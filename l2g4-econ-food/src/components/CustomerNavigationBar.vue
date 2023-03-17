@@ -1,10 +1,11 @@
 <template>
   <div class="nav">
     <ul>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Marketplace</a></li>
-      <li><a href="#">Orders</a></li>
       <li><a href="#">Cart</a></li>
+      <li><a href="#">Orders</a></li>
+      <li><a href="#">Marketplace</a></li>
+      <li><a href="#">Profile</a></li>
+      
     </ul>
   </div>
 </template>
@@ -29,17 +30,29 @@ export default {
 }
 
 .nav li {
-  float: left;
-}
-
-.nav li a {
-  display: block;
-  padding: 16px;
-  text-decoration: none;
+  float: right;
 }
 
 .nav li a:hover {
   background-color: white;
   color: green;
+}
+
+/* Style the links inside the navigation bar */
+.nav a {
+  display:block;
+  float: right;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 20px 30px 20px 30px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: sans-serif;
+}
+
+/* Add a color to the active/current link */
+.nav a.active {
+  background-color: green;
+  color: white;
 }
 </style>
