@@ -1,28 +1,10 @@
 <template>
 	<div class="container">
 		<div class="center">
-		<h1> Register </h1>
+            <h1> Forgot password? </h1>
 			<form>
-				<div class="buttons">
-					<button :class="{active: isCustomer}" @click.prevent="toggle('customer')">Customer</button>
-					<button :class="{active: !isCustomer}" @click.prevent="toggle('merchant')">Merchant</button>
-				</div>
 				<input type="text" name="email" placeholder="Email">
-				<input type="password" name="password" placeholder="Password">
-				<input type="password" name="confirm-password" placeholder="Confirm Password">
-				<input type="submit" value="Register">
-				<div class="links">
-					<router-link to="/login">
-						<div class="link">
-							Login
-						</div>
-					</router-link>
-					<router-link to="/forgotpassword">
-						<div class="link">
-							Forgot password?
-						</div>
-					</router-link>
-				</div>
+				<input type="submit" value="Verify Email">
 			</form>
 		</div>
 		<div class="topleft">
@@ -32,22 +14,7 @@
 </template>
 <script>
 export default {
-    name: "Register",
-	data() {
-		return {
-			// default option is Customer
-			isCustomer: true
-		}
-	},
-	methods: {
-		toggle(client) {
-      		if (client === 'customer') {
-        		this.isCustomer = true;
-      	} else {
-        	this.isCustomer = false;
-      		}
-    	}
-	}
+    name: "ForgotPassword"
 }
 </script>
 <style scoped>
@@ -70,9 +37,9 @@ export default {
         left: 0px;
         background-color: rgba(0, 0, 0, 0.25)
     }
-	h1 {
+    h1 {
 		position: absolute;
-		top: 33%;
+		top: 40%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 1;
@@ -91,7 +58,7 @@ export default {
 		border-radius: 30px;
 		box-shadow: 0px 0px 10px #999;
 	}
-	input[type="text"], input[type="password"] {
+	input[type="text"]{
 		display: block;
 		width: 90%;
 		margin-bottom: 10px;
@@ -116,37 +83,6 @@ export default {
 		font-family: 'Nunito Sans';
 		cursor: pointer;
 	}
-	.links {
-		display: flex;
-		justify-content: space-between;
-		width: 70%;
-		margin: 0 auto;
-		margin-top: 20px;
-  	}
-	.link {
-		display: block;
-		text-align: center;
-		margin-top: 20px;
-		font-size: 16px;
-		font-family: 'Nunito Sans'
-	}
-	button {
-		font-family: 'Nunito Sans';
-		font-size: 16px;
-		height: 50px;
-  		width: 150px;
-		margin-left: 15px;
-		margin-bottom: 15px;
-		margin-right: 15px;
-		border-radius: 15px;
-		border-radius: 30px;
-		box-shadow: 0px 0px 5px #999;
-		cursor: pointer;
-	}
-	.active {
-    	background-color: #16703C;
-    	color: white;
-  	}
 	.icon {
         width: 200px;
         height: 200px;
