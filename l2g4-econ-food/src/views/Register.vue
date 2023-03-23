@@ -52,7 +52,13 @@ export default {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Nunito Sans');
+	html, body {
+		height: 100%;
+	}
     .container {
+		display: flex;
+  		justify-content: center;
+  		align-items: center;
         background-image: url('https://i.ibb.co/C69CYVs/Landing-Register-Login-Page.png');
         background-size: cover;
         position: fixed;
@@ -61,35 +67,27 @@ export default {
         bottom: 0px;
         left: 0px;
     }
-    .container::before {
-        content: "";
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
-        background-color: rgba(0, 0, 0, 0.25)
-    }
+	.center {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 	h1 {
-		position: absolute;
-		top: 33%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 1;
 		color: #fff;
 		font-size: 40px;
 		font-family: 'Nunito Sans';
 		text-shadow: 2px 2px #000;
+		margin-bottom: 30px;
 	}
 	form {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 		background-color: #fff;
 		padding: 20px;
 		border-radius: 30px;
 		box-shadow: 0px 0px 10px #999;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 	input[type="text"], input[type="password"] {
 		display: block;
@@ -147,6 +145,11 @@ export default {
     	background-color: #16703C;
     	color: white;
   	}
+	  .topleft {
+  		position: absolute;
+  		top: 0;
+  		left: 0;
+	}
 	.icon {
         width: 200px;
         height: 200px;
