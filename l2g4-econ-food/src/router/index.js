@@ -3,6 +3,8 @@ import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import CustomerLandingTest from '../views/CustomerLandingTest.vue'
+import AddListing from '../views/AddListing.vue'
+import MerchantListings from '../views/MerchantListings.vue'
 
 const routes = [
   {
@@ -25,6 +27,16 @@ const routes = [
     name: 'CustomerLandingTest',
     component: CustomerLandingTest
   },
+  {
+    path: '/AddListing',
+    name: 'AddListing',
+    component: AddListing
+  },
+  {
+    path: '/MerchantListings',
+    name: 'MerchantListings',
+    component: MerchantListings
+  }
 ]
 
 const router = createRouter({
