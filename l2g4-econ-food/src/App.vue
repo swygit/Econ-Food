@@ -1,4 +1,5 @@
 <template>
+
 <div id='nav'>
   <router-link to="/">Landing</router-link>
   <router-link to="/Register">Register</router-link>
@@ -17,5 +18,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
