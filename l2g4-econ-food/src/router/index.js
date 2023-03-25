@@ -7,7 +7,9 @@ import Marketplace from '../views/Marketplace.vue'
 import Dashboard from '../views/Dashboard.vue'
 import CustomerProfile from '../views/CustomerProfile.vue'
 import MerchantProfile from '../views/MerchantProfile.vue'
-
+import CustomerLandingTest from '../views/CustomerLandingTest.vue'
+import AddListing from '../views/AddListing.vue'
+import MerchantListings from '../views/MerchantListings.vue'
 
 const routes = [
   {
@@ -49,6 +51,21 @@ const routes = [
     path: '/merchantprofile',
     name: 'MerchantProfile',
     component: MerchantProfile
+   },
+   {
+    path: '/CustomerLandingTest',
+    name: 'CustomerLandingTest',
+    component: CustomerLandingTest
+  },
+  {
+    path: '/AddListing',
+    name: 'AddListing',
+    component: AddListing
+  },
+  {
+    path: '/MerchantListings',
+    name: 'MerchantListings',
+    component: MerchantListings
   }
 ]
 
