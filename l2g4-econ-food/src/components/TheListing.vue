@@ -16,6 +16,7 @@
         </div>
       </div>
     </div>
+    <button class="listing__delete-button" @click="deleteListing">Delete</button>
   </div>
 </template>
 
@@ -69,6 +70,10 @@ export default {
       const newQuantity = Math.max(0, this.quantity - 1);
       this.updateQuantity(newQuantity);
       this.quantity = newQuantity;
+    },
+    async deleteListing() {
+      const listingRef = doc(this.$firebase.firestore, String(this.$parent.useremail)+'listings', this.id);
+      await deleteDoc(listingRef);
     }
   }
 }

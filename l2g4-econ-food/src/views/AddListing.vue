@@ -65,7 +65,7 @@
           price: parseFloat(this.price),
           imageUrl: this.imageUrl
         });
-        this.$router.push('/');
+        this.$router.push('/MerchantListings');
       },
       onImageSelected(event) {
         const file = event.target.files[0];

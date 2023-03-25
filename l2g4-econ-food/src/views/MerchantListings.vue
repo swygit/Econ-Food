@@ -3,12 +3,15 @@
       <h1 class="title"> Merchant Listings</h1>
       <div class="listings">
         <TheListing v-for="listing in listings"
-                    :key="listing.id"
-                    :imageUrl="listing.imageUrl"
-                    :name="listing.name"
-                    :price="listing.price"
-                    :quantity="listing.quantity"
-                    :bestBy="listing.bestBy" />
+            :key="listing.id"
+            :id="listing.id"
+            :imageUrl="listing.imageUrl"
+            :name="listing.name"
+            :price="listing.price"
+            :quantity="listing.quantity"
+            :bestBy="listing.bestBy"
+            @updateQuantity="updateQuantity(listing.id, $event)"
+            @deleteListing="deleteListing(listing.id)" />
       </div>
     </div>
   </template>
@@ -61,8 +64,14 @@
         .catch((error) => {
           console.error('Error getting documents:', error);
         });
+    },
+  methods: {
+    deleteListing(id) {
+      this.listings = this.listings.filter((listing) => listing.id !== id);
     }
   }
+
+}
   </script>
 
   <style>
