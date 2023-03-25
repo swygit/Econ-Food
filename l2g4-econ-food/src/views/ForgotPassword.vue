@@ -4,7 +4,7 @@
             <h1> Forgot password? </h1>
 			<form>
 				<input type="text" name="email" placeholder="Email">
-				<input type="submit" value="Verify Email">
+				<button id="verifyEmail" @click="verifyEmail">Verify Email</button>
 			</form>
 		</div>
 		<div class="topleft">
@@ -64,7 +64,7 @@ export default {
 		font-size: 16px;
 		font-family: 'Nunito Sans';
 	}
-	input[type="submit"] {
+	#verifyEmail {
 		display: block;
 		width: 95%;
 		margin-bottom: 10px;

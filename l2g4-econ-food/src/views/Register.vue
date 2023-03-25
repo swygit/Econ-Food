@@ -1,16 +1,16 @@
 <template>
 	<div class="container">
 		<div class="center">
-		<h1> Register </h1>
-			<form>
+			<h1> Register </h1>
+			<form @submit.prevent="register">
 				<div class="buttons">
 					<button :class="{active: isCustomer}" @click.prevent="toggle('customer')">Customer</button>
 					<button :class="{active: !isCustomer}" @click.prevent="toggle('merchant')">Merchant</button>
 				</div>
-				<input type="text" name="email" placeholder="Email">
-				<input type="password" name="password" placeholder="Password">
-				<input type="password" name="confirm-password" placeholder="Confirm Password">
-				<input type="submit" value="Register">
+				<input type="text" placeholder="Email" v-model="email">
+				<input type="password" placeholder="Password" v-model="password">
+				<input type="password" placeholder="Confirm Password" v-model="confirmpassword">
+				<button type="submit" id="register">Register</button>
 				<div class="links">
 					<router-link to="/login">
 						<div class="link">
@@ -31,14 +31,33 @@
 	</div>
 </template>
 <script>
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
+
+import firebaseApp from '../firebase.js'
+import router from '../router';
 export default {
     name: "Register",
 	data() {
 		return {
 			// default option is Customer
-			isCustomer: true
+			isCustomer: true,
+			user: false,
+			email: "",
+			password: "",
+			confirmpassword: ""
 		}
 	},
+	mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+ 	},
 	methods: {
 		toggle(client) {
       		if (client === 'customer') {
@@ -46,15 +65,49 @@ export default {
       	} else {
         	this.isCustomer = false;
       		}
-    	}
+    	},
+		async register() {
+			if (this.password === this.confirmpassword) {
+				try {
+      				await createUserWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password);
+					// set up the customer data
+					if (this.isCustomer) {
+						const customerData = {
+							name: "",
+							email: this.email,
+							phoneNumber: "",
+							updatedProfile: false,
+						}
+						await setDoc(doc(db, "customers", this.email), customerData)
+					// set up merchant data
+					} else if (!this.isCustomer) {
+						const merchantData = {
+							name: "",
+							businessType: "",
+							email: this.email,
+							operatingHours: "",
+							location: "",
+							phoneNumber: "",
+							bankNumber: "",
+							updatedProfile: false,
+						}
+						await setDoc(doc(db, "merchants", this.email), merchantData)
+					}
+					console.log('Successfully registered!')
+					router.push('/login')
+				} catch(error) {
+					console.log(error);
+					alert('Invalid email/Email already taken.')
+				}
+			} else {
+				alert('Passwords do not match!')
+			}
+		}
 	}
 }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Nunito Sans');
-	html, body {
-		height: 100%;
-	}
     .container {
 		display: flex;
   		justify-content: center;
@@ -100,7 +153,7 @@ export default {
 		font-size: 16px;
 		font-family: 'Nunito Sans';
 	}
-	input[type="submit"] {
+	#register {
 		display: block;
 		width: 95%;
 		margin-bottom: 10px;

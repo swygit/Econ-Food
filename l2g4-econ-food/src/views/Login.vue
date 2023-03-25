@@ -1,15 +1,16 @@
 <template>
 	<div class="container">
 		<div class="center">
-		<h1> Sign In </h1>
-			<form>
+			<h1> Login </h1>
+			<form @submit.prevent="login">
 				<div class="buttons">
 					<button :class="{active: isCustomer}" @click.prevent="toggle('customer')">Customer</button>
 					<button :class="{active: !isCustomer}" @click.prevent="toggle('merchant')">Merchant</button>
 				</div>
-				<input type="text" name="email" placeholder="Email">
-				<input type="password" name="password" placeholder="Password">
-				<input type="submit" value="Sign in">
+				<input type="text" placeholder="Email" v-model="email">
+				<input type="password" placeholder="Password" v-model="password">
+				<p v-if="errMsg" v-text="errMsg"></p>
+				<button type="submit" id="login">Login</button>
 				<div class="links">
 					<router-link to="/register">
 						<div class="link">
@@ -31,15 +32,34 @@
 </template>
 <script>
 import App from '../App.vue';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import firebaseApp from '../firebase.js'
+import router from '../router';
+
+const db = getFirestore(firebaseApp);
+
 export default {
   components: { App },
     name: "Login",
 	data() {
 		return {
 			// default option is Customer
-			isCustomer: true
+			isCustomer: true,
+			user: false,
+			email: "",
+			password: "",
+			errMsg: ""
 		}
 	},
+	mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+ 	},
 	methods: {
 		toggle(client) {
       		if (client === 'customer') {
@@ -47,15 +67,61 @@ export default {
       	} else {
         	this.isCustomer = false;
       		}
-    	}
-	}
+    	},
+		async login() {
+			this.errMsg = ""
+			try {
+				if (this.isCustomer) {
+					const customerDocRef = await getDoc(doc(db, "customers", this.email))
+						if (customerDocRef.exists()) {
+						await signInWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password)
+						console.log('Successfully logged in as a customer!')
+						const updatedProfile = customerDocRef.data().updatedProfile
+						if (updatedProfile) {
+							console.log('User has updated all details in profile.')
+							router.push('/marketplace')			
+						} else if (!updatedProfile) {
+							console.log('User has not updated all details in profile.')
+							router.push('/customerprofile')
+						}
+					} else {
+						this.errMsg = "The provided email does not belong to a registered customer."
+					}
+				}
+				else if (!this.isCustomer) {
+					const merchantDocRef = await getDoc(doc(db, "merchants", this.email))
+					if (merchantDocRef.exists()) {
+						await signInWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password)
+						console.log('Successfully logged in as a merchant!')
+						const updatedProfile = merchantDocRef.data().updatedProfile
+						if (updatedProfile) {
+							console.log('User has updated all details in profile.')
+							router.push('/marketplace')			
+						} else if (!updatedProfile) {
+							console.log('User has not updated all details in profile.')
+							router.push('/merchantprofile')
+						}
+					} else {
+						this.errMsg = "The provided email does not belong to a registered merchant."
+					}
+				}
+			} catch(error) {
+					console.log(error);
+					switch (error.code) {
+						case "auth/wrong-password":
+							this.errMsg = "Incorrect password."
+							break
+						default:
+							this.errMsg = "Something went wrong. Try again."
+							break
+					}
+			}
+		}
+	}	
 }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Nunito Sans');
-	html, body {
-		height: 100%;
-	}
     .container {
 		display: flex;
   		justify-content: center;
@@ -101,7 +167,7 @@ export default {
 		font-size: 16px;
 		font-family: 'Nunito Sans';
 	}
-	input[type="submit"] {
+	#login {
 		display: block;
 		width: 95%;
 		margin-bottom: 10px;
@@ -114,6 +180,9 @@ export default {
 		font-size: 16px;
 		font-family: 'Nunito Sans';
 		cursor: pointer;
+	}
+	p {
+		font-family: 'Nunito Sans'
 	}
 	.links {
 		display: flex;
