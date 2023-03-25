@@ -1,11 +1,12 @@
 <template>
-<div id='nav'>
+<!-- <nav>
   Oops! This page has not been developed yet. Click the above links to navigate to the developed pages.<br>
   <router-link to="/">Landing</router-link><br>
   <router-link to="/Register">Register</router-link><br>
   <router-link to="/Login">Login</router-link><br>
-  <router-link to="/ForgotPassword">ForgotPassword</router-link>
-</div>
+  <router-link to="/ForgotPassword">ForgotPassword</router-link><br>
+  <router-link to="/Marketplace">Marketplace</router-link>
+</nav> -->
 <router-view/>  
 </template>
 
