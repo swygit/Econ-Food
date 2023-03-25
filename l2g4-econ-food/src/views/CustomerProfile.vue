@@ -3,10 +3,12 @@
         <CustomerNavBar/>
         <div class="center">
             <img src="https://i.ibb.co/GxMZDwr/user-icon.png" class="user-icon">
-            <input type="text" placeholder="Name" v-model="name">
-			<input type="text" placeholder="Email" v-model="email">
-			<input type="text" placeholder="Phone Number" v-model="phoneNumber">
-            <button @click="" id="save">Save</button>
+            <form @submit.prevent="updateProfile">
+                <input type="text" placeholder="Name" v-model="name">
+                <input type="text" placeholder="Email" v-model="email" readonly>
+                <input type="text" placeholder="Phone Number" v-model="phoneNumber">
+                <button type="submit" id="save">Save</button>
+            </form>
 			<button @click="" id="changePassword">Change Password</button>
             <button @click="signOut" id="signOut">Sign Out</button>
         </div>
@@ -15,9 +17,8 @@
 
 <script>
 import CustomerNavBar from '@/components/CustomerNavBar.vue'
-// import LogOut from "@/components/LogOut.vue";
 import { getAuth, onAuthStateChanged, signOut } from "@firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import firebaseApp from '../firebase.js'
 import router from '../router';
 
@@ -27,7 +28,6 @@ export default {
   name: "CustomerProfile",
   components: {
     CustomerNavBar,
-    // LogOut,
   },
   data() {
     return {
@@ -42,17 +42,37 @@ export default {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         this.user = user;
-        console.log("Current user:", user);
         const customerDocRef = await getDoc(doc(db, "customers", user.email))
-        console.log(customerDocRef)
         this.name = customerDocRef.data().name
         this.email = customerDocRef.data().email
         this.phoneNumber = customerDocRef.data().phoneNumber
+        console.log(customerDocRef.data())
       }
     });
   },
   methods: {
-    async updateProfile() {},
+    async updateProfile() {
+        const customerDoc = await doc(db, "customers", this.email)
+        await updateDoc(customerDoc, {
+            name: this.name,
+            phoneNumber: this.phoneNumber
+        })
+        // check if the profile has been filled up
+        const customerDocRef = await getDoc(doc(db, "customers", this.email))
+        for (const key in customerDocRef.data()) {
+            const value = customerDocRef.data()[key]
+            if (value === "") {
+                await updateDoc(customerDoc, {
+                    updatedProfile: false,
+                })
+                break;
+            }
+            await updateDoc(customerDoc, {
+                updatedProfile: true,
+            })
+        }
+        alert("Profile successfully updated!")
+    },
     async signOut() {
         await signOut(getAuth(firebaseApp))
         router.push("/login")

@@ -112,7 +112,7 @@ export default {
 							this.errMsg = "Incorrect password."
 							break
 						default:
-							this.errMsg = "Something went wrong. Try again."
+							this.errMsg = "Enter email and password."
 							break
 					}
 			}
