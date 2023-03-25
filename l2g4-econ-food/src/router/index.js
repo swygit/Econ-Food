@@ -3,6 +3,8 @@ import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
+import AboutCustomer from '../views/AboutCustomer.vue'
+import AboutMerchant from '../views/AboutMerchant.vue'
 
 const routes = [
   {
@@ -24,6 +26,16 @@ const routes = [
     path: '/forgotpassword',
     name: 'ForgotPassword',
     component: ForgotPassword
+  },
+  {
+    path: '/aboutCustomer',
+    name: 'AboutCustomer',
+    component: AboutCustomer
+  },
+  {
+    path: '/aboutMerchant',
+    name: 'AboutMerchant',
+    component: AboutMerchant
   }
 ]
 

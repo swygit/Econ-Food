@@ -5,6 +5,8 @@
   <router-link to="/Register">Register</router-link><br>
   <router-link to="/Login">Login</router-link><br>
   <router-link to="/ForgotPassword">ForgotPassword</router-link>
+  <router-link to="/AboutCustomer">AboutCustomer</router-link>
+  <router-link to="/AboutMerchant">AboutMerchant</router-link>
 </div>
 <router-view/>  
 </template>
