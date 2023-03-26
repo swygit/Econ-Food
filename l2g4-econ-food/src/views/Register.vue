@@ -7,10 +7,11 @@
 					<button :class="{active: isCustomer}" @click.prevent="toggle('customer')">Customer</button>
 					<button :class="{active: !isCustomer}" @click.prevent="toggle('merchant')">Merchant</button>
 				</div>
-				<input type="text" placeholder="Email" v-model="email">
+				<input type="email" placeholder="Email" v-model="email" required>
 				<input type="password" placeholder="Password" v-model="password">
 				<input type="password" placeholder="Confirm Password" v-model="confirmpassword">
 				<button type="submit" id="register">Register</button>
+				<p v-if="errMsg" v-text="errMsg"></p>
 				<div class="links">
 					<router-link to="/login">
 						<div class="link">
@@ -32,7 +33,7 @@
 </template>
 <script>
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth'
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 
@@ -47,7 +48,8 @@ export default {
 			user: false,
 			email: "",
 			password: "",
-			confirmpassword: ""
+			confirmpassword: "",
+			errMsg: ""
 		}
 	},
 	mounted() {
@@ -67,6 +69,7 @@ export default {
       		}
     	},
 		async register() {
+			this.errMsg = ""
 			if (this.password === this.confirmpassword) {
 				try {
       				await createUserWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password);
@@ -78,7 +81,8 @@ export default {
 							phoneNumber: "",
 							updatedProfile: false,
 						}
-						await setDoc(doc(db, "customers", this.email), customerData)
+						// await setDoc(doc(db, "customers", this.email), customerData)
+						await addDoc(collection(db, "customers"), customerData)
 					// set up merchant data
 					} else if (!this.isCustomer) {
 						const merchantData = {
@@ -91,16 +95,24 @@ export default {
 							bankNumber: "",
 							updatedProfile: false,
 						}
-						await setDoc(doc(db, "merchants", this.email), merchantData)
+						// await setDoc(doc(db, "merchants", this.email), merchantData)
+						await addDoc(collection(db, "merchants"), merchantData)
 					}
 					console.log('Successfully registered!')
 					router.push('/login')
 				} catch(error) {
 					console.log(error);
-					alert('Invalid email/Email already taken.')
+					switch (error.code) {
+						case "auth/email-already-in-use":
+							this.errMsg = "Email already in use. Try another one."
+							break
+						case "auth/invalid-email":
+							this.errMsg = "Invalid email. Try again."
+							break
+					}
 				}
 			} else {
-				alert('Passwords do not match!')
+				this.errMsg = "Passwords do not match!"
 			}
 		}
 	}
@@ -142,7 +154,7 @@ export default {
 		flex-direction: column;
 		align-items: center;
 	}
-	input[type="text"], input[type="password"] {
+	input[type="email"], input[type="password"] {
 		display: block;
 		width: 90%;
 		margin-bottom: 10px;
@@ -166,6 +178,9 @@ export default {
 		font-size: 16px;
 		font-family: 'Nunito Sans';
 		cursor: pointer;
+	}
+	p {
+		font-family: 'Nunito Sans'
 	}
 	.links {
 		display: flex;

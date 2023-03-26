@@ -7,8 +7,8 @@
 					<button :class="{active: isCustomer}" @click.prevent="toggle('customer')">Customer</button>
 					<button :class="{active: !isCustomer}" @click.prevent="toggle('merchant')">Merchant</button>
 				</div>
-				<input type="text" placeholder="Email" v-model="email">
-				<input type="password" placeholder="Password" v-model="password">
+				<input type="email" placeholder="Email" v-model="email" required>
+				<input type="password" placeholder="Password" v-model="password" required>
 				<p v-if="errMsg" v-text="errMsg"></p>
 				<button type="submit" id="login">Login</button>
 				<div class="links">
@@ -33,7 +33,7 @@
 <script>
 import App from '../App.vue';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, getDocs, collection, query, where } from "firebase/firestore";
 import firebaseApp from '../firebase.js'
 import router from '../router';
 
@@ -72,37 +72,48 @@ export default {
 			this.errMsg = ""
 			try {
 				if (this.isCustomer) {
-					const customerDocRef = await getDoc(doc(db, "customers", this.email))
-						if (customerDocRef.exists()) {
-						await signInWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password)
-						console.log('Successfully logged in as a customer!')
-						const updatedProfile = customerDocRef.data().updatedProfile
-						if (updatedProfile) {
-							console.log('User has updated all details in profile.')
-							router.push('/marketplace')			
-						} else if (!updatedProfile) {
-							console.log('User has not updated all details in profile.')
-							router.push('/customerprofile')
-						}
-					} else {
-						this.errMsg = "The provided email does not belong to a registered customer."
+					const customerDocQuery = query(collection(db, "customers"), where('email', '==', this.email))
+					const customerDocsRef = await getDocs(customerDocQuery)
+					let customerDocRef
+					customerDocsRef.forEach((doc) => {
+						customerDocRef = doc
+					})
+					// if there is no such customer email address
+					if (customerDocRef === undefined) {
+						throw new Error()
 					}
+					await signInWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password)
+					console.log('Successfully logged in as a customer!')
+					const updatedProfile = customerDocRef.data().updatedProfile
+					if (updatedProfile) {
+						console.log('User has updated all details in profile.')
+						router.push('/marketplace')			
+					} else if (!updatedProfile) {
+						console.log('User has not updated all details in profile.')
+						router.push('/customerprofile')
+					}
+	
 				}
 				else if (!this.isCustomer) {
-					const merchantDocRef = await getDoc(doc(db, "merchants", this.email))
-					if (merchantDocRef.exists()) {
-						await signInWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password)
-						console.log('Successfully logged in as a merchant!')
-						const updatedProfile = merchantDocRef.data().updatedProfile
-						if (updatedProfile) {
-							console.log('User has updated all details in profile.')
-							router.push('/marketplace')			
-						} else if (!updatedProfile) {
-							console.log('User has not updated all details in profile.')
-							router.push('/merchantprofile')
-						}
-					} else {
-						this.errMsg = "The provided email does not belong to a registered merchant."
+					const merchantDocQuery = query(collection(db, "merchants"), where('email', '==', this.email))
+					const merchantDocsRef = await getDocs(merchantDocQuery)
+					let merchantDocRef
+					merchantDocsRef.forEach((doc) => {
+						merchantDocRef = doc
+					})
+					// if there is no such merchant email address
+					if (merchantDocRef === undefined) {
+						throw new Error()
+					}
+					await signInWithEmailAndPassword(getAuth(firebaseApp), this.email, this.password)
+					console.log('Successfully logged in as a merchant!')
+					const updatedProfile = merchantDocRef.data().updatedProfile
+					if (updatedProfile) {
+						console.log('User has updated all details in profile.')
+						router.push('/marketplace')			
+					} else if (!updatedProfile) {
+						console.log('User has not updated all details in profile.')
+						router.push('/merchantprofile')
 					}
 				}
 			} catch(error) {
@@ -112,7 +123,7 @@ export default {
 							this.errMsg = "Incorrect password."
 							break
 						default:
-							this.errMsg = "Enter email and password."
+							this.errMsg = "The provided email address does not belong to a registered customer/merchant."
 							break
 					}
 			}
@@ -156,7 +167,7 @@ export default {
 		flex-direction: column;
 		align-items: center;
 	}
-	input[type="text"], input[type="password"] {
+	input[type="email"], input[type="password"] {
 		display: block;
 		width: 90%;
 		margin-bottom: 10px;
