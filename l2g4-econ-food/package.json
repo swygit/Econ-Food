@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebaseui": "^0.600.0",
+    "firebase": "^9.18.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
