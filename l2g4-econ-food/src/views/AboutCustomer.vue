@@ -3,43 +3,44 @@
 
     <div class="row">
 
+        <div class="topleft">
+            <a href="/">
+                <img src="../assets/logo1.png" class="logo" alt="Logo">
+            </a>
+        </div>
+        
         <div class="col-left">
-            <div class="topleft">
-                <a href="/">
-                    <img src="../assets/logo1.png" class="logo" alt="Logo">
-                </a>
-            </div>
 
             <v-col class="center">
                 <h1>As a Customer...</h1>
-                <div class="row">
-                    <div class="col">
-                    <img src="../assets/customer-icon-1.png" alt="customer-icon-1" class="icon">
-                    </div>
-                    <div class="col">
-                    <h2>LOCATE</h2>
-                    <p>
-                    Discover a breath of food options from food places near you
-                    </p>
-                    </div>
-                </div>
+                <ListWithIcon
+                image-src="src/assets/customer-icon-1.png"
+                image-alt="customer-icon-1"
+                header="LOCATE"
+                description="Discover a breath of food options from food places near you"
+                />
 
                 <br>
 
-                <h2>SELF PICKUP</h2>
-                <p>
-                Head over to their store to pick up your tasty food/groceries
-                </p>
+                <ListWithIcon
+                image-src="src/assets/customer-icon-2.png"
+                image-alt="customer-icon-2"
+                header="SELF PICKUP"
+                description="Head over to their store to pick up your tasty food/groceries"
+                />
 
                 <br>
 
-                <h2>ENJOY</h2>
-                <p>
-                Enjoy your affordable prepared meal or whip up a storm with your fresh groceries
-                </p>
+                <ListWithIcon
+                image-src="src/assets/customer-icon-3.png"
+                image-alt="customer-icon-3"
+                header="ENJOY"
+                description="Enjoy your affordable prepared meal or whip up a storm with your fresh groceries"
+                />
+
                 <br>
 
-                <div class="topright">
+                <div class="center-div">
                 <router-link to="/login">
                     <button class="signin">Sign In / Register</button>
                 </router-link>
@@ -58,8 +59,13 @@
 </template>
 
 <script>
+import ListWithIcon from '../components/ListWithIcon.vue'
+
 export default {
-    name: "AboutCustomer",
+  name: 'AboutCustomer',
+  components: {
+    ListWithIcon
+  }
 }
 </script>
 
@@ -85,21 +91,13 @@ export default {
     background-color: #f5f5ef;
 } */
 .center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-125%, -50%);
-    text-align: left;
-}
-
-.fix { 
-position:fixed; 
-bottom:0px; 
-left:50%;
-height: 754px;
-width: 754px;
-z-index: 9999999;
-text-align: center;
+    /* position: absolute; */
+    /* top: 50%;
+    left: 50%; */
+    /* transform: translate(-125%, -50%); */
+    /* left: 5%; */
+    max-width: 450px;
+    /* text-align: left; */
 }
 
 h1 {
@@ -133,26 +131,28 @@ p {
 }
 
 .row {
-display: flex;
+    display: flex;
 }
 
 .col-left {
-flex: 1;
+    display: flex;
+    align-items: center;
+    flex: 1;
 }
 
 .col-right {
-flex: 1;
+    flex: 1;
 }
 
 .half-image {
-  width: 50vw;
-  height: 100vh;
+    width: 50vw;
+    height: 100vh;
 }
 
 .icon {
-  width: 70px;
-  height: 70px;
-  justify-self: auto;
+    width: 70px;
+    height: 70px;
+    margin: 10px;
 }
 
 .signin {
@@ -166,10 +166,7 @@ flex: 1;
     cursor: pointer;
 }
 
-.topright {
-    /* position: fixed;
-    top: 10px;
-    right: 10px; */
+.center-div{
     text-align: center;
 }
 </style>

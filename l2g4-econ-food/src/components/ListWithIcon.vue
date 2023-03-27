@@ -1,37 +1,50 @@
 <template>
-  <div class="container">
-    <div class="logo">
-      <img :src="logoSrc" alt="Logo" />
+  <div class="row">
+    <div class="col">
+      <img :src="imageSrc" :alt="imageAlt" class="icon">
     </div>
-    <div class="header">
-      <h1>{{ headerText }}</h1>
-      <p>{{ descriptionText }}</p>
+    <div class="col">
+      <h2>{{ header }}</h2>
+      <p>{{ description }}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "MyComponent",
+  name: 'ListWithIcon',
   props: {
-    logoSrc: String,
-    headerText: String,
-    descriptionText: String,
-  },
-};
+    imageSrc: String,
+    imageAlt: String,
+    header: String,
+    description: String
+  }
+}
 </script>
 
-<style>
-.container {
-  display: flex;
-  align-items: center;
-}
+<style scoped>
+@import url('https://fonts.googleapis.com/css?family=Nunito Sans');
 
-.logo {
-  margin-right: 20px;
-}
-
-.header {
+h2 {
+  font-weight: normal;
+  font-family: 'Nunito Sans';
+  color: black;
+  margin-bottom: 5px;
+  font-size: 23px;
   font-weight: bold;
+}
+
+p {
+  font-weight: normal;
+  font-family: 'Nunito Sans';
+  color: black;
+  margin-bottom: 30px;
+  font-size: 13.9px;
+}
+
+.icon {
+  width: 70px;
+  height: 70px;
+  margin: 10px;
 }
 </style>
