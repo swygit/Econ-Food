@@ -1,125 +1,186 @@
 <template>
-    <div>
-      <h1 class="add-listing-title">Add Listing</h1>
-      <form @submit.prevent="addListing">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" v-model="name" required>
+  <MerchantNavBar />
+  <div class="container" v-if="user">
+    <div class="center">
+      <div class="formDiv">
+        <div class="imageDiv">
+          <img :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'" class="listing-image" /><br />
+          <input type="file" @change="onUpload" accept=".jpg,.png" />
         </div>
-        <div class="form-group">
-          <label for="quantity">Quantity:</label>
-          <input type="number" id="quantity" v-model="quantity" required>
+        <div class="inputDiv">
+          <form @submit.prevent="addListing">
+            <input type="text" placeholder="Name of Listing" v-model="name" required />
+            <input type="number" placeholder="Price" min="0" step="0.01" v-model="price" required />
+            <input type="number" placeholder="Quantity" min="0" v-model="quantity" required />
+            <input type="datetime-local" placeholder="Best By Date" v-model="bestByDate" required />
+            <button type="submit" id="addListing">Add Listing</button>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="best-by">Best by:</label>
-          <input type="datetime-local" id="best-by" v-model="bestBy" required>
-        </div>
-        <div class="form-group">
-          <label for="price">Price:</label>
-          <input type="number" step="0.01" id="price" v-model="price" required>
-        </div>
-        <div class="form-group">
-          <label for="image">Image:</label>
-          <input type="file" id="image" ref="image" @change="onImageSelected">
-        </div>
-        <button type="submit" v-on:click="addListing">Add Listing</button>
-      </form>
+      </div>
     </div>
-  </template>
-  
-  <script>
-    import firebaseApp from "../firebase.js";
-    import { getFirestore } from "firebase/firestore";
-    import { doc, setDoc } from "firebase/firestore";
-    import { getAuth, onAuthStateChanged } from "@firebase/auth";
-    // import { db, storage } from '../firebase';
+  </div>
+</template>
 
-    const db = getFirestore(firebaseApp);
-  
-  export default {
-    mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-        if (user) {
-            this.useremail = auth.currentUser.email;
-            this.user = user;
-        }
-        });
-    },
-    data() {
-      return {
-        name: '',
-        quantity: 0,
-        bestBy: '',
-        price: 0,
-        image: null,
-        imageUrl: null
+<script>
+import MerchantNavBar from "@/components/MerchantNavBar.vue";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { getFirestore, getDoc, addDoc, getDocs, updateDoc, collection, doc, query, where } from "firebase/firestore";
+import firebaseApp from "../firebase.js";
+import router from "../router";
+
+const db = getFirestore(firebaseApp);
+
+export default {
+  name: "AddListingNew",
+  components: {
+    MerchantNavBar,
+  },
+  data() {
+    return {
+      user: false,
+      imageUrl: null,
+      name: "",
+      price: null,
+      quantity: null,
+      bestByDate: null,
+      userId: null,
+    };
+  },
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+        this.userId = user.uid;
       }
-    },
-    methods: {
-      async addListing() {        
-        const docRef = await setDoc(doc(db, String(this.useremail) + "listings", this.name), {
+    });
+  },
+  methods: {
+    async addListing() {
+      try {
+        const listingsCollectionRef = collection(db, "listings"); 
+        const docRef = await addDoc(listingsCollectionRef, {
           name: this.name,
-          quantity: parseInt(this.quantity),
-          bestBy: this.bestBy,
           price: parseFloat(this.price),
-          imageUrl: this.imageUrl
+          quantity: parseInt(this.quantity),
+          bestByDate: new Date(this.bestByDate).toISOString(),
+          merchantId: this.userId
         });
-        this.$router.push('/MerchantListings');
-      },
-      onImageSelected(event) {
-        const file = event.target.files[0];
-        const storageRef = storage.ref(`images/${file.name}`);
-        const uploadTask = storageRef.put(file);
-        uploadTask.on('state_changed', () => {}, () => {}, () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            this.imageUrl = downloadURL;
-          });
-        });
+        if (this.imageUrl) {
+          // upload image to storage and associate with the listing document
+        }
+        alert("Listing added successfully!");
+        this.name = "";
+        this.price = null;
+        this.quantity = null;
+        this.bestByDate = null;
+        this.imageUrl = null;
+      } catch (error) {
+        console.error(error);
+        alert("Failed to add listing. Please try again later.");
       }
-    }
+    },
+    onUpload(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageUrl = reader.result;
+      };
+    },
+  },
+};
+</script>
+
+<style scoped>
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f5f5ef;
+    background-size: cover;
+    position: relative;
   }
-  </script>
-  
-  <style scoped>
-    .add-listing-title {
-    font-size: 36px;
-    font-family: 'Nunito Sans', sans-serif;
-    margin-bottom: 20px;
-    }
-  .form-group {
-    margin-bottom: 10px;
+  .center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
   }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
+  .imageDiv {
+    margin-top: 20px;
   }
-  
+  .profileDiv {
+    margin-left: 20px;
+  }
+  .formDiv {
+    margin-left: 20px;
+  }
+  .MerchantNavBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .merchant-image {
+    width: 500px;
+    height: 500px;
+    border: 2px solid #000;
+  }
+  .listing-image {
+    width: 300px;
+    height: 300px;
+    border: 2px solid #000;
+  }
+  input[type="file"] {
+    font-family: "Nunito Sans";
+    font-size: 16px;
+  }
+  input[type="file"]::-webkit-file-upload-button {
+    font-family: "Nunito Sans";
+    font-size: 16px;
+    color: #fff;
+    background-color: #16703c;
+    padding: 10px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    outline: none;
+  }
   input[type="text"],
   input[type="number"],
   input[type="datetime-local"],
-  input[type="file"] {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  input[type="tel"],
+  textarea {
+    display: block;
     width: 100%;
-    box-sizing: border-box;
-    background-color: #c7e9c0; /* Update to green color */
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0px 0px 5px #999;
+    font-size: 16px;
+    font-family: "Nunito Sans";
   }
-  
-  button[type="submit"] {
+  button[type="submit"],
+  button[type="button"] {
+    display: block;
+    width: 100%;
     margin-top: 10px;
     padding: 10px;
-    background-color: #2ca25f; /* Update to green color */
-    color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 5px #999;
+    background-color: #16703c;
+    color: #fff;
+    font-size: 16px;
+    font-family: "Nunito Sans";
     cursor: pointer;
   }
-  
-  button[type="submit"]:hover {
-    background-color: #006d2c; /* Update to darker green color */
+  button[type="button"] {
+    background-color: transparent;
+    color: #000;
+    border: 2px solid #16703c;
   }
-  </style>
-  
+</style>

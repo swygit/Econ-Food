@@ -1,117 +1,242 @@
 <template>
-  <div class="listing">
-    <div class="listing__image-container">
-      <img class="listing__image" :src="imageUrl" alt="">
+  <div class="listing-card">
+    <div class="listing-image-container">
+      <img :src="listing.imageUrl || 'https://cdn.pixabay.com/photo/2016/02/23/17/42/orange-1218158_1280.png'" class="listing-image" />
     </div>
-    <div class="listing__content">
-      <h2 class="listing__title">{{ name }}</h2>
-      <p class="listing__best-by">Best by {{ bestBy }}</p>
-      <p class="listing__price">{{ price | formatPrice }}</p>
-      <div class="listing__quantity-container">
-        <p class="listing__quantity-label">Quantity:</p>
-        <div class="listing__quantity-buttons">
-          <button class="listing__quantity-button" @click="decrementQuantity">-</button>
-          <input class="listing__quantity-input" type="number" :value="quantity" @input="updateQuantity(+event.target.value)" min="0">
-          <button class="listing__quantity-button" @click="incrementQuantity">+</button>
+    <div class="listing-info">
+      <div class="listing-header">
+        <h2 class="listing-name">{{ listing.name }}</h2>
+        <div class="listing-buttons">
+          <p>Quantity</p>
+          <button class="quantity-button" @click="decrementQuantity">-</button>
+          <input type="number" class="quantity-input" v-model.number="quantity" />
+          <button class="quantity-button" @click="incrementQuantity">+</button>
         </div>
       </div>
+      <div class="listing-details">
+        <p class="listing-price">$ {{ listing.price.toFixed(2) }}</p>
+        <p class="listing-best-by">Best By: {{ formattedBestByDateTime }}</p>
+      </div>
     </div>
-    <button class="listing__delete-button" @click="deleteListing">Delete</button>
+    <div class="listing-buttons">
+      <button class="delete-button" @click="deleteListing">Delete</button>
+      <button class="save-button" @click="updateQuantity">Save</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { updateDoc, doc } from 'firebase/firestore';
-
+import { getFirestore, getDoc, addDoc, getDocs, updateDoc, collection, doc, query, where, deleteDoc } from "firebase/firestore";
+import firebaseApp from "../firebase.js";
+const db = getFirestore(firebaseApp);
 export default {
-  name: 'TheListing',
+  name: "TheListing",
   props: {
-    id: {
-      type: String,
-      required: true
+    listing: {
+      type: Object,
+      required: true,
     },
-    imageUrl: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    price: {
-      type: Number,
-      required: true
-    },
-    quantity: {
-      type: Number,
-      required: true
-    },
-    bestBy: {
-      type: String,
-      required: true
-    }
   },
-  filters: {
-    formatPrice(value) {
-      return `$${value.toFixed(2)}`;
-    }
+  data() {
+    return {
+      quantity: this.listing.quantity,
+    };
+  },
+  computed: {
+    formattedBestByDateTime() {
+      const date = new Date(this.listing.bestByDate);
+      const options = { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+      return date.toLocaleDateString(undefined, options);
+    },
   },
   methods: {
-    async updateQuantity(quantity) {
-      const listingRef = doc(this.$firebase.firestore, String(this.$parent.useremail)+'listings', this.name);
-      await updateDoc(listingRef, { quantity: parseInt(quantity, 10) });
+    decrementQuantity() {
+      if (this.quantity > 0) {
+        this.quantity--;
+      }
     },
     incrementQuantity() {
-      const newQuantity = this.quantity + 1;
-      this.updateQuantity(newQuantity);
-      this.quantity = newQuantity;
-    },
-    decrementQuantity() {
-      const newQuantity = Math.max(0, this.quantity - 1);
-      this.updateQuantity(newQuantity);
-      this.quantity = newQuantity;
+      this.quantity++;
     },
     async deleteListing() {
-      const listingRef = doc(this.$firebase.firestore, String(this.$parent.useremail)+'listings', this.id);
-      await deleteDoc(listingRef);
-    }
-  }
-}
+      if (confirm("Are you sure you want to delete this listing?")) {
+        try {
+          const listingRef = doc(db, "listings", this.listing.id);
+          await deleteDoc(listingRef);
+          alert("Listing deleted successfully!");
+        } catch (error) {
+          console.error(error);
+          alert("Failed to delete listing. Please try again later.");
+        }
+      }
+    },
+    async updateQuantity() {
+      try {
+        const listingRef = doc(db, "listings", this.listing.id);
+        await updateDoc(listingRef, {
+          quantity: this.quantity,
+        });
+        alert("Quantity updated successfully!");
+      } catch (error) {
+        console.error(error);
+        alert("Failed to update quantity. Please try again later.");
+      }
+    },
+  },
+};
 </script>
 
-<style>
-.listing {
+<style scoped>
+.listing-card {
   display: flex;
-  background-color: #f1f6f2;
-  border: 1px solid #dce0db;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f5ef;
   border-radius: 8px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  max-width: 400px;
+  margin: 16px;
 }
 
-.listing__image-container {
-  width: 200px;
+.listing-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 200px;
+  border-radius: 8px;
   overflow: hidden;
-  border-radius: 8px 0 0 8px;
 }
 
-.listing__image {
-  display: block;
+.listing-image {
+  object-fit: cover;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
-.listing__content {
-  padding: 1rem;
-  flex: 1;
+.listing-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 16px;
 }
 
-.listing__title {
-  font-size: 2rem;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  color: #3b6b
+.listing-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
+
+.listing-name {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.listing-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.quantity-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #16703c;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0px 8px;
+}
+
+.quantity-input {
+  font-size: 20px;
+  text-align: center;
+  width: 60px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.listing-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.listing-price {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.listing-best-by {
+  font-size: 14px;
+  text-align: center;
+}
+
+.save-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.save-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #16703c;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #16703c;
+}
+
+.delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff1f01;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #FF8C69;
+}
+
 </style>
