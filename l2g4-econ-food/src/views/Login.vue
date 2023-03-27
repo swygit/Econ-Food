@@ -110,7 +110,7 @@ export default {
 					const updatedProfile = merchantDocRef.data().updatedProfile
 					if (updatedProfile) {
 						console.log('User has updated all details in profile.')
-						router.push('/marketplace')			
+						router.push('/dashboard')			
 					} else if (!updatedProfile) {
 						console.log('User has not updated all details in profile.')
 						router.push('/merchantprofile')

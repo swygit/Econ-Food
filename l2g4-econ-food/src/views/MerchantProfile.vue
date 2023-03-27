@@ -28,7 +28,7 @@
 import MerchantNavBar from '@/components/MerchantNavBar.vue'
 import { getAuth, onAuthStateChanged, signOut } from "@firebase/auth";
 import { getFirestore, getDoc, getDocs, updateDoc, collection, doc, query, where } from "firebase/firestore";
-import firebaseApp from '../firebase.js'
+import firebaseApp from '../firebase.js';
 import router from '../router';
 
 const db = getFirestore(firebaseApp);
@@ -42,8 +42,7 @@ export default {
     return {
       user: false,
       userId: "",
-      image: null,
-      imageUrl: null,
+      imageUrl: "",
       name: "",
       businessType: "",
       email: "",
@@ -65,6 +64,7 @@ export default {
           merchantDocRef = doc
           this.userId = doc.id
         })
+        this.imageUrl = merchantDocRef.data().imageUrl
         this.name = merchantDocRef.data().name
         this.businessType = merchantDocRef.data().businessType
         this.email = merchantDocRef.data().email
@@ -80,6 +80,7 @@ export default {
     async updateProfile() {
         const merchantDoc = await doc(db, "merchants", this.userId)
         await updateDoc(merchantDoc, {
+            imageUrl: this.imageUrl,
             name: this.name,
             businessType: this.businessType,
             operatingHours: this.operatingHours,
@@ -108,8 +109,7 @@ export default {
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = () => {
-        this.imageUrl = reader.result
-        // save the result into Firebase
+            this.imageUrl = reader.result
       }
     },
     async signOut() {

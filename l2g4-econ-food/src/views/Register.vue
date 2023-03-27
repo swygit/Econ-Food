@@ -86,6 +86,7 @@ export default {
 					// set up merchant data
 					} else if (!this.isCustomer) {
 						const merchantData = {
+							imageUrl: "",
 							name: "",
 							businessType: "",
 							email: this.email,
