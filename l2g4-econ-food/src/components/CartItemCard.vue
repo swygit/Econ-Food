@@ -4,7 +4,7 @@
       <!-- <span>{{ item.name }}</span> -->
       <div class="top-container">
         <div class="top-image-container">
-          <img src="@/images/coldstorage.jpg" />
+          <img src="@/images/cs2.jpg" />
         </div>
         <div class="text">
           <h1>Cold Storage - West Coast Park</h1>

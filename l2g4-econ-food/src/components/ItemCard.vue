@@ -10,7 +10,9 @@
       <div class="item-card-icon-circle">
         <img :src="item.image" alt="" />
       </div>
-      <h2 class="item-card-category">{{ item.businessType || item.price }}</h2>
+      <h2 class="item-card-category">
+        {{ item.businessType || "$" + item.price }}
+      </h2>
       <p class="item-card-title">{{ item.name }}</p>
     </div>
   </div>
