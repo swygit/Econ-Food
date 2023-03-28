@@ -3,6 +3,8 @@ import Landing from '../views/Landing.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
+import AboutCustomer from '../views/AboutCustomer.vue'
+import AboutMerchant from '../views/AboutMerchant.vue'
 import Marketplace from '../views/Marketplace.vue'
 import Dashboard from '../views/Dashboard.vue'
 import CustomerProfile from '../views/CustomerProfile.vue'
@@ -10,6 +12,7 @@ import MerchantProfile from '../views/MerchantProfile.vue'
 import CustomerLandingTest from '../views/CustomerLandingTest.vue'
 import AddListing from '../views/AddListing.vue'
 import MerchantListings from '../views/MerchantListings.vue'
+
 
 const routes = [
   {
@@ -33,6 +36,16 @@ const routes = [
     component: ForgotPassword
   },
   {
+
+    path: '/aboutCustomer',
+    name: 'AboutCustomer',
+    component: AboutCustomer
+  },
+  {
+    path: '/aboutMerchant',
+    name: 'AboutMerchant',
+    component: AboutMerchant
+  },
     path: '/marketplace',
     name: 'Marketplace',
     component: Marketplace
