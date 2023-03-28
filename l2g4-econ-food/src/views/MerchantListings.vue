@@ -1,103 +1,140 @@
 <template>
-    <div>
-      <h1 class="title"> Merchant Listings</h1>
-      <div class="listings">
-        <TheListing v-for="listing in listings"
-            :key="listing.id"
-            :id="listing.id"
-            :imageUrl="listing.imageUrl"
-            :name="listing.name"
-            :price="listing.price"
-            :quantity="listing.quantity"
-            :bestBy="listing.bestBy"
-            @updateQuantity="updateQuantity(listing.id, $event)"
-            @deleteListing="deleteListing(listing.id)" />
+  <div>
+    <MerchantNavBar />
+    <div class="header-wrapper">
+      <h1>Listings</h1>
+      <ListingSearchBar v-bind:value="searchQuery" v-on:update:value="searchQuery = $event" v-on:search="searchListings" v-on:reset="getListings" />
+      <router-link to="/AddListing" class="add-listing-btn">
+        Add Listing
+      </router-link>
+    </div>
+    <div class="merchant-listings">
+      <div class="merchant-listings-wrapper">
+        <TheListing v-for="listing in listings" :key="listing.id" :listing="listing" />
       </div>
     </div>
-  </template>
-  
-  <script>
-  import TheListing from "@/components/TheListing.vue";
-  import firebaseApp from "../firebase.js";
-    import { getFirestore, collection, getDocs } from "firebase/firestore";
-    import { getAuth, onAuthStateChanged } from "@firebase/auth";
+  </div>
+</template>
 
-    const db = getFirestore(firebaseApp);
-  
+<script>
+import MerchantNavBar from "@/components/MerchantNavBar.vue";
+import TheListing from "@/components/TheListing.vue";
+import ListingSearchBar from "@/components/ListingSearchBar.vue";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import firebaseApp from "../firebase.js";
 
-  export default {
-    name: 'MerchantListings',
-    components: {
-      TheListing,
-    },
-    data() {
-      return {
-        listings: []
+const db = getFirestore(firebaseApp);
+
+export default {
+  name: "MerchantListings",
+  components: {
+    MerchantNavBar,
+    TheListing,
+    ListingSearchBar
+  },
+  data() {
+    return {
+      user: null,
+      userId: null,
+      listings: [],
+      searchQuery: "",
+    };
+  },
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+        this.userId = user.uid;
+        this.getListings();
       }
-    },
-    mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-        if (user) {
-            this.useremail = auth.currentUser.email;
-            this.user = user;
-        }
-        });
-      const myCollection = collection(db, String(this.useremail)+'listings');
-      getDocs(myCollection)
-        .then((querySnapshot) => {
-          const listings = [];
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const listing = {
-              id: doc.id,
-              imageUrl: data.imageUrl,
-              name: data.name,
-              price: data.price,
-              quantity: data.quantity,
-              bestBy: data.bestBy
-            };
-            listings.push(listing);
-          });
-          this.listings = listings;
-        })
-        .catch((error) => {
-          console.error('Error getting documents:', error);
-        });
-    },
+    });
+  },
   methods: {
-    deleteListing(id) {
-      this.listings = this.listings.filter((listing) => listing.id !== id);
-    }
-  }
+    async getListings() {
+      const q = query(collection(db, "listings"), where("merchantId", "==", this.userId));
+      const querySnapshot = await getDocs(q);
+      const listings = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      this.listings = listings;
+    },
+    async searchListings() {
+      const query1 = this.searchQuery.toLowerCase();
+      const q = query(collection(db, "listings"), where("merchantId", "==", this.userId));
+      const querySnapshot = await getDocs(q);
+      const listings = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      const filteredListings = listings.filter((listing) => {
+        return (
+          listing.name.toLowerCase().includes(query1) ||
+          listing.quantity.toString().includes(query1) ||
+          listing.price.toString().includes(query1) ||
+          (listing.formattedBestByDateTime && listing.formattedBestByDateTime.toLowerCase().includes(query1))
+        );
+      });
+      this.listings = filteredListings;
+    },
+  },
+};
+</script>
 
+<style scoped>
+.merchant-listings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
-  </script>
 
-  <style>
-  .title {
-    font-size: 50px;
-    font-family: 'Nunito Sans', sans-serif;
-    margin-bottom: 20px;
-  }
+.merchant-listings-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+  margin: 0 16px;
+  width: 100%;
+}
 
+.merchant-listings-item {
+  display: flex;
+  flex: 0 0 auto;
+  margin-right: 16px;
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 35px ;
+}
+
+h1 {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  color: black;
+  margin-right: 16px;
+}
+
+.add-listing-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #16703c;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.add-listing-btn:hover {
+  background-color: #16703c;
+  transform: translateY(-2px);
+}
 </style>
 
-  
-
-   <!-- <template>
-    <div>
-      <CustomerNavigationBar />
-    </div>
-  </template>
-  
-  <script>
-  import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
-  
-  export default {
-      name: "MerchantListings",
-      components: {
-          CustomerNavigationBar
-      }
-  };
-  </script> -->
