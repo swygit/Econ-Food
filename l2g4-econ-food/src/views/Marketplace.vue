@@ -48,6 +48,7 @@ import SearchBar from "@/components/SearchBar.vue";
 import FilterButton from "@/components/FilterButton.vue";
 import ItemCard from "@/components/ItemCard.vue";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 
 const db = getFirestore(firebaseApp);
 
@@ -64,6 +65,7 @@ export default {
     };
   },
   mounted() {
+    this.getUser();
     this.display();
   },
   components: {
@@ -79,17 +81,17 @@ export default {
     },
     toggleHotel: function () {
       this.filteredMerchants = this.merchants.filter(
-        (item) => item.category == "Hotel"
+        (item) => item.businessType == "Hotel"
       );
     },
     toggleSupermarket: function () {
       this.filteredMerchants = this.merchants.filter(
-        (item) => item.category == "Supermarket"
+        (item) => item.businessType == "Supermarket"
       );
     },
     toggleOthers: function () {
       this.filteredMerchants = this.merchants.filter(
-        (item) => item.category == "Others"
+        (item) => item.businessType == "Others"
       );
     },
     clickRouter: function (id) {
@@ -101,12 +103,12 @@ export default {
       );
     },
     display: async function () {
-      let allDocuments = await getDocs(collection(db, "merchant"));
+      let allDocuments = await getDocs(collection(db, "merchants"));
       let values = allDocuments.docs.map((v) => {
         const data = v.data();
         return {
           ...data,
-          id: v.id,
+          id: data.uid,
         };
       });
       this.merchants = values;
@@ -115,6 +117,14 @@ export default {
       // 1. Store it as a url (if hardcoded)
       // 2. Store as base64 string
       // 3. Blob in firebase (https://firebase.google.com/docs/storage/web/upload-files)
+    },
+    getUser: function () {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+        }
+      });
     },
   },
 };

@@ -45,25 +45,26 @@ const routes = [
     component: IndividualProductPage,
   },
   {
-    //Filter by customer id
-    path: "/cart",
+    //Filter by customer id (DONE)
+    path: "/cart/:id",
     name: "Cart",
     component: Cart,
   },
   {
-    //Filter by merchant id
+    //Filter by customer id (unsure)
+    path: "/checkout",
+    name: "Checkout",
+    component: Checkout,
+  },
+  {
+    //Filter by merchant id (DONE)
     path: "/merchant/:id",
     name: "Individual Marketplace",
     component: IndividualMarketplace,
   },
   {
     //Filter by merchant id
-    path: "/checkout",
-    name: "Checkout",
-    component: Checkout,
-  },
-  {
-    path: "/dashboard",
+    path: "/dashboard:id",
     name: "Dashboard",
     component: Dashboard,
   },

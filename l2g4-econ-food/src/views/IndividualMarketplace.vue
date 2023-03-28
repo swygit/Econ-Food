@@ -64,12 +64,21 @@ export default {
     },
     loadMerchant: async function () {
       const id = this.$route.params.id;
-      const document = await getDoc(doc(db, "merchant", id));
-      this.merchant = document.data();
+      let allDocuments = await getDocs(collection(db, "merchants"));
+      let values = allDocuments.docs
+        .map((v) => {
+          const data = v.data();
+          return {
+            ...data,
+            id: data.uid,
+          };
+        })
+        .find((v) => v.id === id);
+      this.merchant = values;
     },
     loadItems: async function () {
       const id = this.$route.params.id;
-      let allDocuments = await getDocs(collection(db, "items"));
+      let allDocuments = await getDocs(collection(db, "listings"));
       let values = allDocuments.docs
         .map((v) => {
           const data = v.data();
@@ -86,6 +95,7 @@ export default {
   mounted: async function () {
     this.loadMerchant();
     this.loadItems();
+    // 79cXYQW4Qhf1OmpqxhzZfkBXUjP2
   },
 };
 </script>
