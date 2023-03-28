@@ -64,6 +64,7 @@ export default {
           const listingRef = doc(db, "listings", this.listing.id);
           await deleteDoc(listingRef);
           alert("Listing deleted successfully!");
+          window.location.reload();
         } catch (error) {
           console.error(error);
           alert("Failed to delete listing. Please try again later.");
