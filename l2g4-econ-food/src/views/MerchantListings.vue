@@ -3,6 +3,7 @@
     <MerchantNavBar />
     <div class="header-wrapper">
       <h1>Listings</h1>
+      <ListingSearchBar v-bind:value="searchQuery" v-on:update:value="searchQuery = $event" v-on:search="searchListings" v-on:reset="getListings" />
       <router-link to="/AddListing" class="add-listing-btn">
         Add Listing
       </router-link>
@@ -18,6 +19,7 @@
 <script>
 import MerchantNavBar from "@/components/MerchantNavBar.vue";
 import TheListing from "@/components/TheListing.vue";
+import ListingSearchBar from "@/components/ListingSearchBar.vue";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import firebaseApp from "../firebase.js";
@@ -29,12 +31,14 @@ export default {
   components: {
     MerchantNavBar,
     TheListing,
+    ListingSearchBar
   },
   data() {
     return {
       user: null,
       userId: null,
       listings: [],
+      searchQuery: "",
     };
   },
   mounted() {
@@ -56,6 +60,23 @@ export default {
       });
       this.listings = listings;
     },
+    async searchListings() {
+      const query1 = this.searchQuery.toLowerCase();
+      const q = query(collection(db, "listings"), where("merchantId", "==", this.userId));
+      const querySnapshot = await getDocs(q);
+      const listings = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      const filteredListings = listings.filter((listing) => {
+        return (
+          listing.name.toLowerCase().includes(query1) ||
+          listing.quantity.toString().includes(query1) ||
+          listing.price.toString().includes(query1) ||
+          (listing.formattedBestByDateTime && listing.formattedBestByDateTime.toLowerCase().includes(query1))
+        );
+      });
+      this.listings = filteredListings;
+    },
   },
 };
 </script>
@@ -67,8 +88,6 @@ export default {
   align-items: center;
   height: 100%;
 }
-
-
 
 .merchant-listings-wrapper {
   display: flex;
@@ -117,5 +136,5 @@ h1 {
   background-color: #16703c;
   transform: translateY(-2px);
 }
-
 </style>
+
