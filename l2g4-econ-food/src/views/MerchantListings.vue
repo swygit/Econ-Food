@@ -1,27 +1,42 @@
 <template>
   <div>
-    <MerchantNavBar />
+    <MerchantNavigationBar />
     <div class="header-wrapper">
       <h1>Listings</h1>
-      <ListingSearchBar v-bind:value="searchQuery" v-on:update:value="searchQuery = $event" v-on:search="searchListings" v-on:reset="getListings" />
+      <ListingSearchBar
+        v-bind:value="searchQuery"
+        v-on:update:value="searchQuery = $event"
+        v-on:search="searchListings"
+        v-on:reset="getListings"
+      />
       <router-link to="/AddListing" class="add-listing-btn">
         Add Listing
       </router-link>
     </div>
     <div class="merchant-listings">
       <div class="merchant-listings-wrapper">
-        <TheListing v-for="listing in listings" :key="listing.id" :listing="listing" />
+        <TheListing
+          v-for="listing in listings"
+          :key="listing.id"
+          :listing="listing"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import MerchantNavBar from "@/components/MerchantNavBar.vue";
+import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
 import TheListing from "@/components/TheListing.vue";
 import ListingSearchBar from "@/components/ListingSearchBar.vue";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import firebaseApp from "../firebase.js";
 
 const db = getFirestore(firebaseApp);
@@ -29,9 +44,9 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "MerchantListings",
   components: {
-    MerchantNavBar,
+    MerchantNavigationBar,
     TheListing,
-    ListingSearchBar
+    ListingSearchBar,
   },
   data() {
     return {
@@ -53,7 +68,10 @@ export default {
   },
   methods: {
     async getListings() {
-      const q = query(collection(db, "listings"), where("merchantId", "==", this.userId));
+      const q = query(
+        collection(db, "listings"),
+        where("merchantId", "==", this.userId)
+      );
       const querySnapshot = await getDocs(q);
       const listings = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
@@ -62,7 +80,10 @@ export default {
     },
     async searchListings() {
       const query1 = this.searchQuery.toLowerCase();
-      const q = query(collection(db, "listings"), where("merchantId", "==", this.userId));
+      const q = query(
+        collection(db, "listings"),
+        where("merchantId", "==", this.userId)
+      );
       const querySnapshot = await getDocs(q);
       const listings = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
@@ -72,7 +93,8 @@ export default {
           listing.name.toLowerCase().includes(query1) ||
           listing.quantity.toString().includes(query1) ||
           listing.price.toString().includes(query1) ||
-          (listing.formattedBestByDateTime && listing.formattedBestByDateTime.toLowerCase().includes(query1))
+          (listing.formattedBestByDateTime &&
+            listing.formattedBestByDateTime.toLowerCase().includes(query1))
         );
       });
       this.listings = filteredListings;
@@ -108,11 +130,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 32px 35px ;
+  margin: 32px 35px;
 }
 
 h1 {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 48px;
   font-weight: bold;
   color: black;
@@ -137,4 +159,3 @@ h1 {
   transform: translateY(-2px);
 }
 </style>
-

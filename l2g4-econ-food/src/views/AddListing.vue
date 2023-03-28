@@ -1,19 +1,48 @@
 <template>
-  <MerchantNavBar />
+  <MerchantNavigationBar />
   <div class="container" v-if="user">
     <div class="center">
       <div class="formDiv">
         <div class="imageDiv">
-          <img :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'" class="listing-image" />
+          <img
+            :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
+            class="listing-image"
+          />
           <input type="file" @change="onUpload" accept=".jpg,.png" />
         </div>
         <div class="inputDiv">
           <form @submit.prevent="addListing">
-            <input type="text" placeholder="Name of Listing" v-model="name" required />
-            <input type="number" placeholder="Price" min="0" step="0.01" v-model="price" required />
-            <input type="number" placeholder="Quantity" min="1" v-model="quantity" required />
-            <input type="datetime-local" placeholder="Best By Date" v-model="bestByDate" required />
-            <textarea placeholder="Listing Description" v-model="description"></textarea>
+            <input
+              type="text"
+              placeholder="Name of Listing"
+              v-model="name"
+              required
+            />
+            <input
+              type="number"
+              placeholder="Price"
+              min="0"
+              step="0.01"
+              v-model="price"
+              required
+            />
+            <input
+              type="number"
+              placeholder="Quantity"
+              min="1"
+              v-model="quantity"
+              required
+            />
+            <input
+              type="datetime-local"
+              placeholder="Best By Date"
+              v-model="bestByDate"
+              required
+            />
+            <textarea
+              placeholder="Listing Description"
+              v-model="description"
+            ></textarea>
             <button type="submit" id="addListing">Add Listing</button>
           </form>
         </div>
@@ -23,9 +52,19 @@
 </template>
 
 <script>
-import MerchantNavBar from "@/components/MerchantNavBar.vue";
+import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
-import { getFirestore, getDoc, addDoc, getDocs, updateDoc, collection, doc, query, where } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  addDoc,
+  getDocs,
+  updateDoc,
+  collection,
+  doc,
+  query,
+  where,
+} from "firebase/firestore";
 import firebaseApp from "../firebase.js";
 import router from "../router";
 
@@ -34,7 +73,7 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "AddListingNew",
   components: {
-    MerchantNavBar,
+    MerchantNavigationBar,
   },
   data() {
     return {
@@ -82,7 +121,9 @@ export default {
         this.description = "";
       } catch (error) {
         if (error.code === "invalid-argument") {
-          alert("The selected image is too large. Please choose a smaller image.");
+          alert(
+            "The selected image is too large. Please choose a smaller image."
+          );
         } else {
           console.error(error);
           console.log(error.code);
@@ -103,7 +144,6 @@ export default {
 </script>
 
 <style scoped>
-
 .container {
   display: flex;
   flex-direction: column;
@@ -203,5 +243,4 @@ button[type="button"] {
   color: #000;
   border: 2px solid #16703c;
 }
-
 </style>
