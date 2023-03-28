@@ -46,6 +46,7 @@ const routes = [
     name: 'AboutMerchant',
     component: AboutMerchant
   },
+  {
     path: '/marketplace',
     name: 'Marketplace',
     component: Marketplace
