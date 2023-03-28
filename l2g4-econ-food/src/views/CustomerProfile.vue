@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import CustomerNavBar from '@/components/CustomerNavBar.vue'
+import CustomerNavBar from '@/components/CustomerNavBar.vue';
 import { getAuth, onAuthStateChanged, signOut } from "@firebase/auth";
 import { getFirestore, getDoc, getDocs, updateDoc, collection, doc, query, where } from "firebase/firestore";
-import firebaseApp from '../firebase.js'
+import firebaseApp from '../firebase.js';
 import router from '../router';
 
 const db = getFirestore(firebaseApp);

@@ -81,7 +81,6 @@ export default {
 							phoneNumber: "",
 							updatedProfile: false,
 						}
-						// await setDoc(doc(db, "customers", this.email), customerData)
 						await addDoc(collection(db, "customers"), customerData)
 					// set up merchant data
 					} else if (!this.isCustomer) {
@@ -96,7 +95,6 @@ export default {
 							bankNumber: "",
 							updatedProfile: false,
 						}
-						// await setDoc(doc(db, "merchants", this.email), merchantData)
 						await addDoc(collection(db, "merchants"), merchantData)
 					}
 					console.log('Successfully registered!')

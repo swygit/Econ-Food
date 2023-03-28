@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import MerchantNavBar from '@/components/MerchantNavBar.vue'
+import MerchantNavBar from '@/components/MerchantNavBar.vue';
 import { getAuth, onAuthStateChanged, signOut } from "@firebase/auth";
 import { getFirestore, getDoc, getDocs, updateDoc, collection, doc, query, where } from "firebase/firestore";
 import firebaseApp from '../firebase.js';

@@ -11,6 +11,10 @@
 				<input type="password" placeholder="Password" v-model="password" required>
 				<p v-if="errMsg" v-text="errMsg"></p>
 				<button type="submit" id="login">Login</button>
+				<button id="loginGoogle" @click.prevent="loginGoogle">
+					<img id="googleLogo" src="https://i.ibb.co/ySrpjSd/google-icon.png">
+					Login with Google
+				</button>
 				<div class="links">
 					<router-link to="/register">
 						<div class="link">
@@ -32,10 +36,12 @@
 </template>
 <script>
 import App from '../App.vue';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
-import { getFirestore, getDocs, collection, query, where } from "firebase/firestore";
-import firebaseApp from '../firebase.js'
+import { getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth';
+import { getFirestore, addDoc, getDocs, collection, query, where } from "firebase/firestore";
+import firebaseApp from '../firebase.js';
 import router from '../router';
+
+const provider = new GoogleAuthProvider();
 
 const db = getFirestore(firebaseApp);
 
@@ -78,7 +84,7 @@ export default {
 					customerDocsRef.forEach((doc) => {
 						customerDocRef = doc
 					})
-					// if there is no such customer email address
+					// if there is no such customer document with specified email address
 					if (customerDocRef === undefined) {
 						throw new Error()
 					}
@@ -101,7 +107,7 @@ export default {
 					merchantDocsRef.forEach((doc) => {
 						merchantDocRef = doc
 					})
-					// if there is no such merchant email address
+					// if there is no such merchant document with specified email address
 					if (merchantDocRef === undefined) {
 						throw new Error()
 					}
@@ -126,6 +132,77 @@ export default {
 							this.errMsg = "The provided email address does not belong to a registered customer/merchant."
 							break
 					}
+			}
+		},
+		async loginGoogle() {
+			const auth = getAuth();
+			const result = await signInWithPopup(auth, provider)
+			// const credential = GoogleAuthProvider.credentialFromResult(result);
+			const user = result.user;
+			console.log(user.email)
+			if (this.isCustomer) {
+				const customerDocQuery = query(collection(db, "customers"), where('email', '==', user.email))
+				const customerDocsRef = await getDocs(customerDocQuery)
+				let customerDocRef
+				customerDocsRef.forEach((doc) => {
+					customerDocRef = doc
+				})
+				// if there is no such customer document with specified email address
+				if (customerDocRef === undefined) {
+					const customerData = {
+						name: "",
+						email: user.email,
+						phoneNumber: "",
+						updatedProfile: false,
+					}
+					addDoc(collection(db, "customers"), customerData)
+					console.log('User has not updated all details in profile.')
+					router.push('/customerprofile')
+				// if customer has logged in with Google before	
+				} else {
+					const updatedProfile = customerDocRef.data().updatedProfile
+					if (updatedProfile) {
+						console.log('User has updated all details in profile.')
+						router.push('/marketplace')			
+					} else if (!updatedProfile) {
+						console.log('User has not updated all details in profile.')
+						router.push('/customerprofile')
+					}
+				}
+			} else if (!this.isCustomer) {
+				const merchantDocQuery = query(collection(db, "merchants"), where('email', '==', user.email))
+				const merchantDocsRef = await getDocs(merchantDocQuery)
+				let merchantDocRef
+				merchantDocsRef.forEach((doc) => {
+					merchantDocRef = doc
+				})
+				// if there is no such merchant document with specified email address
+				if (merchantDocRef === undefined) {
+					const merchantData = {
+						imageUrl: "",
+						name: "",
+						businessType: "",
+						email: user.email,
+						operatingHours: "",
+						location: "",
+						phoneNumber: "",
+						bankNumber: "",
+						updatedProfile: false,
+					}
+					addDoc(collection(db, "merchants"), merchantData)
+					console.log('User has not updated all details in profile.')
+					router.push('/merchantprofile')
+				// if merchant has logged in with Google before	
+				} else {
+					const updatedProfile = merchantDocRef.data().updatedProfile
+					if (updatedProfile) {
+						console.log('User has updated all details in profile.')
+						router.push('/dashboard')			
+					} else if (!updatedProfile) {
+						console.log('User has not updated all details in profile.')
+						router.push('/merchantprofile')
+					}
+				}
 			}
 		}
 	}	
@@ -192,6 +269,24 @@ export default {
 		font-family: 'Nunito Sans';
 		cursor: pointer;
 	}
+	#loginGoogle {
+		display: block;
+		width: 95%;
+		margin-bottom: 10px;
+		padding: 10px;
+		border: none;
+		border-radius: 30px;
+		box-shadow: 0px 0px 5px #999;
+		background-color: #fff;
+		font-size: 16px;
+		font-family: 'Nunito Sans';
+		cursor: pointer;
+	}
+	#googleLogo {
+		width: 20px;
+		height: 20px;
+		float: left;
+	}
 	p {
 		font-family: 'Nunito Sans'
 	}
@@ -217,7 +312,6 @@ export default {
 		margin-left: 15px;
 		margin-bottom: 15px;
 		margin-right: 15px;
-		border-radius: 15px;
 		border-radius: 30px;
 		box-shadow: 0px 0px 5px #999;
 		cursor: pointer;
