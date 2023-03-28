@@ -139,14 +139,21 @@ export default {
 			const result = await signInWithPopup(auth, provider)
 			// const credential = GoogleAuthProvider.credentialFromResult(result);
 			const user = result.user;
-			console.log(user.email)
-			if (this.isCustomer) {
-				const customerDocQuery = query(collection(db, "customers"), where('email', '==', user.email))
-				const customerDocsRef = await getDocs(customerDocQuery)
-				let customerDocRef
-				customerDocsRef.forEach((doc) => {
-					customerDocRef = doc
-				})
+			// customer doc
+			const customerDocQuery = query(collection(db, "customers"), where('email', '==', user.email))
+			const customerDocsRef = await getDocs(customerDocQuery)
+			let customerDocRef
+			customerDocsRef.forEach((doc) => {
+				customerDocRef = doc
+			})
+			// merchant doc
+			const merchantDocQuery = query(collection(db, "merchants"), where('email', '==', user.email))
+			const merchantDocsRef = await getDocs(merchantDocQuery)
+			let merchantDocRef
+			merchantDocsRef.forEach((doc) => {
+				merchantDocRef = doc
+			})
+			if (this.isCustomer && merchantDocRef === undefined) {
 				// if there is no such customer document with specified email address
 				if (customerDocRef === undefined) {
 					const customerData = {
@@ -169,13 +176,7 @@ export default {
 						router.push('/customerprofile')
 					}
 				}
-			} else if (!this.isCustomer) {
-				const merchantDocQuery = query(collection(db, "merchants"), where('email', '==', user.email))
-				const merchantDocsRef = await getDocs(merchantDocQuery)
-				let merchantDocRef
-				merchantDocsRef.forEach((doc) => {
-					merchantDocRef = doc
-				})
+			} else if (!this.isCustomer && customerDocRef === undefined) {
 				// if there is no such merchant document with specified email address
 				if (merchantDocRef === undefined) {
 					const merchantData = {
@@ -203,6 +204,8 @@ export default {
 						router.push('/merchantprofile')
 					}
 				}
+			} else {
+				this.errMsg = "The provided email address already belongs to a registered customer/merchant."
 			}
 		}
 	}	
