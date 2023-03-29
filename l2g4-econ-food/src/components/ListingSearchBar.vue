@@ -16,11 +16,13 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Nunito Sans');
 .search-bar {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 32px;
+  font-family: 'Nunito Sans';
 }
 
 .search-input {
@@ -36,6 +38,7 @@ export default {
   margin-right: 8px;
   outline: none;
   transition: all 0.3s ease;
+  font-family: 'Nunito Sans';
 }
 
 .search-input:focus {
@@ -50,6 +53,7 @@ export default {
   background-color: #16703c;
   border: none;
   color: #fff;
+  font-family: 'Nunito Sans';
   font-size: 20px;
   font-weight: bold;
   width: 120px;

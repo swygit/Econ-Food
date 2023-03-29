@@ -8,7 +8,7 @@
       @click="clickRouter(item.id)"
     >
       <div class="item-card-icon-circle">
-        <img :src="item.image" alt="" />
+        <img :src="item.imageUrl" alt="" />
       </div>
       <h2 class="item-card-category">
         {{ item.businessType || "$" + item.price }}

@@ -87,6 +87,7 @@ export default {
   padding: 20px 30px 20px 30px;
   text-decoration: none;
   font-size: 11px;
+  cursor: pointer;
 }
 
 /* Add a color to the active/current link */

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <MerchantNavigationBar />
     <div class="header-wrapper">
       <h1>Listings</h1>
@@ -104,11 +104,19 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Nunito Sans');
+.wrapper {
+  font-family: 'Nunito Sans';
+}
+h1 {
+  font-family: 'Nunito Sans';
+}
 .merchant-listings {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  font-family: 'Nunito Sans';
 }
 
 .merchant-listings-wrapper {
