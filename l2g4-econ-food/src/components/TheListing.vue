@@ -1,7 +1,13 @@
 <template>
   <div class="listing-card">
     <div class="listing-image-container">
-      <img :src="listing.imageUrl || 'https://cdn.pixabay.com/photo/2016/02/23/17/42/orange-1218158_1280.png'" class="listing-image" />
+      <img
+        :src="
+          listing.imageUrl ||
+          'https://cdn.pixabay.com/photo/2016/02/23/17/42/orange-1218158_1280.png'
+        "
+        class="listing-image"
+      />
     </div>
     <div class="listing-info">
       <div class="listing-header">
@@ -9,7 +15,11 @@
         <div class="listing-buttons">
           <p>Quantity</p>
           <button class="quantity-button" @click="decrementQuantity">-</button>
-          <input type="number" class="quantity-input" v-model.number="quantity" />
+          <input
+            type="number"
+            class="quantity-input"
+            v-model.number="quantity"
+          />
           <button class="quantity-button" @click="incrementQuantity">+</button>
         </div>
       </div>
@@ -26,7 +36,18 @@
 </template>
 
 <script>
-import { getFirestore, getDoc, addDoc, getDocs, updateDoc, collection, doc, query, where, deleteDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  addDoc,
+  getDocs,
+  updateDoc,
+  collection,
+  doc,
+  query,
+  where,
+  deleteDoc,
+} from "firebase/firestore";
 import firebaseApp from "../firebase.js";
 const db = getFirestore(firebaseApp);
 export default {
@@ -45,7 +66,13 @@ export default {
   computed: {
     formattedBestByDateTime() {
       const date = new Date(this.listing.bestByDate);
-      const options = { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "numeric" };
+      const options = {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      };
       return date.toLocaleDateString(undefined, options);
     },
   },
@@ -237,7 +264,6 @@ export default {
 }
 
 .delete-button:hover {
-  background-color: #FF8C69;
+  background-color: #ff8c69;
 }
-
 </style>

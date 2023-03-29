@@ -14,6 +14,7 @@ import Cart from "../views/Cart.vue";
 import Checkout from "../views/Checkout.vue";
 
 import Dashboard from "../views/Dashboard.vue";
+import CustomerOrders from "../views/CustomerOrders.vue";
 import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
@@ -93,6 +94,11 @@ const routes = [
     path: "/merchantprofile",
     name: "MerchantProfile",
     component: MerchantProfile,
+  },
+  {
+    path: "/customerorders",
+    name: "CustomerOrders",
+    component: CustomerOrders,
   },
   {
     path: "/AddListing",
