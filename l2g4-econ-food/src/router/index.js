@@ -99,7 +99,6 @@ const routes = [
     path: "/customerorders",
     name: "CustomerOrders",
     component: CustomerOrders,
->>>>>>> 64fd044e5c7f134c3ae677a0677b971071d76280
   },
   {
     path: "/AddListing",
