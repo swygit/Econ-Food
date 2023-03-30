@@ -8,6 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vue-stripe/vue-stripe": "^4.5.0",
+    "date-fns": "^2.29.3",
+    "esbuild": "^0.17.14",
+    "firebase": "^9.18.0",
     "firebaseui": "^0.600.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
@@ -16,5 +20,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "vite": "^4.1.4"
+  },
+  "optionalDependencies": {
+    "@esbuild/darwin-arm64": "^0.12.28"
   }
 }
