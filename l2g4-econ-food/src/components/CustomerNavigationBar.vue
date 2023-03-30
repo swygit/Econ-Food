@@ -68,6 +68,7 @@ export default {
 }
 .nav li {
   float: right;
+  cursor: pointer;
 }
 
 .nav li a:hover {
