@@ -22,7 +22,7 @@
       </div> -->
 
       <!-- Items -->
-      <ItemCard v-bind:filteredItems="filteredItems" />
+      <ProductItemCard v-bind:filteredItems="filteredItems" />
     </div>
   </div>
 </template>
@@ -37,9 +37,10 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import SearchBar from "@/components/SearchBar.vue";
 import CustomerNavigationBar from "../components/CustomerNavigationBar.vue";
-import ItemCard from "@/components/ItemCard.vue";
+import ProductItemCard from "@/components/ProductItemCard.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -48,13 +49,17 @@ export default {
   components: {
     SearchBar,
     CustomerNavigationBar,
-    ItemCard,
+    ProductItemCard,
   },
   data: function () {
     return {
       merchant: {},
       filteredItems: [],
     };
+  },
+  mounted: async function () {
+    this.loadMerchant();
+    this.loadItems();
   },
   methods: {
     searchPayload: function (search) {
@@ -91,23 +96,19 @@ export default {
       this.items = values;
       this.filteredItems = values;
     },
-  },
-  mounted: async function () {
-    this.loadMerchant();
-    this.loadItems();
-    // 79cXYQW4Qhf1OmpqxhzZfkBXUjP2
+    getUser: function () {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+        }
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-:root {
-  font-size: 8px;
-}
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-body {
-  background-color: #f5f5ef;
-}
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-size: 4rem;

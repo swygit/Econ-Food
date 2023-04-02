@@ -4,7 +4,7 @@
       <img class="image" src="@/images/logo.png" />
       <li><a @click="profileClickRouter">Profile</a></li>
       <li><a @click="cartRouter">Cart</a></li>
-      <li><a href="#">Orders</a></li>
+      <li><a @click="ordersRouter">Orders</a></li>
       <li><a @click="marketplaceClickRouter">Marketplace</a></li>
     </ul>
   </div>
@@ -40,16 +40,14 @@ export default {
     cartRouter: function () {
       this.$router.push(`/cart/${this.user.uid}`);
     },
+    ordersRouter: function () {
+      this.$router.push(`/customerorders`);
+    },
   },
 };
 </script>
 
 <style scoped>
-:root {
-  font-size: 15px;
-}
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-
 .image {
   height: 50px;
   padding-left: 20px;
