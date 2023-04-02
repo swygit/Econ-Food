@@ -98,8 +98,8 @@ export default {
               name: "",
               email: this.email,
               phoneNumber: "",
-              updatedProfile: false,
               uid: result.user.uid,
+              updatedProfile: false
             };
             const customerCart = {
               uid: result.user.uid,
