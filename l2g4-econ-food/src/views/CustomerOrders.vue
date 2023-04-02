@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <CustomerNavBar></CustomerNavBar>
+    <CustomerNavigationBar></CustomerNavigationBar>
     <h1 class="title">Orders</h1>
     <div v-for="(entries, date) in orders" :key="date">
       <h2>{{ date }}</h2>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CustomerNavBar from "../components/CustomerNavBar.vue";
+import CustomerNavigationBar from "../components/CustomerNavigationBar.vue";
 import OrdersList from "../components/OrdersList.vue";
 import firebaseApp from "../firebase.js";
 import {
@@ -36,7 +36,7 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "CustomerOrders",
   components: {
-    CustomerNavBar,
+    CustomerNavigationBar,
     OrdersList,
   },
   data() {

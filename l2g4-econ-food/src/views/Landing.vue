@@ -4,32 +4,32 @@
       <h1>Reducing food waste and</h1>
       <h1>providing affordable food</h1>
       <h1>options. One pickup at a time.</h1>
-        <router-link to="/aboutCustomer">
-            <button class="about">I'M A CUSTOMER</button>
-        </router-link>
-        <router-link to="/aboutMerchant">
-            <button class="about">I'M A MERCHANT</button>
-        </router-link>
+      <router-link to="/aboutCustomer">
+        <button class="about">I'M A CUSTOMER</button>
+      </router-link>
+      <router-link to="/aboutMerchant">
+        <button class="about">I'M A MERCHANT</button>
+      </router-link>
     </div>
     <div class="topleft">
-        <img src='https://i.ibb.co/rkSWW2b/ECON-FOOD.png' class='icon'>
+      <img src="https://i.ibb.co/rkSWW2b/ECON-FOOD.png" class="icon" />
     </div>
     <div class="topright">
-        <router-link to="/login">
-            <button class="signin">Sign In / Register</button>
-        </router-link>
+      <router-link to="/login">
+        <button class="signin">Sign In / Register</button>
+      </router-link>
     </div>
   </div>
 </template>
 <script>
 export default {
-    name: "Landing"
-}
+  name: "Landing",
+};
 </script>
-<style scoped>  
-@import url('https://fonts.googleapis.com/css?family=Nunito Sans');
+<style scoped>
+@import url("https://fonts.googleapis.com/css?family=Nunito Sans");
 .container {
-  background-image: url('https://i.ibb.co/C69CYVs/Landing-Register-Login-Page.png');
+  background-image: url("https://i.ibb.co/C69CYVs/Landing-Register-Login-Page.png");
   background-size: cover;
   position: fixed;
   top: 0px;
@@ -45,7 +45,7 @@ export default {
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-color: rgba(0, 0, 0, 0.25)
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .center {
@@ -71,15 +71,15 @@ export default {
 
 h1 {
   font-weight: normal;
-  font-family: 'Nunito Sans';
+  font-family: "Nunito Sans";
   color: #fff;
   margin-bottom: 30px;
 }
 
 .signin {
-  background-color: #A9A9A9;
+  background-color: #a9a9a9;
   color: #fff;
-  font-family: 'Nunito Sans';
+  font-family: "Nunito Sans";
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -90,7 +90,7 @@ h1 {
 .about {
   background-color: transparent;
   border: 2px solid #fff;
-  font-family: 'Nunito Sans';
+  font-family: "Nunito Sans";
   color: white;
   padding: 10px 20px;
   font-size: 16px;
