@@ -40,14 +40,10 @@ import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
+  getDocs
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { loadStripe } from '@stripe/stripe-js';
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 import NormalButton from "@/components/NormalButton.vue";
 import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
@@ -63,6 +59,15 @@ export default {
       checkoutButtonName: "Checkout",
       cart: {},
       totalPrice: 0,
+      publishableKey: "pk_test_51MqfYlFyCavaBQIYQrdDrJI5LF2F6NyUmKt1MlPpG8aKmgINwC6Z0BE2mHOWVhnKMK8Qp2CMZX7s5FDjfjc7g0yH00dvVLRKBF",
+      lineItems: [
+        {
+          price: "price_1MsU62FyCavaBQIYwKtZkWRJ",
+          quantity: 1
+        }
+      ],
+      successURL: "http://localhost:5173/ordersummary",
+      cancelURL: "http://localhost:5173/error"
     };
   },
   mounted() {
@@ -96,21 +101,29 @@ export default {
         .find((v) => v.uid === this.user.uid);
       this.cart = values;
       this.cartItems = this.cart.products;
-
+      
       for (let i = 0; i < this.cart.products.length; i++) {
+        // sum up the total price of the items in cart to display
         const currentProductPrice = this.cart.products[i].price;
         this.totalPrice += currentProductPrice;
+        // create products for checkout
       }
     },
     viewItem() {
       const id = this.$route.params.id;
       this.$router.push(`/individualcart/${id}`);
     },
-    checkoutItem(item) {
-      // handle logic
-    },
-  },
-};
+    async checkoutItem() {
+      var stripe = await loadStripe(this.publishableKey);
+      stripe.redirectToCheckout({
+        lineItems: this.lineItems,
+        mode: 'payment',
+        successUrl: this.successURL,
+        cancelUrl: this.cancelURL
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -12,6 +12,7 @@ import IndividualProduct from "../views/IndividualProduct.vue";
 import CustomerProfile from "../views/CustomerProfile.vue";
 import Cart from "../views/Cart.vue";
 import IndividualCart from "../views/IndividualCart.vue";
+import CheckoutError from '../views/CheckoutError.vue'
 import OrderSummary from "../views/OrderSummary.vue";
 
 import Dashboard from "../views/Dashboard.vue";
@@ -79,6 +80,11 @@ const routes = [
     path: "/individualcart/:id",
     name: "IndividualCart",
     component: IndividualCart,
+  },
+  {
+    path: "/checkouterror",
+    name: "CheckoutError",
+    component: CheckoutError
   },
   {
     //Filter by customer id (unsure)

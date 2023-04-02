@@ -10,6 +10,7 @@
   "dependencies": {
     "@stripe/stripe-js": "^1.52.0",
     "@vue-stripe/vue-stripe": "^4.5.0",
+    "axios": "^1.3.4",
     "date-fns": "^2.29.3",
     "esbuild": "^0.17.14",
     "firebase": "^9.18.0",
