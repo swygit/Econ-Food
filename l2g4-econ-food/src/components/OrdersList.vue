@@ -13,6 +13,7 @@
         <router-link to="/aboutMerchant">
           <button class="view-order" @click="handleClick">View Order</button>
         </router-link>
+        <button @click="goToChat(orderid)" class="merchant-order-chat-btn">Chat</button>
       </div>
     </div>
   </div>
@@ -21,6 +22,11 @@
 <script>
 export default {
   name: "OrdersList",
+  methods: {
+    goToChat(orderId) {
+      this.$router.push({ name: "OrderChat", params: { orderId: orderId } });
+    },
+  },
   props: {
     id: {
       type: String,

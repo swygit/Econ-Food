@@ -10,6 +10,7 @@
           :key="order.id"
           :id="order.id"
           :orderid="order.orderid"
+          :merchantid="order.merchantID"
           :merchant="order.merchant"
           :datetime="order.datetime"
           :price="order.price"

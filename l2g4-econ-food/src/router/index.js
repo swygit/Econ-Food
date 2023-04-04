@@ -18,6 +18,9 @@ import CustomerOrders from "../views/CustomerOrders.vue";
 import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
+import MerchantOrders from "../views/MerchantOrders.vue";
+import OrderChat from "../views/OrderChat.vue";
+
 
 const routes = [
   {
@@ -109,6 +112,17 @@ const routes = [
     path: "/merchantlistings",
     name: "MerchantListings",
     component: MerchantListings,
+  },
+  {
+    path: "/merchantorders",
+    name: "MerchantOrders",
+    component: MerchantOrders,
+  },
+  {
+    path: '/orders/:orderId/chat',
+    name: 'OrderChat',
+    component: OrderChat,
+    props: true,
   },
 ];
 
