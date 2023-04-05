@@ -1,30 +1,44 @@
 <template>
   <div class="items-wrapper" id="items-wrapper">
     <!-- Decide id later-->
-    <div
-      class="item-card"
-      v-for="item in filteredItems"
-      :key="item.id"
-      @click="clickRouter(item.id)"
-    >
+    <div class="item-card" v-for="item in filteredItems" :key="item.id">
       <div class="item-card-icon-circle">
         <img :src="item.imageUrl" alt="" />
       </div>
-      <h2 class="item-card-category">
-        {{ item.businessType }}
-      </h2>
-      <p class="item-card-title">{{ item.name }}</p>
+      <div class="item-card-text">
+        <p class="item-card-name">{{ item.name }}</p>
+        &emsp;
+        <p class="item-card-price">{{ "$" + item.price }}</p>
+      </div>
+      <div class="button">
+        <NormalButton
+          @click="viewItem(item.id)"
+          :buttonName="viewButtonName"
+        ></NormalButton>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import NormalButton from "@/components/NormalButton.vue";
+
 export default {
-  name: "ItemCard",
-  data: function () {
-    return {};
+  name: "ProductItemCard",
+  components: {
+    NormalButton,
   },
-  props: { filteredItems: Array, clickRouter: Function },
+  data: function () {
+    return {
+      viewButtonName: "View Item",
+    };
+  },
+  props: { filteredItems: Array },
+  methods: {
+    viewItem: function (id) {
+      this.$router.push(`/individualproduct/${id}`);
+    },
+  },
 };
 </script>
 
@@ -37,13 +51,6 @@ h1 {
   letter-spacing: 2%;
   line-height: 30px;
   color: #000000;
-}
-h2 {
-  background-color: #00bf63;
-  font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
-  letter-spacing: 2%;
-  line-height: 24px;
 }
 p {
   font-family: "Nunito Sans", sans-serif;
@@ -67,14 +74,13 @@ p {
   min-height: 180px;
   background-color: #ffffff;
   border-radius: 7px;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0 10px 10px 0;
   padding: 10px;
 }
-
 .item-card-icon-circle {
   background-color: #ffffff;
   width: 85px;
@@ -85,13 +91,11 @@ p {
   justify-content: center;
   align-items: center;
 }
-
 .item-card-icon-circle img {
   max-width: 60px;
   max-height: 60px;
   object-fit: fill;
 }
-
 .item-card-variety {
   text-align: center;
   margin: 15px auto 0 auto;
@@ -99,17 +103,28 @@ p {
   text-transform: capitalize;
 }
 
-.item-card-title {
+.item-card-name {
   font-weight: 500;
   color: #000000;
   margin: 15px auto 15px auto;
   text-transform: lowercase;
   text-transform: capitalize;
 }
-
-.item-card-category {
+.item-card-price {
+  font-weight: 500;
+  color: #000000;
+  margin: 15px auto 15px auto;
+  text-transform: lowercase;
+  text-transform: capitalize;
+}
+.item-card-text {
   color: #ffffff;
   margin: 15px auto 0 auto;
   font-size: 1.5rem;
+  display: flex;
+}
+.button {
+  padding: 8px 5px;
+  font-size: 1rem;
 }
 </style>

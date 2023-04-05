@@ -3,14 +3,13 @@
     <CustomerNavigationBar></CustomerNavigationBar>
     <h1 class="title">Orders</h1>
     <div v-for="(entries, date) in orders" :key="date">
-      <h2>{{ date }}</h2>
+      <h2 class="date">{{ date }}</h2>
       <div class="orders">
         <OrdersList
           v-for="order in entries"
           :key="order.id"
           :id="order.id"
           :orderid="order.orderid"
-          :merchantid="order.merchantID"
           :merchant="order.merchant"
           :datetime="order.datetime"
           :price="order.price"
@@ -120,6 +119,10 @@ export default {
   font-size: 50px;
   font-family: "Nunito Sans", sans-serif;
   margin-bottom: 20px;
+}
+
+.date {
+  font-size: 20px;
 }
 .background {
   background-size: cover;

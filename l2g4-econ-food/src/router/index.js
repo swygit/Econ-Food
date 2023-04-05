@@ -8,19 +8,18 @@ import AboutMerchant from "../views/AboutMerchant.vue";
 
 import Marketplace from "../views/Marketplace.vue";
 import IndividualMarketplace from "../views/IndividualMarketplace.vue";
-import IndividualProductPage from "../views/IndividualProductPage.vue";
+import IndividualProduct from "../views/IndividualProduct.vue";
 import CustomerProfile from "../views/CustomerProfile.vue";
 import Cart from "../views/Cart.vue";
-import Checkout from "../views/Checkout.vue";
+import IndividualCart from "../views/IndividualCart.vue";
+import OrderSummary from "../views/OrderSummary.vue";
+import CustomerOrders from "../views/CustomerOrders.vue";
+import OrderChat from "../views/OrderChat.vue";
 
 import Dashboard from "../views/Dashboard.vue";
-import CustomerOrders from "../views/CustomerOrders.vue";
 import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
-import MerchantOrders from "../views/MerchantOrders.vue";
-import OrderChat from "../views/OrderChat.vue";
-
 
 const routes = [
   {
@@ -65,10 +64,10 @@ const routes = [
     component: IndividualMarketplace,
   },
   {
-    //Filter by item id
-    path: "/IndividualProductPage",
-    name: "IndividualProductPage",
-    component: IndividualProductPage,
+    //Filter by item id (DONE)
+    path: "/individualproduct/:id",
+    name: "IndividualProduct",
+    component: IndividualProduct,
   },
   {
     //Filter by customer id (DONE)
@@ -77,10 +76,21 @@ const routes = [
     component: Cart,
   },
   {
+    //Filter by customer id
+    path: "/individualcart/:id",
+    name: "IndividualCart",
+    component: IndividualCart,
+  },
+  {
+    path: "/orders/:id",
+    name: "CustomerOrders",
+    component: CustomerOrders,
+  },
+  {
     //Filter by customer id (unsure)
-    path: "/checkout",
-    name: "Checkout",
-    component: Checkout,
+    path: "/order/:id",
+    name: "OrderSummary",
+    component: OrderSummary,
   },
   {
     path: "/customerprofile",
@@ -99,12 +109,7 @@ const routes = [
     component: MerchantProfile,
   },
   {
-    path: "/customerorders",
-    name: "CustomerOrders",
-    component: CustomerOrders,
-  },
-  {
-    path: "/AddListing",
+    path: "/addlisting",
     name: "AddListing",
     component: AddListing,
   },
@@ -114,13 +119,8 @@ const routes = [
     component: MerchantListings,
   },
   {
-    path: "/merchantorders",
-    name: "MerchantOrders",
-    component: MerchantOrders,
-  },
-  {
-    path: '/orders/:orderId/chat',
-    name: 'OrderChat',
+    path: "/orders/:orderId/chat",
+    name: "OrderChat",
     component: OrderChat,
     props: true,
   },

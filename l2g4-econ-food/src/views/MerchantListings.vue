@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div>
     <MerchantNavigationBar />
     <div class="header-wrapper">
       <h1>Listings</h1>
@@ -9,7 +9,7 @@
         v-on:search="searchListings"
         v-on:reset="getListings"
       />
-      <router-link to="/AddListing" class="add-listing-btn">
+      <router-link to="/addlisting" class="add-listing-btn">
         Add Listing
       </router-link>
     </div>
@@ -104,19 +104,11 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Nunito Sans');
-.wrapper {
-  font-family: 'Nunito Sans';
-}
-h1 {
-  font-family: 'Nunito Sans';
-}
 .merchant-listings {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  font-family: 'Nunito Sans';
 }
 
 .merchant-listings-wrapper {

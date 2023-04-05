@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form class="counter-form">
     <div
       class="value-button"
       id="decrease"
@@ -28,12 +28,16 @@ export default {
       value: 0,
     };
   },
+  props: {
+    setCounterValue: Function,
+  },
   methods: {
     increaseValue: function () {
       var value = parseInt(document.getElementById("number").value, 10);
       value = isNaN(value) ? 0 : value;
       value++;
       document.getElementById("number").value = value;
+      this.setCounterValue(value);
     },
 
     decreaseValue: function () {
@@ -42,14 +46,16 @@ export default {
       value < 1 ? (value = 1) : "";
       value--;
       document.getElementById("number").value = value;
+      this.setCounterValue(value);
     },
   },
 };
 </script>
 
 <style scoped>
-form {
+.counter-form {
   text-align: center;
+  display: flex;
 }
 
 .value-button {
@@ -59,8 +65,8 @@ form {
   width: 40px;
   height: 15px;
   text-align: center;
-  vertical-align: 5px;
-  padding: 11px 0;
+  /* vertical-align: 5px; */
+  padding: 11px 0px;
   /* background: #eee; */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -75,14 +81,12 @@ form {
 }
 
 form #decrease {
-  /* margin-right: -4px; */
   border-radius: 28px 0 0 28px;
   background-color: #16703c;
   color: #ffffff;
 }
 
 form #increase {
-  /* margin-left: -4px; */
   border-radius: 0 28px 28px 0;
   background-color: #16703c;
   color: #ffffff;
@@ -98,9 +102,7 @@ input#number {
   border: none;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-  margin: 2px;
-  width: 40px;
-  height: 35px;
+  width: 45px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

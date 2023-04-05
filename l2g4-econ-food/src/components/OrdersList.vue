@@ -10,10 +10,13 @@
         <div class="order-price">
           <p>${{ price }}</p>
         </div>
-        <router-link to="/aboutMerchant">
-          <button class="view-order" @click="handleClick">View Order</button>
-        </router-link>
-        <button @click="goToChat(orderid)" class="merchant-order-chat-btn">Chat</button>
+        <button @click="goSummary(orderid)" class="view-order">
+          View Order
+        </button>
+
+        <button @click="goToChat(orderid)" class="merchant-order-chat-btn">
+          Chat
+        </button>
       </div>
     </div>
   </div>
@@ -25,6 +28,9 @@ export default {
   methods: {
     goToChat(orderId) {
       this.$router.push({ name: "OrderChat", params: { orderId: orderId } });
+    },
+    goSummary(orderId) {
+      this.$router.push(`/order/${orderId}`);
     },
   },
   props: {

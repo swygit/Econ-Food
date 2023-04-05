@@ -41,7 +41,7 @@ export default {
       this.$router.push(`/cart/${this.user.uid}`);
     },
     ordersClickRouter: function () {
-      this.$router.push(`/customerorders`);
+      this.$router.push(`/orders/${this.user.uid}`);
     },
   },
 };
