@@ -3,9 +3,9 @@ import Landing from "../views/Landing.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
-import AboutCustomer from "../views/AboutCustomer.vue";
-import AboutMerchant from "../views/AboutMerchant.vue";
 
+import AboutCustomer from "../views/AboutCustomer.vue";
+import Wallet from "../views/Wallet.vue"
 import Marketplace from "../views/Marketplace.vue";
 import IndividualMarketplace from "../views/IndividualMarketplace.vue";
 import IndividualProduct from "../views/IndividualProduct.vue";
@@ -15,6 +15,7 @@ import IndividualCart from "../views/IndividualCart.vue";
 import CheckoutError from '../views/CheckoutError.vue'
 import OrderSummary from "../views/OrderSummary.vue";
 
+import AboutMerchant from "../views/AboutMerchant.vue";
 import Dashboard from "../views/Dashboard.vue";
 import CustomerOrders from "../views/CustomerOrders.vue";
 import AddListing from "../views/AddListing.vue";
@@ -46,6 +47,11 @@ const routes = [
     path: "/aboutCustomer",
     name: "AboutCustomer",
     component: AboutCustomer,
+  },
+  {
+    path: "/wallet",
+    name: "Wallet",
+    component: Wallet,
   },
   {
     path: "/aboutMerchant",
