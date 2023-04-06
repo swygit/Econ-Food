@@ -14,6 +14,7 @@ import Cart from "../views/Cart.vue";
 import IndividualCart from "../views/IndividualCart.vue";
 import OrderSummary from "../views/OrderSummary.vue";
 import CustomerOrders from "../views/CustomerOrders.vue";
+import CustomerOrderStatus from "../views/CustomerOrderStatus.vue";
 import OrderChat from "../views/OrderChat.vue";
 
 import Dashboard from "../views/Dashboard.vue";
@@ -91,6 +92,11 @@ const routes = [
     path: "/order/:id",
     name: "OrderSummary",
     component: OrderSummary,
+  },
+  {
+    path: "/customerorderstatus/:id",
+    name: "CustomerOrderStatus",
+    component: CustomerOrderStatus,
   },
   {
     path: "/customerprofile",

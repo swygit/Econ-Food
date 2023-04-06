@@ -119,6 +119,7 @@ export default {
         merchantID: this.merchant.id,
         merchant: this.merchant.name,
         datetime: new Date(),
+        status: "Received",
       };
       const ordersRef = collection(db, "orders");
       addDoc(ordersRef, ordersData)

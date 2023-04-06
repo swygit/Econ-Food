@@ -10,7 +10,7 @@
         <div class="order-price">
           <p>${{ price }}</p>
         </div>
-        <button @click="goSummary(orderid)" class="view-order">
+        <button @click="goSummary(orderid, status)" class="view-order">
           View Order
         </button>
 
@@ -29,8 +29,13 @@ export default {
     goToChat(orderId) {
       this.$router.push({ name: "OrderChat", params: { orderId: orderId } });
     },
-    goSummary(orderId) {
-      this.$router.push(`/order/${orderId}`);
+    goSummary(orderId, status) {
+      console.log("Current status is " + status);
+      if (status === "Collected") {
+        this.$router.push(`/order/${orderId}`);
+      } else {
+        this.$router.push(`/customerorderstatus/${orderId}`);
+      }
     },
   },
   props: {
@@ -52,6 +57,10 @@ export default {
     },
     datetime: {
       type: Date,
+      required: true,
+    },
+    status: {
+      type: String,
       required: true,
     },
   },
