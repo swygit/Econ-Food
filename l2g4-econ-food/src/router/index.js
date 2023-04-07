@@ -6,13 +6,14 @@ import ForgotPassword from "../views/ForgotPassword.vue";
 
 import AboutCustomer from "../views/AboutCustomer.vue";
 import Wallet from "../views/Wallet.vue"
+import TopUpSuccessful from "../views/TopUpSuccessful.vue"
+import TopUpError from '../views/TopUpError.vue'
 import Marketplace from "../views/Marketplace.vue";
 import IndividualMarketplace from "../views/IndividualMarketplace.vue";
 import IndividualProduct from "../views/IndividualProduct.vue";
 import CustomerProfile from "../views/CustomerProfile.vue";
 import Cart from "../views/Cart.vue";
 import IndividualCart from "../views/IndividualCart.vue";
-import CheckoutError from '../views/CheckoutError.vue'
 import OrderSummary from "../views/OrderSummary.vue";
 
 import AboutMerchant from "../views/AboutMerchant.vue";
@@ -54,6 +55,16 @@ const routes = [
     component: Wallet,
   },
   {
+    path: "/topupsuccessful",
+    name: "TopUpSuccessful",
+    component: TopUpSuccessful
+  },
+  {
+    path: "/topuperror",
+    name: "TopUpError",
+    component: TopUpError
+  },
+  {
     path: "/aboutMerchant",
     name: "AboutMerchant",
     component: AboutMerchant,
@@ -86,11 +97,6 @@ const routes = [
     path: "/individualcart/:id",
     name: "IndividualCart",
     component: IndividualCart,
-  },
-  {
-    path: "/checkouterror",
-    name: "CheckoutError",
-    component: CheckoutError
   },
   {
     //Filter by customer id (unsure)

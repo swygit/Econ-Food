@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import NormalButton from "@/components/NormalButton.vue";
 import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
@@ -57,7 +58,7 @@ export default {
     NormalButtonUnfilled,
     CustomerNavigationBar,
   },
-  data: function () {
+  data() {
     return {
       orderButtonName: "Place Order",
       backToCartButton: "Back to Cart",
@@ -65,13 +66,19 @@ export default {
   },
   props: {},
   methods: {
-    backToCart: function () {
-      //
+    backToCart() {
     },
-    placeOrder: function () {
-      //   console.log("hi");
+    placeOrder() {
     },
   },
+  mounted() {
+    const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            this.user = user;
+        }
+    });
+  }
 };
 </script>
 

@@ -99,6 +99,7 @@ export default {
               email: this.email,
               phoneNumber: "",
               uid: result.user.uid,
+              balance: 0,
               updatedProfile: false
             };
             const customerCart = {
@@ -122,6 +123,7 @@ export default {
               phoneNumber: "",
               bankNumber: "",
               uid: result.user.uid,
+              balance: 0,
               updatedProfile: false,
             };
             console.log("merchant", merchantData);

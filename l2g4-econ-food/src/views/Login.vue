@@ -204,6 +204,7 @@ export default {
             email: user.email,
             phoneNumber: "",
             uid: result.user.uid,
+            balance: 0,
             updatedProfile: false
           };
           const customerCart = {
@@ -241,6 +242,7 @@ export default {
             phoneNumber: "",
             bankNumber: "",
             uid: result.user.uid,
+            balance: 0,
             updatedProfile: false,
           };
           addDoc(collection(db, "merchants"), merchantData);
