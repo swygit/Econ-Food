@@ -4,18 +4,22 @@
   <div class="order-chat-container">
     <div class="order-chat-topbar">
       <button class="order-chat-back-btn" @click="goBack">Back</button>
-      <h1 class="order-chat-heading">{{ orderId }}</h1>
+      <h1 class="order-chat-heading">Order ID: <span class="black-text">{{ orderId }}</span></h1>
+      <h1 class="order-chat-heading">Customer: <span class="black-text">{{ customerData.name }}</span></h1>
+      <h1 class="order-chat-heading">HP: <span class="black-text">{{ customerData.phoneNumber }}</span></h1>
     </div>
-    <div class="order-chat-messages">
+    <div class="order-chat-messages" ref="messagesContainer" style="overflow-y: auto; height: calc(100vh - 250px);">
       <div
         v-for="(message, index) in messages"
-        :key="index"
+        :key="`message-${index}`"
         :class="[    'order-chat-message',    isSentByCurrentUser(message) ? 'order-chat-message-sent' : 'order-chat-message-received'  ]"
       >
         <p>{{ message.content }}</p>
-        <p class="order-chat-message-timestamp">{{ message.timestamp }}</p>
+        <p class="order-chat-message-timestamp">{{ formatDate(message.timestamp) }}</p>
       </div>
     </div>
+
+
     <form @submit.prevent="sendMessage" class="order-chat-form">
       <div class="order-chat-input-container">
         <input type="text" v-model="messageInput" placeholder="Type a message" class="order-chat-input" />
@@ -26,7 +30,6 @@
     </form>
   </div>
 </template>
-
 <script>
 import { getFirestore, collection, query, where, getDocs, addDoc, orderBy ,getDoc, doc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
@@ -51,6 +54,8 @@ export default {
       messages: [],
       messageInput: "",
       isMerchant: false,
+      orderData: {},
+      customerData: null,
     };
   },
   components: {
@@ -63,13 +68,23 @@ export default {
         this.user = user;
         this.getMessages();
         this.getMerchantUids();
+        this.getOrderData();
       }
     });
-    this.scrollToBottom();
+    this.$nextTick(() => {
+      const container = this.$refs.messagesContainer;
+      container.scrollTop = container.scrollHeight;
+    });
   },
   methods: {
-    scrollToBottom() {
-      window.scrollTo(0, document.body.scrollHeight);
+    formatDate(timestamp) {
+      const date = new Date(timestamp);
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // getMonth() returns 0-based month, so add 1
+      const year = date.getFullYear();
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
     },
     async getMessages() {
       const q = query(collection(db, "messages"), where("orderId", "==", this.orderId), orderBy("timestamp"));
@@ -88,7 +103,6 @@ export default {
       console.log(uids)
       console.log(this.user.uid)
       this.isMerchant = uids.includes(this.user.uid);
-      console.log(this.isMerchant)
     },
     async sendMessage() {
       const message = this.messageInput.trim();
@@ -112,6 +126,25 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    async getOrderData() {
+      const docRef = doc(db, "orders", this.orderId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        this.orderData = docSnap.data();
+        console.log(this.orderData.customerId);
+      } else {
+        console.log("No such document!");
+      }
+      if (this.orderData.customerId) {
+        console.log(this.orderData.customerId)
+        const q = query(collection(db, "customers"), where("uid", "==", this.orderData.customerId));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          this.customerData = querySnapshot.docs[0].data();
+        }
+      }
+      console.log(this.customerData)
+    },
   },
   computed: {
     currentUserId() {
@@ -121,6 +154,15 @@ export default {
       return (message) => message.senderId === this.currentUserId;
     },
   },
+  watch: {
+    messages() {
+      this.$nextTick(() => {
+        const container = this.$refs.messagesContainer;
+        container.scrollTop = container.scrollHeight;
+      });
+    }
+},
+
 };
 </script>
 
@@ -145,11 +187,10 @@ export default {
 .order-chat-messages {
   width: 100%;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   padding: 0 20px;
-  flex: 1;
   overflow-y: auto;
   margin-bottom: 70px;
 }
@@ -309,5 +350,8 @@ height: 50px;
 font-size: 2rem;
 margin-left: 20px;
 }
+}
+.black-text {
+  color: black;
 }
 </style>
