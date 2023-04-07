@@ -1,4 +1,6 @@
 <template>
+  <CustomerNavigationBar v-show="!isMerchant" />
+  <MerchantNavigationBar v-show="isMerchant" />
   <div class="order-chat-container">
     <div class="order-chat-topbar">
       <button class="order-chat-back-btn" @click="goBack">Back</button>
@@ -26,9 +28,11 @@
 </template>
 
 <script>
-import { getFirestore, collection, query, where, getDocs, addDoc, orderBy } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, addDoc, orderBy ,getDoc, doc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import firebaseApp from "../firebase.js";
+import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
+import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
@@ -46,13 +50,19 @@ export default {
       user: null,
       messages: [],
       messageInput: "",
+      isMerchant: false,
     };
+  },
+  components: {
+    MerchantNavigationBar,
+    CustomerNavigationBar,
   },
   mounted() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
         this.getMessages();
+        this.getMerchantUids();
       }
     });
     this.scrollToBottom();
@@ -68,6 +78,17 @@ export default {
         return { id: doc.id, ...doc.data() };
       });
       this.messages = messages;
+    },
+    async getMerchantUids() {
+      const q = query(collection(db, "merchants"));
+      const querySnapshot = await getDocs(q);
+      const uids = querySnapshot.docs.map((doc) => {
+        return doc.data().uid
+      });
+      console.log(uids)
+      console.log(this.user.uid)
+      this.isMerchant = uids.includes(this.user.uid);
+      console.log(this.isMerchant)
     },
     async sendMessage() {
       const message = this.messageInput.trim();
