@@ -23,12 +23,12 @@ import {
 import router from "../router";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
-import NormalButton from "@/components/NormalButton.vue"
-
+import NormalButton from "@/components/NormalButton.vue";
 
 const db = getFirestore(firebaseApp);
 
 export default {
+    components: {CustomerNavigationBar, NormalButton},
     name: "TopUpSuccessful",
     data() {
         return {
