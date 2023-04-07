@@ -1,7 +1,7 @@
 <template>
     <div class="container" v-if="user">
         <CustomerNavigationBar/>
-        Top Up Successful!
+        <h1>Top Up Successful!</h1><br>
         <NormalButton
             @click="toMarketplace"
             :buttonName="buttonName"
@@ -76,4 +76,7 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+.container {
+    font-family: "Nunito Sans"
+}
 </style>

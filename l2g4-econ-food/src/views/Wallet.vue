@@ -3,25 +3,27 @@
         <CustomerNavigationBar/>
         <div class="center">
             <div class="balance">
-                <h1>Current Balance:</h1>
-                <h1 v-text=balance></h1>
+                Current Balance:
+                <h1> ${{ balance }}</h1>
             </div>
-            <NormalButton
-                @click="topup10"
-                :buttonName="amount10"
-            ></NormalButton>
-            <NormalButton
-                @click="topup20"
-                :buttonName="amount20"
-            ></NormalButton>
-            <NormalButton
-                @click="topup50"
-                :buttonName="amount50"
-            ></NormalButton>
-            <NormalButton
-                @click="topup100"
-                :buttonName="amount100"
-            ></NormalButton>
+            <div class="buttons">
+                <NormalButton
+                    @click="topup10"
+                    :buttonName="amount10"
+                ></NormalButton>
+                <NormalButton
+                    @click="topup20"
+                    :buttonName="amount20"
+                ></NormalButton>
+                <NormalButton
+                    @click="topup50"
+                    :buttonName="amount50"
+                ></NormalButton>
+                <NormalButton
+                    @click="topup100"
+                    :buttonName="amount100"
+                ></NormalButton>
+            </div>
         </div>
     </div>
 </template>
@@ -144,5 +146,28 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Nunito Sans"
+}
+.balance {
+  background-color: #16703c;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 24px;
+  padding: 20px;
+  margin: 20px;
+}
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+h1 {
+    text-align: center;
+}
 </style>
 

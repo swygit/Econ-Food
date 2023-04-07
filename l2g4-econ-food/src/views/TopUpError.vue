@@ -1,7 +1,7 @@
 <template>
     <div class="container">
     <CustomerNavigationBar/>
-    Payment unsuccessful. Try again.
+    <h1>Payment unsuccessful. Try again.</h1><br>
     <NormalButton
             @click="toMarketplace"
             :buttonName="buttonName"
@@ -39,3 +39,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+.container {
+    font-family: "Nunito Sans"
+}
+</style>
