@@ -4,9 +4,7 @@
   <div class="order-chat-container">
     <div class="order-chat-topbar">
       <button class="order-chat-back-btn" @click="goBack">Back</button>
-      <h1 class="order-chat-heading">Order ID: <span class="black-text">{{ orderId }}</span></h1>
-      <h1 class="order-chat-heading">Customer: <span class="black-text">{{ customerData.name }}</span></h1>
-      <h1 class="order-chat-heading">HP: <span class="black-text">{{ customerData.phoneNumber }}</span></h1>
+      <h1 class="order-chat-heading">Order ID: <span class="black-text">{{ orderId }} </span> </h1>
     </div>
     <div class="order-chat-messages" ref="messagesContainer" style="overflow-y: auto; height: calc(100vh - 250px);">
       <div
@@ -30,6 +28,7 @@
     </form>
   </div>
 </template>
+
 <script>
 import { getFirestore, collection, query, where, getDocs, addDoc, orderBy ,getDoc, doc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
@@ -167,6 +166,9 @@ export default {
 </script>
 
 <style scoped>
+body {
+  overflow-x: hidden;
+}
 .order-chat-container {
   display: flex;
   flex-direction: column;
@@ -174,6 +176,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #f5f5ef;
+  overflow-x: hidden;
 }
 
 .order-chat-heading {
