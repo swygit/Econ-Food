@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="user">
         <CustomerNavigationBar/>
         <div class="center">
             <div class="balance">
@@ -90,24 +90,24 @@ export default {
     },
     methods: {
         async getBalance() {
-                const customerDocQuery = query(
-                    collection(db, "customers"),
-                    where("email", "==", this.user.email)
-                );
-                const customerDocsRef = await getDocs(customerDocQuery);
-                let customerDocRef;
-                customerDocsRef.forEach((doc) => {
-                    customerDocRef = doc;
-                    this.userId = doc.id;
-                });
-                this.balance = customerDocRef.data().balance
+            const customerDocQuery = query(
+                collection(db, "customers"),
+                where("email", "==", this.user.email)
+            );
+            const customerDocsRef = await getDocs(customerDocQuery);
+            let customerDocRef;
+            customerDocsRef.forEach((doc) => {
+                customerDocRef = doc;
+                this.userId = doc.id;
+            });
+            this.balance = customerDocRef.data().balance
         },
         async topup10() {
             var stripe = await loadStripe(this.publishableKey);
             stripe.redirectToCheckout({
                 lineItems: [this.lineItems[0]],
                 mode: 'payment',
-                successUrl: this.successURL,
+                successUrl: this.successURL + "?amount=10",
                 cancelUrl: this.cancelURL
             })
         },
@@ -116,7 +116,7 @@ export default {
             stripe.redirectToCheckout({
                 lineItems: [this.lineItems[1]],
                 mode: 'payment',
-                successUrl: this.successURL,
+                successUrl: this.successURL + "?amount=20",
                 cancelUrl: this.cancelURL
             })
         },
@@ -125,7 +125,7 @@ export default {
             stripe.redirectToCheckout({
                 lineItems: [this.lineItems[2]],
                 mode: 'payment',
-                successUrl: this.successURL,
+                successUrl: this.successURL + "?amount=50", 
                 cancelUrl: this.cancelURL
             })
         },
@@ -134,7 +134,7 @@ export default {
             stripe.redirectToCheckout({
                 lineItems: [this.lineItems[3]],
                 mode: 'payment',
-                successUrl: this.successURL,
+                successUrl: this.successURL + "?amount=100",
                 cancelUrl: this.cancelURL
             })
         },

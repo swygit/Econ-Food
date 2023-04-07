@@ -124,7 +124,7 @@ export default {
           customerDocRef = doc;
           this.userId = doc.id;
       });
-      // to update the merchant balance, obtain the merchant id from cart
+      // to update the merchant balance, first obtain the cart doc
       const cartDocQuery = query(
         collection(db, "carts"),
         where("uid", "==", this.user.uid)
@@ -135,12 +135,12 @@ export default {
         cartDocRef = doc;
         this.cartId = doc.id
       })
-      // obtain the id of all the listings from cart doc
+      // obtain the Firebase id of all the listings from cart doc
       for (let i = 0; i < cartDocRef.data().products.length; i++) {
         this.listingIds.push(cartDocRef.data().products[i].productId)
         this.quantities.push(cartDocRef.data().products[i].quantity)
       }
-      // to update merchant balance, first obtain merchant doc from cart doc
+      // to update merchant balance, now obtain the merchant doc from the cart doc
       const merchantDocQuery = query(
         collection(db, "merchants"),
         where("uid", "==", cartDocRef.data().merchantId)
@@ -171,7 +171,7 @@ export default {
         }
         // create the order containing all the listings/products in the cart
 
-        // clear cart in view and Firebase *NOT COMPLETE*
+        // clear cart in view and Firebase
         const cartDoc = await doc(db, "carts", this.cartId);
         await updateDoc(cartDoc, {
           merchantId: "",
