@@ -203,9 +203,19 @@ export default {
             name: "",
             email: user.email,
             phoneNumber: "",
-            updatedProfile: false,
+            uid: result.user.uid,
+            balance: 0,
+            updatedProfile: false
           };
+          const customerCart = {
+              uid: result.user.uid,
+              products: [],
+              merchantId: "",
+              merchantName: "",
+              merchantimageUrl: "",
+            };
           addDoc(collection(db, "customers"), customerData);
+          addDoc(collection(db, "carts"), customerCart);
           console.log("User has not updated all details in profile.");
           router.push("/customerprofile");
           // if customer has logged in with Google before
@@ -231,6 +241,8 @@ export default {
             location: "",
             phoneNumber: "",
             bankNumber: "",
+            uid: result.user.uid,
+            balance: 0,
             updatedProfile: false,
           };
           addDoc(collection(db, "merchants"), merchantData);

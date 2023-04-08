@@ -11,7 +11,7 @@
       </div>
 
       <!-- Buttons -->
-      <div id="app">
+      <div>
         <FilterButton
           @click="toggleAll"
           :buttonName="allButtonName"
@@ -91,7 +91,8 @@ export default {
     },
     toggleOthers: function () {
       this.filteredMerchants = this.merchants.filter(
-        (item) => item.businessType == "Others"
+        (item) =>
+          item.businessType != "Hotel" && item.businessType != "Supermarket"
       );
     },
     clickRouter: function (id) {
@@ -104,19 +105,17 @@ export default {
     },
     display: async function () {
       let allDocuments = await getDocs(collection(db, "merchants"));
-      let values = allDocuments.docs.map((v) => {
-        const data = v.data();
-        return {
-          ...data,
-          id: data.uid,
-        };
-      });
+      let values = allDocuments.docs
+        .map((v) => {
+          const data = v.data();
+          return {
+            ...data,
+            id: data.uid,
+          };
+        })
+        .filter((v) => v.updatedProfile === true);
       this.merchants = values;
       this.filteredMerchants = values;
-
-      // 1. Store it as a url (if hardcoded)
-      // 2. Store as base64 string
-      // 3. Blob in firebase (https://firebase.google.com/docs/storage/web/upload-files)
     },
     getUser: function () {
       const auth = getAuth();
@@ -131,13 +130,8 @@ export default {
 </script>
 
 <style scoped>
-:root {
-  font-size: 8px;
-}
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-body {
-  background-color: #f5f5ef;
-}
+
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-size: 4rem;
@@ -150,9 +144,10 @@ h1 {
 .app {
   margin: auto;
   width: 100%;
+
   /* max-width: 1048px; */
 }
-.app-warpper {
+.app-wrapper {
   margin: auto;
 }
 </style>
