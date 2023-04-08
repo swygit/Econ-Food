@@ -40,11 +40,16 @@
         </div>
       </form>
     </div>
+
     <div class="topleft">
-      <img src="https://i.ibb.co/rkSWW2b/ECON-FOOD.png" class="icon" />
+      <a href="/">
+        <img src="../assets/logowhite.png" class='logo'>
+      </a>
     </div>
+
   </div>
 </template>
+
 <script>
 import App from "../App.vue";
 import {
@@ -267,13 +272,15 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Nunito Sans");
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("https://i.ibb.co/C69CYVs/Landing-Register-Login-Page.png");
+  background-image: url("../assets/bg2png.png");
   background-size: cover;
   position: fixed;
   top: 0px;
@@ -281,11 +288,21 @@ export default {
   bottom: 0px;
   left: 0px;
 }
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.4)
+}
 .center {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: absolute;
 }
 h1 {
   color: #fff;
@@ -385,8 +402,8 @@ button {
   top: 0;
   left: 0;
 }
-.icon {
+.logo {
   width: 200px;
-  height: 200px;
+  height: 100px;
 }
 </style>

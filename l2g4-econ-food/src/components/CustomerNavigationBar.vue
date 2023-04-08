@@ -42,16 +42,22 @@ export default {
       this.$router.push(`/cart/${this.user.uid}`);
     },
     toOrders: function () {
-      this.$router.push(`/customerorders`);
+      this.$router.push(`/customerorders/${this.user.uid}`);
     },
     toWallet: function () {
-      this.$router.push('/wallet')
-    }
+      this.$router.push("/wallet");
+    },
   },
 };
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+
+:root {
+  font-size: 15px;
+}
+
 .image {
   height: 50px;
   padding-left: 20px;

@@ -39,7 +39,7 @@ p {
   font-family: 'Nunito Sans';
   color: black;
   margin-bottom: 30px;
-  font-size: 13.9px;
+  font-size: 15px;
 }
 
 .icon {

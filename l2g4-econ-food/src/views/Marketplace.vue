@@ -1,9 +1,8 @@
 <template>
   <div class="app">
+    <CustomerNavigationBar />
     <div class="app-wrapper">
-      <CustomerNavigationBar />
-
-      <h1>Marketplace</h1>
+      <h1 class="mt-3">Marketplace</h1>
 
       <!-- Search bar -->
       <div>
@@ -131,11 +130,16 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-
+:root {
+  font-size: 8px;
+}
+body {
+  background-color: #f5f5ef;
+}
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-size: 4rem;
-  font-weight: 500;
+  font-weight: bold;
   text-align: left;
   letter-spacing: 2%;
   line-height: 30px;
@@ -144,10 +148,10 @@ h1 {
 .app {
   margin: auto;
   width: 100%;
-
-  /* max-width: 1048px; */
 }
 .app-wrapper {
-  margin: auto;
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
 }
 </style>
