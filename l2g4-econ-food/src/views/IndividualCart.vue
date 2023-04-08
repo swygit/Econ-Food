@@ -108,8 +108,36 @@ export default {
         }
       });
     },
+    // Hi just tryin to creat new order from cart with
+    // check out here, can delete if merging - Nat
     checkoutItem(item) {
-      // handle logic
+      const ordersData = {
+        merchantData: this.merchant,
+        cart: this.cartItems,
+        price: this.totalPrice,
+        customerId: this.user.uid,
+        merchantID: this.merchant.id,
+        merchant: this.merchant.name,
+        datetime: new Date(),
+        status: "Received",
+      };
+      const ordersRef = collection(db, "orders");
+      addDoc(ordersRef, ordersData)
+        .then((docRef) => {
+          // Update the newly added document with an orderid field
+          const orderid = docRef.id;
+          const updateData = { orderid: orderid };
+          updateDoc(doc(ordersRef, orderid), updateData)
+            .then(() => {
+              console.log("Document updated with orderid:", orderid);
+            })
+            .catch((error) => {
+              console.error("Error updating document:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error adding document:", error);
+        });
     },
     loadUserCart: async function () {
       let allDocuments = await getDocs(collection(db, "carts"));
@@ -216,6 +244,7 @@ p {
   align-items: center;
 }
 .middle-content {
+  font-size: 15px;
 }
 img {
   width: 230px;

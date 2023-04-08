@@ -1,151 +1,134 @@
 <template>
-  <div class="merchant-orders-container">
-    <MerchantNavigationBar />
-    <div class="merchant-orders">
-      <h1 class="merchant-orders-heading">My Orders</h1>
-      <div class="merchant-orders-grid">
-        <MerchantOrder v-for="(order, index) in orders" :key="index" :order="order" />
-        <!-- <div class="merchant-order-actions">
-            <button @click="goToChat(order.id)" class="merchant-order-chat-btn">Chat</button>
-            <button class="merchant-order-track-btn">Track</button>
-        </div> -->
-
+  <div class="background">
+    <MerchantNavigationBar></MerchantNavigationBar>
+    <h1 class="title">Orders</h1>
+    <div v-for="(entries, date) in orders" :key="date">
+      <h2 class="date">{{ date }}</h2>
+      <div class="orders">
+        <OrdersList
+          v-for="order in entries"
+          :key="order.id"
+          :id="order.id"
+          :orderid="order.orderid"
+          :merchant="order.merchant"
+          :datetime="order.datetime"
+          :price="order.price"
+          :status="order.status"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
-import MerchantOrder from "@/components/MerchantOrder.vue";
-import { getAuth, onAuthStateChanged } from "@firebase/auth";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import MerchantNavigationBar from "../components/MerchantNavigationBar.vue";
+import OrdersList from "../components/OrdersList.vue";
 import firebaseApp from "../firebase.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 
 const db = getFirestore(firebaseApp);
-
 export default {
-  name: "MerchantOrders",
+  name: "CustomerOrders",
   components: {
     MerchantNavigationBar,
-    MerchantOrder,
+    OrdersList,
   },
   data() {
     return {
-      user: null,
-      userId: null,
-      orders: [],
+      orders: {},
     };
   },
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        this.useremail = auth.currentUser.email;
         this.user = user;
-        this.userId = user.uid;
-        this.getOrders();
       }
     });
-  },
-  methods: {
-    async getOrders() {
-      const q = query(collection(db, "orders"), where("merchantID", "==", this.userId));
-      const querySnapshot = await getDocs(q);
-      const orders = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() };
+    const myCollection = collection(db, "orders");
+    const myCollectionByTime = query(myCollection, orderBy("datetime", "desc"));
+    getDocs(myCollectionByTime)
+      .then((querySnapshot) => {
+        const groupedByDate = {};
+        const today = new Date();
+        const merchantid = this.$route.params.id;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          // if the customer id matches, display the orders
+          if (data.merchantID === merchantid) {
+            const order = {
+              id: doc.id,
+              orderid: data.orderid,
+              merchant: data.merchant,
+              price: data.price,
+              status: data.status,
+              // The line of code below basically changes the timestamp format in fire base to the
+              // format that we want
+              datetime: data.datetime
+                .toDate()
+                .toLocaleString("en-SG", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replace(",", " "),
+            };
+            // Check if the date is today
+            const orderDateTime = data.datetime.toDate();
+            let dateDisplay = "";
+            if (
+              orderDateTime.getFullYear() === today.getFullYear() &&
+              orderDateTime.getMonth() === today.getMonth() &&
+              orderDateTime.getDate() === today.getDate()
+            ) {
+              dateDisplay = "Today";
+            } else {
+              // Group the data by dates
+              dateDisplay = orderDateTime.toLocaleString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "2-digit",
+              });
+            }
+            if (!groupedByDate[dateDisplay]) {
+              groupedByDate[dateDisplay] = [order];
+            } else {
+              groupedByDate[dateDisplay].push(order);
+            }
+          }
+        });
+        this.orders = groupedByDate;
+      })
+      .catch((error) => {
+        console.error("Error getting documents:", error);
       });
-      this.orders = orders;
-    },
-    goToChat(orderId) {
-      this.$router.push({ name: "OrderChat", params: { orderId: orderId } });
-    },
   },
 };
 </script>
-
 <style scoped>
-.merchant-orders-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #f5f5ef;
-}
-
-.merchant-orders {
-  margin-top: 90px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.merchant-orders-heading {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  text-align: center;
-  text-shadow: 1px 1px #fff;
-  color: #16703c;
-}
-
-.merchant-orders-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  justify-items: center;
-}
-
-@media screen and (max-width: 768px) {
-  .merchant-orders-heading {
-    font-size: 2rem;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .merchant-orders-heading {
-    font-size: 1.5rem;
-  }
-
-  .merchant-orders-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-}
-
-.merchant-order-actions {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.merchant-order-chat-btn {
-  width: 120px;
-  padding: 10px;
-  background-color: #16703c;
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  font-size: 1rem;
+@import url("https://fonts.googleapis.com/css?family=Nunito Sans");
+.title {
+  font-size: 50px;
   font-family: "Nunito Sans", sans-serif;
-  cursor: pointer;
-  margin-right: 10px;
+  margin-bottom: 20px;
 }
 
-.merchant-order-chat-btn:hover {
-  background-color : #134c2e;
+.date {
+  font-size: 20px;
 }
-
-.merchant-order-track-btn {
-width: 120px;
-padding: 10px;
-background-color: #b5e1b5;
-color: #16703c;
-border: none;
-border-radius: 30px;
-font-size: 1rem;
-font-family: "Nunito Sans", sans-serif;
-cursor: pointer;
-}
-
-.merchant-order-track-btn:hover {
-background-color: #a4d8a4;
+.background {
+  background-size: cover;
+  background-color: #f5f5ef;
 }
 </style>

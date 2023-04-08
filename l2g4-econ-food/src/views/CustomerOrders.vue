@@ -3,7 +3,7 @@
     <CustomerNavigationBar></CustomerNavigationBar>
     <h1 class="title">Orders</h1>
     <div v-for="(entries, date) in orders" :key="date">
-      <h2>{{ date }}</h2>
+      <h2 class="date">{{ date }}</h2>
       <div class="orders">
         <OrdersList
           v-for="order in entries"
@@ -14,6 +14,7 @@
           :merchant="order.merchant"
           :datetime="order.datetime"
           :price="order.price"
+          :status="order.status"
         />
       </div>
     </div>
@@ -58,52 +59,55 @@ export default {
     const myCollectionByTime = query(myCollection, orderBy("datetime", "desc"));
     getDocs(myCollectionByTime)
       .then((querySnapshot) => {
-        const orders = [];
         const groupedByDate = {};
         const today = new Date();
+        const customerid = this.$route.params.id;
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const order = {
-            id: doc.id,
-            orderid: data.orderid,
-            merchant: data.merchant,
-            price: data.price,
-            // The line of code below basically changes the timestamp format in fire base to the
-            // format that we want
-            datetime: data.datetime
-              .toDate()
-              .toLocaleString("en-SG", {
+          // if the customer id matches, display the orders
+          if (data.customerId === customerid) {
+            const order = {
+              id: doc.id,
+              orderid: data.orderid,
+              merchant: data.merchant,
+              price: data.price,
+              status: data.status,
+              // The line of code below basically changes the timestamp format in fire base to the
+              // format that we want
+              datetime: data.datetime
+                .toDate()
+                .toLocaleString("en-SG", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replace(",", " "),
+            };
+            // Check if the date is today
+            const orderDateTime = data.datetime.toDate();
+            let dateDisplay = "";
+            if (
+              orderDateTime.getFullYear() === today.getFullYear() &&
+              orderDateTime.getMonth() === today.getMonth() &&
+              orderDateTime.getDate() === today.getDate()
+            ) {
+              dateDisplay = "Today";
+            } else {
+              // Group the data by dates
+              dateDisplay = orderDateTime.toLocaleString("en-US", {
                 year: "numeric",
-                month: "2-digit",
+                month: "long",
                 day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })
-              .replace(",", " "),
-          };
-          //orders.push(order);
-          // Check if the date is today
-          const orderDateTime = data.datetime.toDate();
-          let dateDisplay = "";
-          if (
-            orderDateTime.getFullYear() === today.getFullYear() &&
-            orderDateTime.getMonth() === today.getMonth() &&
-            orderDateTime.getDate() === today.getDate()
-          ) {
-            dateDisplay = "Today";
-          } else {
-            // Group the data by dates
-            dateDisplay = orderDateTime.toLocaleString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "2-digit",
-            });
-          }
-          if (!groupedByDate[dateDisplay]) {
-            groupedByDate[dateDisplay] = [order];
-          } else {
-            groupedByDate[dateDisplay].push(order);
+              });
+            }
+            if (!groupedByDate[dateDisplay]) {
+              groupedByDate[dateDisplay] = [order];
+            } else {
+              groupedByDate[dateDisplay].push(order);
+            }
           }
         });
         this.orders = groupedByDate;
@@ -120,6 +124,10 @@ export default {
   font-size: 50px;
   font-family: "Nunito Sans", sans-serif;
   margin-bottom: 20px;
+}
+
+.date {
+  font-size: 20px;
 }
 .background {
   background-size: cover;

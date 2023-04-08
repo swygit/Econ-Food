@@ -70,7 +70,6 @@ export default {
 }
 
 h1 {
-  font-size: 30px;
   font-weight: normal;
   font-family: "Nunito Sans";
   color: #fff;

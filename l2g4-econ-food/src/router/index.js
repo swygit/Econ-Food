@@ -15,10 +15,12 @@ import CustomerProfile from "../views/CustomerProfile.vue";
 import Cart from "../views/Cart.vue";
 import IndividualCart from "../views/IndividualCart.vue";
 import OrderSummary from "../views/OrderSummary.vue";
+import CustomerOrders from "../views/CustomerOrders.vue";
+import CustomerOrderStatus from "../views/CustomerOrderStatus.vue";
+import OrderChat from "../views/OrderChat.vue";
 
 import AboutMerchant from "../views/AboutMerchant.vue";
 import Dashboard from "../views/Dashboard.vue";
-import CustomerOrders from "../views/CustomerOrders.vue";
 import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
@@ -102,10 +104,20 @@ const routes = [
     component: IndividualCart,
   },
   {
+    path: "/customerorders/:id",
+    name: "CustomerOrders",
+    component: CustomerOrders,
+  },
+  {
     //Filter by customer id (unsure)
-    path: "/ordersummary",
+    path: "/order/:id",
     name: "OrderSummary",
     component: OrderSummary,
+  },
+  {
+    path: "/customerorderstatus/:id",
+    name: "CustomerOrderStatus",
+    component: CustomerOrderStatus,
   },
   {
     path: "/customerprofile",
@@ -139,13 +151,13 @@ const routes = [
     component: MerchantListings,
   },
   {
-    path: "/merchantorders",
+    path: "/merchantorders/:id",
     name: "MerchantOrders",
     component: MerchantOrders,
   },
   {
-    path: '/orders/:orderId/chat',
-    name: 'OrderChat',
+    path: "/orders/:orderId/chat",
+    name: "OrderChat",
     component: OrderChat,
     props: true,
   },

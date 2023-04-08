@@ -42,7 +42,7 @@ export default {
       this.$router.push(`/merchantlistings`);
     },
     ordersClickRouter: function () {
-      this.$router.push(`/merchantorders`);
+      this.$router.push(`/merchantorders/${this.user.uid}`);
     },
   },
 };
