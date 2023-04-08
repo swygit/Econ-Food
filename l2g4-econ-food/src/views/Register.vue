@@ -109,13 +109,6 @@ export default {
               merchantName: "",
               merchantimageUrl: "",
             };
-            const customerCart = {
-              uid: result.user.uid,
-              products: [],
-              merchantId: "",
-              merchantName: "",
-              merchantimageUrl: "",
-            };
             await addDoc(collection(db, "customers"), customerData);
             await addDoc(collection(db, "carts"), customerCart);
             // set up merchant data

@@ -25,7 +25,6 @@ import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
 import MerchantOrders from "../views/MerchantOrders.vue";
-import OrderChat from "../views/OrderChat.vue";
 
 
 const routes = [
