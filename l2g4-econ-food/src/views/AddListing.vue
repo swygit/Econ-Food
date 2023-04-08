@@ -45,7 +45,7 @@
               placeholder="Listing Description"
               v-model="description"
             ></textarea>
-            <button type="submit" id="addListing">Add Listing</button>
+            <button type="submit" id="addListing" @click=addListing()>Add Listing</button>
           </form>
         </div>
       </div>
