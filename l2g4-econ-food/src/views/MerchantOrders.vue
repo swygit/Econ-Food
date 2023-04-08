@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <CustomerNavigationBar></CustomerNavigationBar>
+    <MerchantNavigationBar></MerchantNavigationBar>
     <h1 class="title">Orders</h1>
     <div v-for="(entries, date) in orders" :key="date">
       <h2 class="date">{{ date }}</h2>
@@ -10,7 +10,6 @@
           :key="order.id"
           :id="order.id"
           :orderid="order.orderid"
-          :merchantid="order.merchantID"
           :merchant="order.merchant"
           :datetime="order.datetime"
           :price="order.price"
@@ -22,7 +21,7 @@
 </template>
 
 <script>
-import CustomerNavigationBar from "../components/CustomerNavigationBar.vue";
+import MerchantNavigationBar from "../components/MerchantNavigationBar.vue";
 import OrdersList from "../components/OrdersList.vue";
 import firebaseApp from "../firebase.js";
 import {
@@ -38,7 +37,7 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "CustomerOrders",
   components: {
-    CustomerNavigationBar,
+    MerchantNavigationBar,
     OrdersList,
   },
   data() {
@@ -46,7 +45,6 @@ export default {
       orders: {},
     };
   },
-
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -61,11 +59,11 @@ export default {
       .then((querySnapshot) => {
         const groupedByDate = {};
         const today = new Date();
-        const customerid = this.$route.params.id;
+        const merchantid = this.$route.params.id;
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           // if the customer id matches, display the orders
-          if (data.customerId === customerid) {
+          if (data.merchantID === merchantid) {
             const order = {
               id: doc.id,
               orderid: data.orderid,

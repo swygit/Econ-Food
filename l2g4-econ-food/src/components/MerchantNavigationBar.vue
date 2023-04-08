@@ -5,7 +5,7 @@
       <li><a @click="profileClickRouter">Profile</a></li>
       <li><a href="#">Analytics</a></li>
       <li><a @click="listingsClickRouter">Listings</a></li>
-      <li><a href="#">Orders</a></li>
+      <li><a @click="ordersClickRouter">Orders</a></li>
       <li><a @click="dashboardClickRouter">Dashboard</a></li>
     </ul>
   </div>
@@ -40,6 +40,9 @@ export default {
     },
     listingsClickRouter: function () {
       this.$router.push(`/merchantlistings`);
+    },
+    ordersClickRouter: function () {
+      this.$router.push(`/merchantorders/${this.user.uid}`);
     },
   },
 };
@@ -82,6 +85,7 @@ export default {
   padding: 20px 30px 20px 30px;
   text-decoration: none;
   font-size: 11px;
+  cursor: pointer;
 }
 
 /* Add a color to the active/current link */

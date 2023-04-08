@@ -40,13 +40,14 @@ import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
   collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
   doc,
-  deleteDoc,
+  getDocs,
+  increment,
+  query,
+  where,
+  updateDoc
 } from "firebase/firestore";
+import router from "../router";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 import NormalButton from "@/components/NormalButton.vue";
@@ -56,8 +57,14 @@ const db = getFirestore(firebaseApp);
 
 export default {
   name: "Cart",
-  data: function () {
+  data() {
     return {
+      user: false,
+      userId: "",
+      merchantId: "",
+      listingIds: [],
+      quantities: [],
+      cartId: "",
       cartItems: [],
       viewButtonName: "View",
       checkoutButtonName: "Checkout",
@@ -66,23 +73,20 @@ export default {
     };
   },
   mounted() {
-    this.getUser();
+    const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            this.user = user;
+        }
+    });
     this.loadUserCart();
-  },
+  },  
   components: {
     CustomerNavigationBar,
     NormalButton,
     NormalButtonUnfilled,
   },
   methods: {
-    getUser: function () {
-      const auth = getAuth();
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          this.user = user;
-        }
-      });
-    },
     loadUserCart: async function () {
       let allDocuments = await getDocs(collection(db, "carts"));
       let values = allDocuments.docs
@@ -96,21 +100,98 @@ export default {
         .find((v) => v.uid === this.user.uid);
       this.cart = values;
       this.cartItems = this.cart.products;
-
+      
       for (let i = 0; i < this.cart.products.length; i++) {
+        // sum up the total price of the items in cart to display
         const currentProductPrice = this.cart.products[i].price;
         this.totalPrice += currentProductPrice;
+        // create products for checkout
       }
     },
     viewItem() {
       const id = this.$route.params.id;
       this.$router.push(`/individualcart/${id}`);
     },
-    checkoutItem(item) {
-      // handle logic
-    },
-  },
-};
+    async checkoutItem() {
+      // to obtain the current balance of the user, first obtain customer doc
+      const customerDocQuery = query(
+        collection(db, "customers"),
+        where("email", "==", this.user.email)
+      );
+      const customerDocsRef = await getDocs(customerDocQuery);
+      let customerDocRef;
+      customerDocsRef.forEach((doc) => {
+          customerDocRef = doc;
+          this.userId = doc.id;
+      });
+      // to update the merchant balance, first obtain the cart doc
+      const cartDocQuery = query(
+        collection(db, "carts"),
+        where("uid", "==", this.user.uid)
+      );
+      const cartDocsRef = await getDocs(cartDocQuery);
+      let cartDocRef;
+      cartDocsRef.forEach((doc) => {
+        cartDocRef = doc;
+        this.cartId = doc.id
+      })
+      // obtain the Firebase id of all the listings from cart doc
+      for (let i = 0; i < cartDocRef.data().products.length; i++) {
+        this.listingIds.push(cartDocRef.data().products[i].productId)
+        this.quantities.push(cartDocRef.data().products[i].quantity)
+      }
+      // to update merchant balance, now obtain the merchant doc from the cart doc
+      const merchantDocQuery = query(
+        collection(db, "merchants"),
+        where("uid", "==", cartDocRef.data().merchantId)
+      );
+      const merchantDocsRef = await getDocs(merchantDocQuery);
+      let merchantDocRef;
+      merchantDocsRef.forEach((doc) => {
+        merchantDocRef = doc;
+        this.merchantId = doc.id
+      })
+      // if balance is sufficient, successful checkout, and update user's balance in Firebase
+      if (customerDocRef.data().balance > this.totalPrice) {
+        const customerDoc = await doc(db, "customers", this.userId);
+        await updateDoc(customerDoc, {
+          balance: customerDocRef.data().balance - this.totalPrice
+        })
+        // update merchant's balance in Firebase
+        const merchantDoc = await doc(db, "merchants", this.merchantId);
+        await updateDoc(merchantDoc, {
+          balance: merchantDocRef.data().balance + this.totalPrice
+        })
+        // update merchant's quantity of listing
+        for (let i = 0; i < this.listingIds.length; i++) {
+          const listingDoc = await doc(db, "listings", this.listingIds[i]);
+          await updateDoc(listingDoc, {
+            quantity: increment(-this.quantities[i])
+          })
+        }
+        // create the order containing all the listings/products in the cart
+
+        // clear cart in view and Firebase
+        const cartDoc = await doc(db, "carts", this.cartId);
+        await updateDoc(cartDoc, {
+          merchantId: "",
+          merchantName: "",
+          merchantimageUrl: "",
+          products: []
+        })
+        this.cart = {}
+        this.cartItems = []
+        this.totalPrice = 0
+        // show order summary page with successful checkout
+        router.push('/ordersummary')
+      // if balance is insufficient, redirect to wallet page for topup 
+      } else {
+        alert('Insufficient funds. Top up your wallet.')
+        router.push('/wallet')
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>

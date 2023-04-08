@@ -98,8 +98,9 @@ export default {
               name: "",
               email: this.email,
               phoneNumber: "",
-              updatedProfile: false,
               uid: result.user.uid,
+              balance: 0,
+              updatedProfile: false
             };
             const customerCart = {
               uid: result.user.uid,
@@ -122,6 +123,7 @@ export default {
               phoneNumber: "",
               bankNumber: "",
               uid: result.user.uid,
+              balance: 0,
               updatedProfile: false,
             };
             console.log("merchant", merchantData);
