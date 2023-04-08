@@ -45,7 +45,9 @@
               placeholder="Listing Description"
               v-model="description"
             ></textarea>
-            <button type="submit" id="addListing">Add Listing</button>
+            <button type="submit" id="addListing" @click="addListing()">
+              Add Listing
+            </button>
           </form>
         </div>
       </div>
@@ -74,12 +76,13 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "AddListing",
   components: {
-    MerchantNavigationBar
+    MerchantNavigationBar,
   },
   data() {
     return {
       user: false,
-      publishableKey: 'pk_test_51MqfYlFyCavaBQIYQrdDrJI5LF2F6NyUmKt1MlPpG8aKmgINwC6Z0BE2mHOWVhnKMK8Qp2CMZX7s5FDjfjc7g0yH00dvVLRKBF',
+      publishableKey:
+        "pk_test_51MqfYlFyCavaBQIYQrdDrJI5LF2F6NyUmKt1MlPpG8aKmgINwC6Z0BE2mHOWVhnKMK8Qp2CMZX7s5FDjfjc7g0yH00dvVLRKBF",
       imageUrl: null,
       name: "",
       price: null,
@@ -123,7 +126,9 @@ export default {
         this.description = "";
       } catch (error) {
         if (error.code === "invalid-argument") {
-          alert("The selected image is too large. Please choose a smaller image.");
+          alert(
+            "The selected image is too large. Please choose a smaller image."
+          );
         } else {
           console.error(error);
           console.log(error.code);

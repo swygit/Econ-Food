@@ -30,6 +30,7 @@ export default {
 .search-bar {
   text-align: left;
   margin-top: 4rem;
+  font-size: 15px;
 }
 
 .search-bar input {
