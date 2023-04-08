@@ -64,7 +64,6 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Nunito Sans");
 .order {
   border: 1px solid black;
   padding: 10px;

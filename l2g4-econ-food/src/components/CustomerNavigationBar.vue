@@ -2,10 +2,11 @@
   <div class="nav">
     <ul>
       <img class="image" src="@/images/logo.png" />
-      <li><a @click="profileClickRouter">Profile</a></li>
-      <li><a @click="cartRouter">Cart</a></li>
-      <li><a @click="ordersClickRouter">Orders</a></li>
-      <li><a @click="marketplaceClickRouter">Marketplace</a></li>
+      <li><a @click="toProfile">Profile</a></li>
+      <li><a @click="toCart">Cart</a></li>
+      <li><a @click="toOrders">Orders</a></li>
+      <li><a @click="toMarketplace">Marketplace</a></li>
+      <li><a @click="toWallet">Wallet</a></li>
     </ul>
   </div>
 </template>
@@ -31,28 +32,26 @@ export default {
         }
       });
     },
-    marketplaceClickRouter: function () {
+    toMarketplace: function () {
       this.$router.push(`/marketplace`);
     },
-    profileClickRouter: function () {
+    toProfile: function () {
       this.$router.push(`/customerprofile`);
     },
-    cartRouter: function () {
+    toCart: function () {
       this.$router.push(`/cart/${this.user.uid}`);
     },
-    ordersClickRouter: function () {
-      this.$router.push(`/customerorders/${this.user.uid}`);
+    toOrders: function () {
+      this.$router.push(`/customerorders`);
     },
+    toWallet: function () {
+      this.$router.push('/wallet')
+    }
   },
 };
 </script>
 
 <style scoped>
-:root {
-  font-size: 15px;
-}
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-
 .image {
   height: 50px;
   padding-left: 20px;

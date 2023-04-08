@@ -7,8 +7,8 @@
       </div>
       <div class="text">
         <h1 class="merchant-name">{{ merchant.name }}</h1>
-        <h2 calss="location">{{ merchant.location }}</h2>
-        <h2 calss="detail">{{ merchant.operatingHours }}</h2>
+        <h2 class="location">{{ merchant.location }}</h2>
+        <h2 class="detail">{{ merchant.operatingHours }}</h2>
       </div>
     </div>
     <div class="order-id">
@@ -32,6 +32,7 @@
       <NormalButton
         @click="goBackOrders(orderid)"
         :buttonName="backToOrder"
+
       ></NormalButton>
     </div>
   </div>
