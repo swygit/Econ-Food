@@ -42,11 +42,11 @@ export default {
       this.$router.push(`/cart/${this.user.uid}`);
     },
     toOrders: function () {
-      this.$router.push(`/customerorders`);
+      this.$router.push(`/customerorders/${this.user.uid}`);
     },
     toWallet: function () {
-      this.$router.push('/wallet')
-    }
+      this.$router.push("/wallet");
+    },
   },
 };
 </script>

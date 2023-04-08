@@ -5,9 +5,9 @@ import Register from "../views/Register.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
 
 import AboutCustomer from "../views/AboutCustomer.vue";
-import Wallet from "../views/Wallet.vue"
-import TopUpSuccessful from "../views/TopUpSuccessful.vue"
-import TopUpError from '../views/TopUpError.vue'
+import Wallet from "../views/Wallet.vue";
+import TopUpSuccessful from "../views/TopUpSuccessful.vue";
+import TopUpError from "../views/TopUpError.vue";
 import Marketplace from "../views/Marketplace.vue";
 import IndividualMarketplace from "../views/IndividualMarketplace.vue";
 import IndividualProduct from "../views/IndividualProduct.vue";
@@ -25,7 +25,6 @@ import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
 import MerchantOrders from "../views/MerchantOrders.vue";
-
 
 const routes = [
   {
@@ -61,12 +60,12 @@ const routes = [
   {
     path: "/topupsuccessful",
     name: "TopUpSuccessful",
-    component: TopUpSuccessful
+    component: TopUpSuccessful,
   },
   {
     path: "/topuperror",
     name: "TopUpError",
-    component: TopUpError
+    component: TopUpError,
   },
   {
     path: "/aboutMerchant",
@@ -135,7 +134,7 @@ const routes = [
     component: MerchantProfile,
   },
   {
-    path: "/customerorders",
+    path: "/customerorders/:id",
     name: "CustomerOrders",
     component: CustomerOrders,
   },
