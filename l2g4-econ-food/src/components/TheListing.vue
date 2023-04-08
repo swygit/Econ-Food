@@ -4,9 +4,9 @@
       <img
         :src="
           listing.imageUrl ||
-          'https://cdn.pixabay.com/photo/2016/02/23/17/42/orange-1218158_1280.png'
+          'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFile%3ANo_image_available.svg&psig=AOvVaw1ess-dyR_hgsRPHT6PMAIe&ust=1681050910109000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMD4suLAmv4CFQAAAAAdAAAAABAQ'
         "
-        class="listing-image"
+        class="listing-image" alt="Picture Unavailable"
       />
     </div>
     <div class="listing-info">
@@ -63,6 +63,9 @@ export default {
       quantity: this.listing.quantity,
     };
   },
+  mounted() {
+    this.listenForQuantityUpdates();
+  },
   computed: {
     formattedBestByDateTime() {
       const date = new Date(this.listing.bestByDate);
@@ -98,6 +101,17 @@ export default {
         }
       }
     },
+    async deleteListingNoConfirm() {
+        try {
+          const listingRef = doc(db, "listings", this.listing.id);
+          await deleteDoc(listingRef);
+          alert("Listing deleted successfully!");
+          window.location.reload();
+        } catch (error) {
+          console.error(error);
+          alert("Failed to delete listing. Please try again later.");
+        }
+    },
     async updateQuantity() {
       try {
         const listingRef = doc(db, "listings", this.listing.id);
@@ -105,10 +119,27 @@ export default {
           quantity: this.quantity,
         });
         alert("Quantity updated successfully!");
+
+        if (this.quantity === 0) {
+          alert("New Quantity is now 0, this will delete the listing.");
+          await this.deleteListingNoConfirm();
+        }
       } catch (error) {
         console.error(error);
         alert("Failed to update quantity. Please try again later.");
       }
+    },
+    async listenForQuantityUpdates() {
+      const listingRef = doc(db, "listings", this.listing.id);
+      const unsubscribe = onSnapshot(listingRef, (doc) => {
+        const updatedListing = doc.data();
+        if (updatedListing.quantity === 0) {
+          this.deleteListingNoConfirm();
+          unsubscribe(); // Stop listening after the listing has been deleted
+        } else {
+          this.quantity = updatedListing.quantity;
+        }
+      });
     },
   },
 };

@@ -45,7 +45,6 @@ export default {
       orders: {},
     };
   },
-
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {

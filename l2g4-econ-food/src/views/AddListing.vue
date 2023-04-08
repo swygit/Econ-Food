@@ -38,6 +38,7 @@
               type="datetime-local"
               placeholder="Best By Date"
               v-model="bestByDate"
+              :min="minDate"
               required
             />
             <textarea
@@ -86,6 +87,7 @@ export default {
       bestByDate: null,
       userId: null,
       description: "",
+      minDate: new Date().toISOString().slice(0, -8), // remove the last 8 characters (the milliseconds and the time zone offset)
     };
   },
   mounted() {
