@@ -9,7 +9,7 @@
         v-on:search="searchListings"
         v-on:reset="getListings"
       />
-      <router-link to="/AddListing" class="add-listing-btn">
+      <router-link to="/addlisting" class="add-listing-btn">
         Add Listing
       </router-link>
     </div>

@@ -3,16 +3,20 @@ import Landing from "../views/Landing.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
-import AboutCustomer from "../views/AboutCustomer.vue";
-import AboutMerchant from "../views/AboutMerchant.vue";
 
+import AboutCustomer from "../views/AboutCustomer.vue";
+import Wallet from "../views/Wallet.vue"
+import TopUpSuccessful from "../views/TopUpSuccessful.vue"
+import TopUpError from '../views/TopUpError.vue'
 import Marketplace from "../views/Marketplace.vue";
 import IndividualMarketplace from "../views/IndividualMarketplace.vue";
-import IndividualProductPage from "../views/IndividualProductPage.vue";
+import IndividualProduct from "../views/IndividualProduct.vue";
 import CustomerProfile from "../views/CustomerProfile.vue";
 import Cart from "../views/Cart.vue";
-import Checkout from "../views/Checkout.vue";
+import IndividualCart from "../views/IndividualCart.vue";
+import OrderSummary from "../views/OrderSummary.vue";
 
+import AboutMerchant from "../views/AboutMerchant.vue";
 import Dashboard from "../views/Dashboard.vue";
 import CustomerOrders from "../views/CustomerOrders.vue";
 import AddListing from "../views/AddListing.vue";
@@ -49,6 +53,21 @@ const routes = [
     component: AboutCustomer,
   },
   {
+    path: "/wallet",
+    name: "Wallet",
+    component: Wallet,
+  },
+  {
+    path: "/topupsuccessful",
+    name: "TopUpSuccessful",
+    component: TopUpSuccessful
+  },
+  {
+    path: "/topuperror",
+    name: "TopUpError",
+    component: TopUpError
+  },
+  {
     path: "/aboutMerchant",
     name: "AboutMerchant",
     component: AboutMerchant,
@@ -65,10 +84,10 @@ const routes = [
     component: IndividualMarketplace,
   },
   {
-    //Filter by item id
-    path: "/IndividualProductPage",
-    name: "IndividualProductPage",
-    component: IndividualProductPage,
+    //Filter by item id (DONE)
+    path: "/individualproduct/:id",
+    name: "IndividualProduct",
+    component: IndividualProduct,
   },
   {
     //Filter by customer id (DONE)
@@ -77,10 +96,16 @@ const routes = [
     component: Cart,
   },
   {
+    //Filter by customer id
+    path: "/individualcart/:id",
+    name: "IndividualCart",
+    component: IndividualCart,
+  },
+  {
     //Filter by customer id (unsure)
-    path: "/checkout",
-    name: "Checkout",
-    component: Checkout,
+    path: "/ordersummary",
+    name: "OrderSummary",
+    component: OrderSummary,
   },
   {
     path: "/customerprofile",
@@ -104,7 +129,7 @@ const routes = [
     component: CustomerOrders,
   },
   {
-    path: "/AddListing",
+    path: "/addlisting",
     name: "AddListing",
     component: AddListing,
   },

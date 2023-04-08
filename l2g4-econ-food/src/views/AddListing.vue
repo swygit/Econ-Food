@@ -11,7 +11,8 @@
           <input type="file" @change="onUpload" accept=".jpg,.png" />
         </div>
         <div class="inputDiv">
-          <form @submit.prevent="addListing">
+          <!-- <form @submit.prevent="addListing"> -->
+          <form @submit.prevent="addProduct">
             <input
               type="text"
               placeholder="Name of Listing"
@@ -67,18 +68,18 @@ import {
   where,
 } from "firebase/firestore";
 import firebaseApp from "../firebase.js";
-import router from "../router";
 
 const db = getFirestore(firebaseApp);
 
 export default {
-  name: "AddListingNew",
+  name: "AddListing",
   components: {
-    MerchantNavigationBar,
+    MerchantNavigationBar
   },
   data() {
     return {
       user: false,
+      publishableKey: 'pk_test_51MqfYlFyCavaBQIYQrdDrJI5LF2F6NyUmKt1MlPpG8aKmgINwC6Z0BE2mHOWVhnKMK8Qp2CMZX7s5FDjfjc7g0yH00dvVLRKBF',
       imageUrl: null,
       name: "",
       price: null,
@@ -102,6 +103,7 @@ export default {
     async addListing() {
       try {
         const listingsCollectionRef = collection(db, "listings");
+        // add listing into Firebase collection
         const docRef = await addDoc(listingsCollectionRef, {
           name: this.name,
           price: parseFloat(this.price),
@@ -111,10 +113,8 @@ export default {
           imageUrl: this.imageUrl,
           description: this.description,
         });
-        if (this.imageUrl) {
-          // upload image to storage and associate with the listing document
-        }
         alert("Listing added successfully!");
+        // remove input in the fields
         this.name = "";
         this.price = null;
         this.quantity = null;
@@ -123,9 +123,7 @@ export default {
         this.description = "";
       } catch (error) {
         if (error.code === "invalid-argument") {
-          alert(
-            "The selected image is too large. Please choose a smaller image."
-          );
+          alert("The selected image is too large. Please choose a smaller image.");
         } else {
           console.error(error);
           console.log(error.code);

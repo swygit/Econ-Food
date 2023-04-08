@@ -8,11 +8,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^1.52.0",
     "@vue-stripe/vue-stripe": "^4.5.0",
+    "axios": "^1.3.4",
     "date-fns": "^2.29.3",
     "esbuild": "^0.17.14",
     "firebase": "^9.18.0",
     "firebaseui": "^0.600.0",
+    "stripe": "^11.16.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vue3-google-oauth2": "^1.0.7",

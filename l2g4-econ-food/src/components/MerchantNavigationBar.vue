@@ -49,11 +49,6 @@ export default {
 </script>
 
 <style scoped>
-:root {
-  font-size: 15px;
-}
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-
 .image {
   height: 50px;
   padding-left: 20px;

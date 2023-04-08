@@ -1,4 +1,5 @@
 <template>
+  <CustomerNavigationBar />
   <div class="container">
     <div class="top-container">
       <div class="top-image-container">
@@ -10,64 +11,78 @@
         <h2>Open 24 hours</h2>
       </div>
     </div>
-    <div class="middle-container">
-      <div class="middle-image-container">
-        <img src="@/images/lemons.jpg" />
+
+    <h3>Cart Summary</h3>
+    <div class="middle-content">
+      <div class="middle-left-content">
+        <h2>Basket of Lemons - x1</h2>
+        <h4>Subtotal</h4>
+        <h4>GST</h4>
+        <h4>Total</h4>
       </div>
-      <div class="middle-content">
-        <h3>Basket of Lemons</h3>
-        <h2>
-          The fruit color is green to bright yellow at maturity and is with or
-          without a collar at the neck. Thickness and smoothness of rind vary
-          among varieties and lemons are either seedless or seedy.
-        </h2>
-        <h2>Best Before Date: 01/03/2023</h2>
-        <h2>Best Before Time: 23:59</h2>
-        <h2>Price: $4.00</h2>
+      <p></p>
+      <div class="middle-right-content">
+        <h2 style="margin-left: auto">$3.00</h2>
+        <h4 style="margin-left: auto">$10.00</h4>
+        <h4 style="margin-left: auto">$0.50</h4>
+        <h4 style="margin-left: auto">$10.50</h4>
       </div>
     </div>
+
     <div class="bottom-container">
-      <CounterButton></CounterButton>
+      <NormalButtonUnfilled
+        @click="backToCart"
+        :buttonName="backToCartButton"
+      ></NormalButtonUnfilled>
       <div>
         <p></p>
       </div>
-      <NormalButton @click="addToCart" :buttonName="buttonName"></NormalButton>
+      <NormalButton
+        @click="placeOrder"
+        :buttonName="orderButtonName"
+      ></NormalButton>
     </div>
   </div>
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import NormalButton from "@/components/NormalButton.vue";
-import CounterButton from "@/components/CounterButton.vue";
+import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
+import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 
 export default {
-  name: "IndividualProduct",
+  name: "OrderSummary",
   components: {
     NormalButton,
-    CounterButton,
+    NormalButtonUnfilled,
+    CustomerNavigationBar,
   },
-  data: function () {
+  data() {
     return {
-      buttonName: "Add To Cart",
+      orderButtonName: "Place Order",
+      backToCartButton: "Back to Cart",
     };
   },
   props: {},
   methods: {
-    addToCart: function () {
-      //
+    backToCart() {
+    },
+    placeOrder() {
     },
   },
+  mounted() {
+    const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            this.user = user;
+        }
+    });
+  }
 };
 </script>
 
 <style scoped>
-:root {
-  font-size: 8px;
-}
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
-body {
-  background-color: #f5f5ef;
-}
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 500;
@@ -89,15 +104,22 @@ h3 {
   letter-spacing: 2%;
   line-height: 24px;
   font-size: 20px;
+  margin-right: 170px;
 }
 
+h4 {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 700;
+  letter-spacing: 2%;
+  line-height: 24px;
+  font-size: 15px;
+}
 p {
   padding: 25px 50px;
 }
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: #ffffff;
   /* margin: 100px; */
@@ -119,16 +141,24 @@ p {
 .middle-container {
   display: flex;
   flex-direction: row;
-  width: 100%;
-}
-.middle-image-container {
-  display: flex;
-  flex-grow: 1;
   justify-content: center;
-  align-items: center;
+}
+.middle-left-content {
+  justify-content: left;
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+}
+.middle-right-content {
+  justify-content: right;
+  display: flex;
+  align-items: right;
+  flex-direction: column;
 }
 .middle-content {
-  flex-grow: 4;
+  justify-content: right;
+  display: flex;
+  align-items: right;
 }
 img {
   width: 280px;

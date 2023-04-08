@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .search-bar {
   text-align: left;
   margin-top: 4rem;
