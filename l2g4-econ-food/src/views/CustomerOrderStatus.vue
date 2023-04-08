@@ -7,33 +7,38 @@
       </div>
       <div class="text">
         <h1 class="merchant-name">{{ merchant.name }}</h1>
-        <h2 class="location">{{ merchant.location }}</h2>
-        <h2 class="detail">{{ merchant.operatingHours }}</h2>
+        <h2 calss="location">{{ merchant.location }}</h2>
+        <h2 calss="detail">{{ merchant.operatingHours }}</h2>
       </div>
     </div>
     <div class="order-id">
       <h1>Order #{{ orderid }}</h1>
     </div>
     <div class="time">
-      <h2>Completed at {{ datetime }}</h2>
+      <h2>Pickup By: {{ datetime }}</h2>
     </div>
-    <h1>Order Summary</h1>
-    <div class="middle-container" v-for="item in cart" :key="item.productId">
-      <div class="middle-content">
-        <h3>{{ item.name }} x {{ item.quantity }}</h3>
-      </div>
-      <h2 style="margin-left: auto">${{ item.price }}&emsp;&emsp;</h2>
-    </div>
-    <div style="margin-left: auto">
-      <h3>Subtotal: ${{ totalPrice }}</h3>
-    </div>
+    <OrderStatusIcon :status="orderstatus" />
 
     <div class="bottom-container">
+      <NormalButtonUnfilled
+        @click="viewDetail(orderid)"
+        :buttonName="viewdetails"
+      ></NormalButtonUnfilled>
+    </div>
+    <div>
       <NormalButton
-        @click="goBackOrders(orderid)"
-        :buttonName="backToOrder"
-
+        @click="goToChat(orderid)"
+        :buttonName="chat"
       ></NormalButton>
+    </div>
+    <div>
+      <h1></h1>
+    </div>
+    <div>
+      <NormalButtonUnfilled
+        @click="goBack(customerid)"
+        :buttonName="back"
+      ></NormalButtonUnfilled>
     </div>
   </div>
 </template>
@@ -51,26 +56,31 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
-import NormalButton from "@/components/NormalButton.vue";
-import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 
 const db = getFirestore(firebaseApp);
-
+import NormalButton from "@/components/NormalButton.vue";
+import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
+import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
+import OrderStatusIcon from "@/components/OrderStatusIcon.vue";
 export default {
   name: "OrderSummary",
   components: {
     NormalButton,
+    NormalButtonUnfilled,
     CustomerNavigationBar,
+    OrderStatusIcon,
   },
   data: function () {
     return {
-      backToOrder: "Back",
-      cart: [],
+      viewdetails: "View Details",
+      chat: "Chat with Merchant",
+      back: "Back",
       merchant: {},
       orderid: "",
       datetime: "",
       totalPrice: 0,
       customerid: "",
+      orderstatus: "",
     };
   },
   mounted: async function () {
@@ -104,25 +114,24 @@ export default {
       this.orderid = values.orderid;
       this.datetime = values.datetime;
       this.customerid = values.customerId;
-      (this.datetime = this.datetime
+      this.orderstatus = values.status;
+      this.datetime = this.datetime
         .toDate()
         .toLocaleString("en-SG", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
         })
-        .replace(",", " ")),
-        console.log(this.datetime);
-      for (let i = 0; i < this.cart.length; i++) {
-        const currentProductPrice = this.cart[i].price;
-        this.totalPrice += currentProductPrice;
-      }
+        .replace(",", " ");
     },
-    goBackOrders(orderid) {
-      this.$router.push(`/customerorderstatus/${orderid}`);
+    viewDetail(orderid) {
+      this.$router.push(`/order/${orderid}`);
+    },
+    goToChat(orderId) {
+      this.$router.push({ name: "OrderChat", params: { orderId: orderId } });
+    },
+    goBack(customerid) {
+      this.$router.push(`/customerorders/${customerid}`);
     },
   },
 };
@@ -152,7 +161,6 @@ h3 {
   font-size: 20px;
   margin-right: 170px;
 }
-
 h4 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 700;
@@ -207,9 +215,8 @@ p {
   align-items: right;
 }
 img {
-  align-items: left;
-  width: 200px;
-  height: 120px;
+  width: 280px;
+  height: 180px;
 }
 .bottom-container {
   display: flex;

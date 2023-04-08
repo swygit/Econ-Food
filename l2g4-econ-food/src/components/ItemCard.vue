@@ -73,7 +73,6 @@ p {
   align-items: center;
   margin: 0 10px 10px 0;
   padding: 10px;
-  cursor: pointer;
 }
 
 .item-card-icon-circle {

@@ -1,0 +1,75 @@
+<template>
+  <div>
+    <svg width="300" height="100">
+      <circle cx="50" cy="50" r="20" :class="{ active: true }" />
+      <text x="50" y="50" text-anchor="middle" dy="40" font-size="14px">
+        Received
+      </text>
+
+      <circle
+        cx="150"
+        cy="50"
+        r="20"
+        :class="{ active: status === 'Prepared' || status === 'Collected' }"
+      />
+      <text x="150" y="50" text-anchor="middle" dy="40" font-size="14px">
+        Prepared
+      </text>
+
+      <circle
+        cx="250"
+        cy="50"
+        r="20"
+        :class="{ active: status === 'Collected' }"
+      />
+      <text x="250" y="50" text-anchor="middle" dy="40" font-size="14px">
+        Collected
+      </text>
+
+      <path
+        d="M70,50 H130 M170,50 H230"
+        stroke="green"
+        stroke-width="5"
+        stroke-linecap="round"
+        fill="none"
+      />
+
+      <path
+        v-if="status === 'Prepared' || status === 'Collected'"
+        d="M50,50 H150"
+        stroke="green"
+        stroke-width="5"
+        stroke-linecap="round"
+        fill="none"
+      />
+
+      <path
+        v-if="status === 'Collected'"
+        d="M150,50 H250"
+        stroke="green"
+        stroke-width="5"
+        stroke-linecap="round"
+        fill="none"
+      />
+    </svg>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    status: String,
+  },
+};
+</script>
+
+<style>
+.active {
+  fill: green;
+}
+circle:not(.active) {
+  stroke: green;
+  stroke-width: 4;
+  fill: none;
+}
+</style>
