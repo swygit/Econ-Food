@@ -101,7 +101,7 @@ export default {
       this.isPageVisible = !document.hidden;
     },
     handleIntersection(entries) {
-      const isVisible = entries[0].isIntersecting;
+    const isVisible = entries[0].isIntersecting;
       this.isPageVisible = isVisible;
       if (isVisible) {
         this.getMessages();
@@ -434,8 +434,8 @@ font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border: none;
   border-radius: 50%;
   background-color: #16703c;
