@@ -1,34 +1,52 @@
 <template>
+  <CustomerNavigationBar v-show="!isMerchant" />
+  <MerchantNavigationBar v-show="isMerchant" />
   <div class="order-chat-container">
     <div class="order-chat-topbar">
       <button class="order-chat-back-btn" @click="goBack">Back</button>
-      <h1 class="order-chat-heading">{{ orderId }}</h1>
+      <h1 class="order-chat-heading">Order ID: <span class="black-text">{{ orderId }} </span> </h1>
     </div>
-    <div class="order-chat-messages">
+    <div class="order-chat-messages" ref="messagesContainer" style="overflow-y: auto; height: calc(100vh - 250px);">
       <div
-        v-for="(message, index) in messages"
-        :key="index"
-        :class="[    'order-chat-message',    isSentByCurrentUser(message) ? 'order-chat-message-sent' : 'order-chat-message-received'  ]"
-      >
-        <p>{{ message.content }}</p>
-        <p class="order-chat-message-timestamp">{{ message.timestamp }}</p>
+            v-for="(message, index) in messages"
+            :key="`message-${index}`"
+            :class="[    'order-chat-message',    isSentByCurrentUser(message) ? 'order-chat-message-sent' : 'order-chat-message-received',    message.isImage ? 'order-chat-message-image' : ''  ]"
+          >
+            <template v-if="!message.isImage">
+              <p>{{ message.content }}</p>
+            </template>
+            <template v-else>
+              <img :src="message.content" class="order-chat-image" />
+            </template>
+            <p class="order-chat-message-timestamp">{{ formatDate(message.timestamp) }}</p>
       </div>
+
     </div>
+
+
     <form @submit.prevent="sendMessage" class="order-chat-form">
       <div class="order-chat-input-container">
         <input type="text" v-model="messageInput" placeholder="Type a message" class="order-chat-input" />
         <button type="submit" class="order-chat-send-btn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
+        <input type="file" ref="fileInput" accept="image/*" @change="onFileSelected">
       </div>
     </form>
+
+
   </div>
 </template>
 
 <script>
-import { getFirestore, collection, query, where, getDocs, addDoc, orderBy } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, addDoc, orderBy ,getDoc, doc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import firebaseApp from "../firebase.js";
+import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
+import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
+const storage = getStorage(firebaseApp);
+
 
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
@@ -46,20 +64,68 @@ export default {
       user: null,
       messages: [],
       messageInput: "",
+      isMerchant: false,
+      orderData: {},
+      customerData: null,
     };
+  },
+  components: {
+    MerchantNavigationBar,
+    CustomerNavigationBar,
   },
   mounted() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
         this.getMessages();
+        this.getMerchantUids();
+        this.getOrderData();
       }
     });
-    this.scrollToBottom();
+    this.$nextTick(() => {
+      const container = this.$refs.messagesContainer;
+      container.scrollTop = container.scrollHeight;
+    });
   },
   methods: {
-    scrollToBottom() {
-      window.scrollTo(0, document.body.scrollHeight);
+    onFileSelected(event) {
+    const file = event.target.files[0];
+    this.uploadImage(file);
+    },
+    async uploadImage(file) {
+      try {
+        // create a storage reference for the image file
+        const storageRef = ref(storage, "images/" + this.orderId + "/" + file.name);
+
+        // upload the file to the storage reference
+        const snapshot = await uploadBytes(storageRef, file);
+
+        // get the download URL for the uploaded file
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        // send the image URL as a message
+        await addDoc(collection(db, "messages"), {
+          content: downloadURL,
+          orderId: this.orderId,
+          senderId: this.user.uid,
+          timestamp: new Date().toISOString(),
+          isImage: true, // add a flag to indicate that this is an image message
+        });
+
+        await this.getMessages();
+      } catch (error) {
+        console.error(error);
+        alert("Failed to upload image. Please try again later.");
+      }
+    },
+    formatDate(timestamp) {
+      const date = new Date(timestamp);
+      const hours = date.getHours();
+      const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // getMonth() returns 0-based month, so add 1
+      const year = date.getFullYear();
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
     },
     async getMessages() {
       const q = query(collection(db, "messages"), where("orderId", "==", this.orderId), orderBy("timestamp"));
@@ -68,6 +134,16 @@ export default {
         return { id: doc.id, ...doc.data() };
       });
       this.messages = messages;
+    },
+    async getMerchantUids() {
+      const q = query(collection(db, "merchants"));
+      const querySnapshot = await getDocs(q);
+      const uids = querySnapshot.docs.map((doc) => {
+        return doc.data().uid
+      });
+      console.log(uids)
+      console.log(this.user.uid)
+      this.isMerchant = uids.includes(this.user.uid);
     },
     async sendMessage() {
       const message = this.messageInput.trim();
@@ -91,6 +167,25 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    async getOrderData() {
+      const docRef = doc(db, "orders", this.orderId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        this.orderData = docSnap.data();
+        console.log(this.orderData.customerId);
+      } else {
+        console.log("No such document!");
+      }
+      if (this.orderData.customerId) {
+        console.log(this.orderData.customerId)
+        const q = query(collection(db, "customers"), where("uid", "==", this.orderData.customerId));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          this.customerData = querySnapshot.docs[0].data();
+        }
+      }
+      console.log(this.customerData)
+    },
   },
   computed: {
     currentUserId() {
@@ -100,10 +195,22 @@ export default {
       return (message) => message.senderId === this.currentUserId;
     },
   },
+  watch: {
+    messages() {
+      this.$nextTick(() => {
+        const container = this.$refs.messagesContainer;
+        container.scrollTop = container.scrollHeight;
+      });
+    }
+},
+
 };
 </script>
 
 <style scoped>
+body {
+  overflow-x: hidden;
+}
 .order-chat-container {
   display: flex;
   flex-direction: column;
@@ -111,6 +218,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #f5f5ef;
+  overflow-x: hidden;
 }
 
 .order-chat-heading {
@@ -124,11 +232,10 @@ export default {
 .order-chat-messages {
   width: 100%;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   padding: 0 20px;
-  flex: 1;
   overflow-y: auto;
   margin-bottom: 70px;
 }
@@ -179,41 +286,8 @@ export default {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 }
-
-.order-chat-input {
-  flex: 1;
-  height: 40px;
-  padding: 5px 10px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  font-family: "Nunito Sans", sans-serif;
-  background-color: #f5f5ef;
-}
-
-.order-chat-send-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background-color: #16703c;
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.order-chat-send-btn:hover {
-  background-color: #134c2e;
-}
-
 .order-chat-message-sent {
   align-self: flex-end;
   background-color: #def8c7;
@@ -282,11 +356,77 @@ height: 50px;
 font-size: 1.2rem;
 }
 
-.order-chat-send-btn {
-width: 50px;
-height: 50px;
-font-size: 2rem;
-margin-left: 20px;
 }
+.black-text {
+  color: black;
+}
+.order-chat-message-image {
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.order-chat-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.order-chat-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0px -5px 15px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.order-chat-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.order-chat-input {
+  flex: 1;
+  height: 40px;
+  padding: 5px 10px;
+  font-size: 2rem;
+  border: none;
+  border-radius: 5px;
+  font-family: "Nunito Sans", sans-serif;
+  background-color: #f5f5ef;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-chat-send-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: #16703c;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-chat-send-btn:hover {
+  background-color: #134c2e;
 }
 </style>

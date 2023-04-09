@@ -38,13 +38,14 @@
               type="datetime-local"
               placeholder="Best By Date"
               v-model="bestByDate"
+              :min="minDate"
               required
             />
             <textarea
               placeholder="Listing Description"
               v-model="description"
             ></textarea>
-            <button type="submit" id="addListing">Add Listing</button>
+            <button type="submit" id="addListing" @click=addListing()>Add Listing</button>
           </form>
         </div>
       </div>
@@ -86,6 +87,7 @@ export default {
       bestByDate: null,
       userId: null,
       description: "",
+      minDate: new Date().toISOString().slice(0, -8), // remove the last 8 characters (the milliseconds and the time zone offset)
     };
   },
   mounted() {
@@ -99,6 +101,11 @@ export default {
   },
   methods: {
     async addListing() {
+      if (!this.name || !this.price || !this.quantity || !this.bestByDate) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
       try {
         const listingsCollectionRef = collection(db, "listings");
         // add listing into Firebase collection

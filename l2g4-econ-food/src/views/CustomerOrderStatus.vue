@@ -34,7 +34,7 @@
     <div>
       <h1></h1>
     </div>
-    <div>
+    <div class="bottom-container">
       <NormalButtonUnfilled
         @click="goBack(customerid)"
         :buttonName="back"

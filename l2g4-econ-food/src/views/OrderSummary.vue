@@ -22,17 +22,18 @@
       <div class="middle-content">
         <h3>{{ item.name }} x {{ item.quantity }}</h3>
       </div>
-      <h2 style="margin-left: auto">${{ item.price }}&emsp;&emsp;</h2>
+      <h2 style="margin-left: auto">
+        ${{ item.price.toFixed(2) }}&emsp;&emsp;
+      </h2>
     </div>
     <div style="margin-left: auto">
-      <h3>Subtotal: ${{ totalPrice }}</h3>
+      <h3>Subtotal: ${{ totalPrice.toFixed(2) }}</h3>
     </div>
 
     <div class="bottom-container">
       <NormalButton
         @click="goBackOrders(orderid)"
         :buttonName="backToOrder"
-
       ></NormalButton>
     </div>
   </div>

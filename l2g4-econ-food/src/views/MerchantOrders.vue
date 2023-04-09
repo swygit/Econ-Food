@@ -5,7 +5,7 @@
     <div v-for="(entries, date) in orders" :key="date">
       <h2 class="date">{{ date }}</h2>
       <div class="orders">
-        <OrdersList
+        <MerchantOrderList
           v-for="order in entries"
           :key="order.id"
           :id="order.id"
@@ -22,7 +22,7 @@
 
 <script>
 import MerchantNavigationBar from "../components/MerchantNavigationBar.vue";
-import OrdersList from "../components/OrdersList.vue";
+import MerchantOrderList from "../components/MerchantOrderList.vue";
 import firebaseApp from "../firebase.js";
 import {
   getFirestore,
@@ -38,14 +38,13 @@ export default {
   name: "CustomerOrders",
   components: {
     MerchantNavigationBar,
-    OrdersList,
+    MerchantOrderList,
   },
   data() {
     return {
       orders: {},
     };
   },
-
   mounted() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {

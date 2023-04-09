@@ -10,6 +10,7 @@
           :key="order.id"
           :id="order.id"
           :orderid="order.orderid"
+          :merchantid="order.merchantID"
           :merchant="order.merchant"
           :datetime="order.datetime"
           :price="order.price"
@@ -117,6 +118,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Nunito Sans");
 .title {
