@@ -1,5 +1,5 @@
 <template>
-  <CustomerNavigationBar />
+  <MerchantNavigationBar />
   <div class="container">
     <div class="top-container">
       <div class="top-image-container">
@@ -53,7 +53,7 @@ import {
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import NormalButton from "@/components/NormalButton.vue";
-import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
+import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -61,7 +61,7 @@ export default {
   name: "OrderSummary",
   components: {
     NormalButton,
-    CustomerNavigationBar,
+    MerchantNavigationBar,
   },
   data: function () {
     return {
@@ -123,7 +123,7 @@ export default {
       }
     },
     goBackOrders(orderid) {
-      this.$router.push(`/customerorderstatus/${orderid}`);
+      this.$router.push(`/merchantorderstatus/${orderid}`);
     },
   },
 };

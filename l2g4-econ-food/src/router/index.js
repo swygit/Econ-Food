@@ -25,6 +25,8 @@ import AddListing from "../views/AddListing.vue";
 import MerchantListings from "../views/MerchantListings.vue";
 import MerchantProfile from "../views/MerchantProfile.vue";
 import MerchantOrders from "../views/MerchantOrders.vue";
+import MerchantOrderStatus from "../views/MerchantOrderStatus.vue";
+import MerchantOrderSummary from "../views/MerchantOrderSummary.vue";
 
 const routes = [
   {
@@ -152,6 +154,16 @@ const routes = [
     path: "/merchantorders/:id",
     name: "MerchantOrders",
     component: MerchantOrders,
+  },
+  {
+    path: "/merchantorderstatus/:id",
+    name: "MerchantOrderStatus",
+    component: MerchantOrderStatus,
+  },
+  {
+    path: "/merchantorder/:id",
+    name: "MerchantOrderSummary",
+    component: MerchantOrderSummary,
   },
   {
     path: "/orders/:orderId/chat",

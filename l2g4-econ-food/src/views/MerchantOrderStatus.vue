@@ -1,5 +1,5 @@
 <template>
-  <CustomerNavigationBar />
+  <MerchantNavigationBar />
   <div class="container">
     <div class="top-container">
       <div class="top-image-container">
@@ -7,34 +7,38 @@
       </div>
       <div class="text">
         <h1 class="merchant-name">{{ merchant.name }}</h1>
-        <h2 class="location">{{ merchant.location }}</h2>
-        <h2 class="detail">{{ merchant.operatingHours }}</h2>
+        <h2 calss="location">{{ merchant.location }}</h2>
+        <h2 calss="detail">{{ merchant.operatingHours }}</h2>
       </div>
     </div>
     <div class="order-id">
       <h1>Order #{{ orderid }}</h1>
     </div>
     <div class="time">
-      <h2>Completed at {{ datetime }}</h2>
+      <h2>Pickup By: {{ datetime }}</h2>
     </div>
-    <h1>Order Summary</h1>
-    <div class="middle-container" v-for="item in cart" :key="item.productId">
-      <div class="middle-content">
-        <h3>{{ item.name }} x {{ item.quantity }}</h3>
-      </div>
-      <h2 style="margin-left: auto">
-        ${{ item.price.toFixed(2) }}&emsp;&emsp;
-      </h2>
-    </div>
-    <div style="margin-left: auto">
-      <h3>Subtotal: ${{ totalPrice.toFixed(2) }}</h3>
-    </div>
+    <OrderStatusIcon :status="orderstatus" @update:status="updateStatus" />
 
     <div class="bottom-container">
+      <NormalButtonUnfilled
+        @click="viewDetail(orderid)"
+        :buttonName="viewdetails"
+      ></NormalButtonUnfilled>
+    </div>
+    <div>
       <NormalButton
-        @click="goBackOrders(orderid)"
-        :buttonName="backToOrder"
+        @click="goToChat(orderid)"
+        :buttonName="chat"
       ></NormalButton>
+    </div>
+    <div>
+      <h1></h1>
+    </div>
+    <div class="bottom-container">
+      <NormalButtonUnfilled
+        @click="goBack(merchantid)"
+        :buttonName="back"
+      ></NormalButtonUnfilled>
     </div>
   </div>
 </template>
@@ -52,26 +56,32 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
-import NormalButton from "@/components/NormalButton.vue";
-import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 
 const db = getFirestore(firebaseApp);
-
+import NormalButton from "@/components/NormalButton.vue";
+import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
+import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
+import OrderStatusIcon from "@/components/OrderStatusIcon.vue";
 export default {
   name: "OrderSummary",
   components: {
     NormalButton,
-    CustomerNavigationBar,
+    NormalButtonUnfilled,
+    MerchantNavigationBar,
+    OrderStatusIcon,
   },
   data: function () {
     return {
-      backToOrder: "Back",
-      cart: [],
+      viewdetails: "View Details",
+      chat: "Chat with Customer",
+      back: "Back",
       merchant: {},
+      merchantid: "",
       orderid: "",
       datetime: "",
       totalPrice: 0,
       customerid: "",
+      orderstatus: "",
     };
   },
   mounted: async function () {
@@ -90,7 +100,6 @@ export default {
     loadOrder: async function () {
       let allDocuments = await getDocs(collection(db, "orders"));
       const orderid = this.$route.params.id;
-      console.log(orderid); // Output: 123
       let values = allDocuments.docs
         .map((v) => {
           const data = v.data();
@@ -101,29 +110,35 @@ export default {
         })
         .find((v) => v.orderid === orderid);
       this.merchant = values.merchantData;
+      this.merchantid = this.merchant.uid;
       this.cart = values.cart;
       this.orderid = values.orderid;
       this.datetime = values.datetime;
       this.customerid = values.customerId;
-      (this.datetime = this.datetime
+      this.orderstatus = values.status;
+      this.datetime = this.datetime
         .toDate()
         .toLocaleString("en-SG", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
         })
-        .replace(",", " ")),
-        console.log(this.datetime);
-      for (let i = 0; i < this.cart.length; i++) {
-        const currentProductPrice = this.cart[i].price;
-        this.totalPrice += currentProductPrice;
-      }
+        .replace(",", " ");
     },
-    goBackOrders(orderid) {
-      this.$router.push(`/customerorderstatus/${orderid}`);
+    viewDetail(orderid) {
+      this.$router.push(`/merchantorder/${orderid}`);
+    },
+    goToChat(orderId) {
+      this.$router.push({ name: "OrderChat", params: { orderId: orderId } });
+    },
+    goBack(merchantid) {
+      this.$router.push(`/merchantorders/${merchantid}`);
+    },
+    async updateStatus(newStatus) {
+      this.orderstatus = newStatus;
+      const orderRef = doc(collection(db, "orders"), this.orderid);
+      await updateDoc(orderRef, { status: newStatus });
+      console.log("Order status updated!");
     },
   },
 };
@@ -153,7 +168,6 @@ h3 {
   font-size: 20px;
   margin-right: 170px;
 }
-
 h4 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 700;
@@ -208,9 +222,8 @@ p {
   align-items: right;
 }
 img {
-  align-items: left;
-  width: 200px;
-  height: 120px;
+  width: 280px;
+  height: 180px;
 }
 .bottom-container {
   display: flex;
