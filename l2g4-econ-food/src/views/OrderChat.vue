@@ -1,7 +1,7 @@
 <template>
   <CustomerNavigationBar v-show="!isMerchant" />
   <MerchantNavigationBar v-show="isMerchant" />
-  <div class="order-chat-container">
+  <div class="order-chat-container" ref="chatContainer">
     <div class="order-chat-topbar">
       <button class="order-chat-back-btn" @click="goBack">Back</button>
       <h1 class="order-chat-heading">Order ID: <span class="black-text">{{ orderId }} </span> </h1>
@@ -67,6 +67,7 @@ export default {
       isMerchant: false,
       orderData: {},
       customerData: null,
+      isPageVisible: true,
     };
   },
   components: {
@@ -82,15 +83,33 @@ export default {
         this.getOrderData();
       }
     });
+    const observer = new IntersectionObserver(this.handleIntersection, {
+      rootMargin: '0px',
+      threshold: 1.0
+    });
+    observer.observe(this.$refs.chatContainer);
     this.$nextTick(() => {
       const container = this.$refs.messagesContainer;
       container.scrollTop = container.scrollHeight;
     });
+    setInterval(() => {
+      this.getMessages();
+    }, 1000);
   },
   methods: {
+    handleVisibilityChange() {
+      this.isPageVisible = !document.hidden;
+    },
+    handleIntersection(entries) {
+    const isVisible = entries[0].isIntersecting;
+      this.isPageVisible = isVisible;
+      if (isVisible) {
+        this.getMessages();
+      }
+    },
     onFileSelected(event) {
-    const file = event.target.files[0];
-    this.uploadImage(file);
+      const file = event.target.files[0];
+      this.uploadImage(file);
     },
     async uploadImage(file) {
       try {
@@ -128,6 +147,10 @@ export default {
       return `${day}/${month}/${year} ${hours}:${minutes}`;
     },
     async getMessages() {
+      if (!this.isPageVisible) {
+        return;
+      }
+      console.log("getting messages")
       const q = query(collection(db, "messages"), where("orderId", "==", this.orderId), orderBy("timestamp"));
       const querySnapshot = await getDocs(q);
       const messages = querySnapshot.docs.map((doc) => {
@@ -411,8 +434,8 @@ font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border: none;
   border-radius: 50%;
   background-color: #16703c;
