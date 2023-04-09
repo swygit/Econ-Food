@@ -86,6 +86,9 @@ export default {
       const container = this.$refs.messagesContainer;
       container.scrollTop = container.scrollHeight;
     });
+    setInterval(() => {
+    this.getMessages();
+  }, 1000);
   },
   methods: {
     onFileSelected(event) {
@@ -128,6 +131,7 @@ export default {
       return `${day}/${month}/${year} ${hours}:${minutes}`;
     },
     async getMessages() {
+      console.log("getting messages")
       const q = query(collection(db, "messages"), where("orderId", "==", this.orderId), orderBy("timestamp"));
       const querySnapshot = await getDocs(q);
       const messages = querySnapshot.docs.map((doc) => {
