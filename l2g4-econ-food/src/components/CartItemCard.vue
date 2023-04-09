@@ -1,3 +1,4 @@
+<!-- unused as currently we only allow cart of one merchant, see Cart.vue -->
 <template>
   <div class="listing">
     <div class="listing-item">

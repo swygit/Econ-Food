@@ -3,19 +3,19 @@
     
     <CustomerNavigationBar />
     <div class="app-wrapper">
-      <CustomerNavigationBar />
-      <h1>Cart</h1>
+
+      <h1 class="mb-8">Cart</h1>
       <div class="listing" v-if="this.cart.merchantId">
         <div class="listing-item">
           <div class="top-container">
             <div class="top-image-container">
               <img :src="this.cart.merchantimageUrl" alt="" />
             </div>
-            &emsp;&emsp;&emsp;&emsp;
-            <div>
+            <br/>
+            <div class="ms-6">
               <h2>{{ this.cart.merchantName }}</h2>
               <div class="text" v-for="item in cartItems" :key="item.productId">
-                <h3>{{ item.name }} -x{{ item.quantity }}</h3>
+                <h3>{{ item.name }} x{{ item.quantity }}</h3>
               </div>
               <h3>Total: ${{ totalPrice }}</h3>
             </div>
@@ -25,7 +25,7 @@
               @click="viewItem"
               :buttonName="viewButtonName"
             ></NormalButtonUnfilled>
-            <div>&emsp;&emsp;&emsp;&emsp;</div>
+            <br/>
             <NormalButton
               @click="checkoutItem"
               :buttonName="checkoutButtonName"
@@ -246,7 +246,6 @@ export default {
 :root {
   font-size: 8px;
 }
-
 body {
   background-color: #f5f5ef;
 }
@@ -291,10 +290,10 @@ h3 {
 }
 .top-image-container {
   display: flex;
-  /* flex-grow: 1; */
   justify-content: left;
   align-items: center;
   border-radius: 28px;
+  margin-left: 20px;
 }
 img {
   width: 230px;
@@ -307,7 +306,6 @@ img {
   background-color: #ffffff;
   border-radius: 28px;
 }
-
 .listing-item {
   display: flex;
   justify-content: space-between;
@@ -339,13 +337,6 @@ h3 {
   flex-direction: row;
   align-items: center;
 }
-.top-image-container {
-  display: flex;
-  /* flex-grow: 1; */
-  justify-content: left;
-  align-items: center;
-  border-radius: 28px;
-}
 img {
   width: 230px;
   height: 180px;
@@ -367,5 +358,6 @@ img {
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
+  margin-right: 20px;
 }
 </style>
