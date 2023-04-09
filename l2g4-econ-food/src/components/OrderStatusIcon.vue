@@ -1,12 +1,19 @@
 <template>
   <div>
     <svg width="300" height="100">
-      <circle cx="50" cy="50" r="20" :class="{ active: true }" />
+      <circle
+        @click="$emit('update:status', 'Received')"
+        cx="50"
+        cy="50"
+        r="20"
+        :class="{ active: true }"
+      />
       <text x="50" y="50" text-anchor="middle" dy="40" font-size="14px">
         Received
       </text>
 
       <circle
+        @click="$emit('update:status', 'Prepared')"
         cx="150"
         cy="50"
         r="20"
@@ -17,6 +24,7 @@
       </text>
 
       <circle
+        @click="$emit('update:status', 'Collected')"
         cx="250"
         cy="50"
         r="20"
@@ -60,6 +68,15 @@ export default {
   props: {
     status: String,
   },
+  methods: {
+    toggleCircle(circleStatus) {
+      if (this.status === circleStatus) {
+        this.status = "";
+      } else {
+        this.status = circleStatus;
+      }
+    },
+  },
 };
 </script>
 
@@ -71,5 +88,6 @@ circle:not(.active) {
   stroke: green;
   stroke-width: 4;
   fill: none;
+  cursor: pointer;
 }
 </style>

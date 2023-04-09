@@ -1,19 +1,19 @@
 <template>
   <div class="app">
+    <CustomerNavigationBar />
     <div class="app-wrapper">
-      <CustomerNavigationBar />
-      <h1>Cart</h1>
+      <h1 class="mb-8">Cart</h1>
       <div class="listing" v-if="this.cart.merchantId">
         <div class="listing-item" v-if="this.cartItems.length != 0">
           <div class="top-container">
             <div class="top-image-container">
               <img :src="this.cart.merchantimageUrl" alt="" />
             </div>
-            &emsp;&emsp;&emsp;&emsp;
-            <div>
+            <br />
+            <div class="ms-6">
               <h2>{{ this.cart.merchantName }}</h2>
               <div class="text" v-for="item in cartItems" :key="item.productId">
-                <h3>{{ item.name }} -x{{ item.quantity }}</h3>
+                <h3>{{ item.name }} x{{ item.quantity }}</h3>
               </div>
               <h3>Subtotal: ${{ totalPrice }}</h3>
             </div>
@@ -23,7 +23,7 @@
               @click="viewItem"
               :buttonName="viewButtonName"
             ></NormalButtonUnfilled>
-            <div>&emsp;&emsp;&emsp;&emsp;</div>
+            <br />
             <NormalButton
               @click="checkoutItem"
               :buttonName="checkoutButtonName"
@@ -46,15 +46,14 @@ import {
   query,
   where,
   updateDoc,
+  addDoc,
 } from "firebase/firestore";
 import router from "../router";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 import NormalButton from "@/components/NormalButton.vue";
 import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
-
 const db = getFirestore(firebaseApp);
-
 export default {
   name: "Cart",
   data() {
@@ -70,6 +69,8 @@ export default {
       checkoutButtonName: "Checkout",
       cart: {},
       totalPrice: 0,
+      merchant: {},
+      orderid: "",
     };
   },
   mounted() {
@@ -80,6 +81,7 @@ export default {
       }
     });
     this.loadUserCart();
+    this.loadMerchant();
   },
   components: {
     CustomerNavigationBar,
@@ -87,6 +89,19 @@ export default {
     NormalButtonUnfilled,
   },
   methods: {
+    loadMerchant: async function (id) {
+      let allDocuments = await getDocs(collection(db, "merchants"));
+      let values = allDocuments.docs
+        .map((v) => {
+          const data = v.data();
+          return {
+            ...data,
+            id: data.uid,
+          };
+        })
+        .find((v) => v.id === id);
+      this.merchant = values;
+    },
     loadUserCart: async function () {
       let allDocuments = await getDocs(collection(db, "carts"));
       let values = allDocuments.docs
@@ -100,6 +115,7 @@ export default {
         .find((v) => v.uid === this.user.uid);
       this.cart = values;
       this.cartItems = this.cart.products;
+      this.loadMerchant(this.cart.merchantId);
 
       for (let i = 0; i < this.cart.products.length; i++) {
         // sum up the total price of the items in cart to display
@@ -136,6 +152,7 @@ export default {
         this.cartId = doc.id;
       });
       // obtain the Firebase id of all the listings from cart doc
+      //console.log(cartDocRef.data().products);
       for (let i = 0; i < cartDocRef.data().products.length; i++) {
         this.listingIds.push(cartDocRef.data().products[i].productId);
         this.quantities.push(cartDocRef.data().products[i].quantity);
@@ -170,7 +187,34 @@ export default {
           });
         }
         // create the order containing all the listings/products in the cart
-
+        const ordersData = {
+          merchantData: this.merchant,
+          cart: this.cartItems,
+          price: this.totalPrice,
+          customerId: this.user.uid,
+          merchantID: this.merchant.id,
+          merchant: this.merchant.name,
+          datetime: new Date(),
+          status: "Received",
+        };
+        const ordersRef = collection(db, "orders");
+        addDoc(ordersRef, ordersData)
+          .then((docRef) => {
+            // Update the newly added document with an orderid field
+            const orderid = docRef.id;
+            this.orderid = orderid;
+            const updateData = { orderid: orderid };
+            updateDoc(doc(ordersRef, orderid), updateData)
+              .then(() => {
+                console.log("Document updated with orderid:", orderid);
+              })
+              .catch((error) => {
+                console.error("Error updating document:", error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error adding document:", error);
+          });
         // clear cart in view and Firebase
         const cartDoc = await doc(db, "carts", this.cartId);
         await updateDoc(cartDoc, {
@@ -183,7 +227,7 @@ export default {
         this.cartItems = [];
         this.totalPrice = 0;
         // show order summary page with successful checkout
-        router.push("/ordersummary");
+        this.$router.push(`/customerorderstatus/${this.orderid}`);
         // if balance is insufficient, redirect to wallet page for topup
       } else {
         alert("Insufficient funds. Top up your wallet.");
@@ -195,17 +239,18 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+
 :root {
   font-size: 8px;
 }
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
 body {
   background-color: #f5f5ef;
 }
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-size: 4rem;
-  font-weight: 500;
+  font-weight: bold;
   text-align: left;
   letter-spacing: 2%;
   line-height: 30px;
@@ -216,8 +261,10 @@ h1 {
   width: 100%;
   /* max-width: 1048px; */
 }
-.app-warpper {
-  margin: auto;
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
 }
 h2 {
   font-family: "Nunito Sans", sans-serif;
@@ -241,10 +288,10 @@ h3 {
 }
 .top-image-container {
   display: flex;
-  /* flex-grow: 1; */
   justify-content: left;
   align-items: center;
   border-radius: 28px;
+  margin-left: 20px;
 }
 img {
   width: 230px;
@@ -257,17 +304,58 @@ img {
   background-color: #ffffff;
   border-radius: 28px;
 }
-
 .listing-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 10px;
 }
-
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
+}
+h2 {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+  letter-spacing: 2%;
+  line-height: 24px;
+  font-size: 18px;
+  font-weight: 700;
+}
+h3 {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+  letter-spacing: 2%;
+  line-height: 24px;
+  font-size: 15px;
+}
+.top-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+img {
+  width: 230px;
+  height: 180px;
+  border-radius: 28px;
+}
+.listing {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 28px;
+}
+.listing-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
+}
 .buttons {
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
+  margin-right: 20px;
 }
 </style>

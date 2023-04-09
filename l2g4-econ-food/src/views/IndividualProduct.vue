@@ -131,6 +131,7 @@ export default {
       // (-1 means not found)
 
       if (this.merchant.uid !== this.cart.merchantId) {
+        alert("Adding item from another merchant will override current one!");
         this.cart.products = [];
       }
       let indexProduct = -1;
@@ -143,7 +144,9 @@ export default {
         }
       }
 
-      if (this.item.quantity < this.counterValue) {
+      if (this.counterValue == 0) {
+        alert("Must add minimum of one item!");
+      } else if (this.item.quantity < this.counterValue) {
         alert("Add item count exceeds item quantity!");
         this.$router.push(`/individualproduct/${this.item.id}`);
       } else if (this.cartItemCount + this.counterValue > this.item.quantity) {

@@ -45,7 +45,7 @@
               placeholder="Listing Description"
               v-model="description"
             ></textarea>
-            <button type="submit" id="addListing">Add Listing</button>
+            <button type="submit" id="addListing" @click=addListing()>Add Listing</button>
           </form>
         </div>
       </div>
@@ -101,6 +101,11 @@ export default {
   },
   methods: {
     async addListing() {
+      if (!this.name || !this.price || !this.quantity || !this.bestByDate) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
       try {
         const listingsCollectionRef = collection(db, "listings");
         // add listing into Firebase collection

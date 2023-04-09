@@ -3,7 +3,7 @@
     <div class="row">
       <div class="topleft">
         <a href="/">
-          <img src="../assets/logo1.png" class="logo" alt="Logo" />
+          <img src="../assets/logoblack.png" class="logo" alt="Logo" />
         </a>
       </div>
 
@@ -79,15 +79,7 @@ export default {
   left: 0px;
   background-color: #f5f5ef;
 }
-/* .container::before { # what is this for?
-    content: "";
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    background-color: #f5f5ef;
-} */
+
 .center {
   /* position: absolute; */
   /* top: 50%;

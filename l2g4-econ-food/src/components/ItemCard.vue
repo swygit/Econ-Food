@@ -32,7 +32,7 @@ export default {
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-size: 4rem;
-  font-weight: 500;
+  font-weight: bold;
   text-align: left;
   letter-spacing: 2%;
   line-height: 30px;

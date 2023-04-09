@@ -1,21 +1,23 @@
 <template>
   <div class="background">
-    <CustomerNavigationBar></CustomerNavigationBar>
-    <h1 class="title">Orders</h1>
-    <div v-for="(entries, date) in orders" :key="date">
-      <h2 class="date">{{ date }}</h2>
-      <div class="orders">
-        <OrdersList
-          v-for="order in entries"
-          :key="order.id"
-          :id="order.id"
-          :orderid="order.orderid"
-          :merchantid="order.merchantID"
-          :merchant="order.merchant"
-          :datetime="order.datetime"
-          :price="order.price"
-          :status="order.status"
-        />
+    <CustomerNavigationBar/>
+    <div class="app-wrapper">
+    <h1 class="mb-8">Orders</h1>
+      <div v-for="(entries, date) in orders" :key="date">
+        <h2 class="date mt-8 mb-3">{{ date }}</h2>
+        <div class="orders">
+          <OrdersList
+            v-for="order in entries"
+            :key="order.id"
+            :id="order.id"
+            :orderid="order.orderid"
+            :merchantid="order.merchantID"
+            :merchant="order.merchant"
+            :datetime="order.datetime"
+            :price="order.price"
+            :status="order.status"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -118,19 +120,29 @@ export default {
   },
 };
 </script>
-<style scoped>
-@import url("https://fonts.googleapis.com/css?family=Nunito Sans");
-.title {
-  font-size: 50px;
-  font-family: "Nunito Sans", sans-serif;
-  margin-bottom: 20px;
-}
 
+<style scoped>
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+
+body {
+  background-color: #f5f5ef;
+}
+h1 {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: left;
+  letter-spacing: 2%;
+  line-height: 30px;
+  color: #000000;
+}
 .date {
+  font-family: "Nunito Sans", sans-serif;
   font-size: 20px;
 }
-.background {
-  background-size: cover;
-  background-color: #f5f5ef;
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
 }
 </style>
