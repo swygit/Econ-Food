@@ -60,7 +60,7 @@ export default {
 
 .image {
   height: 50px;
-  padding-left: 20px;
+  padding-left: 25px;
 }
 
 .nav {
@@ -94,7 +94,7 @@ export default {
   text-align: center;
   padding: 20px 30px 20px 30px;
   text-decoration: none;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 /* Add a color to the active/current link */

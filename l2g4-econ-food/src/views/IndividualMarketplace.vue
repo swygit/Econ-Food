@@ -113,7 +113,6 @@ export default {
 :root {
   font-size: 8px;
 }
-
 body {
   background-color: #f5f5ef;
 }
@@ -130,7 +129,6 @@ h1 {
   margin: auto;
   width: 100%;
 }
-
 .app-wrapper {
   margin-top: 40px;
   margin-left: 120px;
