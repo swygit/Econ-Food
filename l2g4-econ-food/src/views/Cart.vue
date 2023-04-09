@@ -1,23 +1,21 @@
 <template>
   <div class="app">
-    
     <CustomerNavigationBar />
     <div class="app-wrapper">
-
       <h1 class="mb-8">Cart</h1>
       <div class="listing" v-if="this.cart.merchantId">
-        <div class="listing-item">
+        <div class="listing-item" v-if="this.cartItems.length != 0">
           <div class="top-container">
             <div class="top-image-container">
               <img :src="this.cart.merchantimageUrl" alt="" />
             </div>
-            <br/>
+            <br />
             <div class="ms-6">
               <h2>{{ this.cart.merchantName }}</h2>
               <div class="text" v-for="item in cartItems" :key="item.productId">
                 <h3>{{ item.name }} x{{ item.quantity }}</h3>
               </div>
-              <h3>Total: ${{ totalPrice }}</h3>
+              <h3>Subtotal: ${{ totalPrice }}</h3>
             </div>
           </div>
           <div class="buttons">
@@ -25,7 +23,7 @@
               @click="viewItem"
               :buttonName="viewButtonName"
             ></NormalButtonUnfilled>
-            <br/>
+            <br />
             <NormalButton
               @click="checkoutItem"
               :buttonName="checkoutButtonName"

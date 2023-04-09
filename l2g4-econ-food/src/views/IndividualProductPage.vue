@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-      <CustomerNavigationBar />
-      <div class="app-wrapper">
+    <CustomerNavigationBar />
+    <div class="app-wrapper">
       <IndividualProduct />
     </div>
   </div>

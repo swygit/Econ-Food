@@ -19,7 +19,7 @@
           @click="viewItem"
           :buttonName="viewButtonName"
         ></NormalButtonUnfilled>
-        <br/>
+        <br />
         <NormalButton
           @click="checkoutItem"
           :buttonName="checkoutButtonName"

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-      <CustomerNavigationBar />
-      <div class="app-wrapper">
+    <CustomerNavigationBar />
+    <div class="app-wrapper">
       <h1>{{ this.merchant.name }}</h1>
 
       <!-- Search bar -->

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container">
     <div class="top-container">
       <div class="top-image-container">
@@ -145,4 +145,4 @@ img {
 .text {
   font-size: 70px;
 }
-</style>
+</style> -->

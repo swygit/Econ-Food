@@ -2,7 +2,7 @@
   <div class="app">
     <div class="app-wrapper">
       <CustomerNavigationBar />
-      <div class="container">
+      <div class="container" v-if="this.cartItems.length != 0">
         <div class="top-container">
           <div class="top-image-container">
             <img :src="this.merchant.imageUrl" alt="" />

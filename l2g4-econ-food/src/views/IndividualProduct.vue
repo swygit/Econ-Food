@@ -78,6 +78,7 @@ export default {
       counterValue: 0,
       merchant: {},
       cart: {},
+      cartItemCount: 0,
     };
   },
   mounted: async function () {
@@ -130,6 +131,7 @@ export default {
       // (-1 means not found)
 
       if (this.merchant.uid !== this.cart.merchantId) {
+        alert("Adding item from another merchant will override current one!");
         this.cart.products = [];
       }
       let indexProduct = -1;
@@ -142,7 +144,12 @@ export default {
         }
       }
 
-      if (this.item.quantity < this.counterValue) {
+      if (this.counterValue == 0) {
+        alert("Must add minimum of one item!");
+      } else if (this.item.quantity < this.counterValue) {
+        alert("Add item count exceeds item quantity!");
+        this.$router.push(`/individualproduct/${this.item.id}`);
+      } else if (this.cartItemCount + this.counterValue > this.item.quantity) {
         alert("Add item count exceeds item quantity!");
         this.$router.push(`/individualproduct/${this.item.id}`);
       } else if (indexProduct === -1) {
@@ -196,6 +203,13 @@ export default {
         })
         .find((v) => v.uid === this.user.uid);
       this.cart = values;
+
+      for (let i = 0; i < this.cart.products.length; i++) {
+        const currentProduct = this.cart.products[i];
+        if (currentProduct.productId === this.item.id) {
+          this.cartItemCount = currentProduct.quantity;
+        }
+      }
     },
   },
   computed: {
