@@ -1,5 +1,7 @@
 <template>
   <div class="app">
+    
+    <CustomerNavigationBar />
     <div class="app-wrapper">
       <CustomerNavigationBar />
       <h1>Cart</h1>
@@ -239,17 +241,19 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+
 :root {
   font-size: 8px;
 }
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
+
 body {
   background-color: #f5f5ef;
 }
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-size: 4rem;
-  font-weight: 500;
+  font-weight: bold;
   text-align: left;
   letter-spacing: 2%;
   line-height: 30px;
@@ -260,8 +264,60 @@ h1 {
   width: 100%;
   /* max-width: 1048px; */
 }
-.app-warpper {
-  margin: auto;
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
+}
+h2 {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+  letter-spacing: 2%;
+  line-height: 24px;
+  font-size: 18px;
+  font-weight: 700;
+}
+h3 {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+  letter-spacing: 2%;
+  line-height: 24px;
+  font-size: 15px;
+}
+.top-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.top-image-container {
+  display: flex;
+  /* flex-grow: 1; */
+  justify-content: left;
+  align-items: center;
+  border-radius: 28px;
+}
+img {
+  width: 230px;
+  height: 180px;
+  border-radius: 28px;
+}
+.listing {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 28px;
+}
+
+.listing-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
+}
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
 }
 h2 {
   font-family: "Nunito Sans", sans-serif;
