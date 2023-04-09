@@ -45,7 +45,7 @@ import {
   increment,
   query,
   where,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 import router from "../router";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
@@ -74,13 +74,13 @@ export default {
   },
   mounted() {
     const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-        if (user) {
-            this.user = user;
-        }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
     });
     this.loadUserCart();
-  },  
+  },
   components: {
     CustomerNavigationBar,
     NormalButton,
@@ -100,7 +100,7 @@ export default {
         .find((v) => v.uid === this.user.uid);
       this.cart = values;
       this.cartItems = this.cart.products;
-      
+
       for (let i = 0; i < this.cart.products.length; i++) {
         // sum up the total price of the items in cart to display
         const currentProductPrice = this.cart.products[i].price;
@@ -121,8 +121,8 @@ export default {
       const customerDocsRef = await getDocs(customerDocQuery);
       let customerDocRef;
       customerDocsRef.forEach((doc) => {
-          customerDocRef = doc;
-          this.userId = doc.id;
+        customerDocRef = doc;
+        this.userId = doc.id;
       });
       // to update the merchant balance, first obtain the cart doc
       const cartDocQuery = query(
@@ -133,12 +133,12 @@ export default {
       let cartDocRef;
       cartDocsRef.forEach((doc) => {
         cartDocRef = doc;
-        this.cartId = doc.id
-      })
+        this.cartId = doc.id;
+      });
       // obtain the Firebase id of all the listings from cart doc
       for (let i = 0; i < cartDocRef.data().products.length; i++) {
-        this.listingIds.push(cartDocRef.data().products[i].productId)
-        this.quantities.push(cartDocRef.data().products[i].quantity)
+        this.listingIds.push(cartDocRef.data().products[i].productId);
+        this.quantities.push(cartDocRef.data().products[i].quantity);
       }
       // to update merchant balance, now obtain the merchant doc from the cart doc
       const merchantDocQuery = query(
@@ -149,25 +149,25 @@ export default {
       let merchantDocRef;
       merchantDocsRef.forEach((doc) => {
         merchantDocRef = doc;
-        this.merchantId = doc.id
-      })
+        this.merchantId = doc.id;
+      });
       // if balance is sufficient, successful checkout, and update user's balance in Firebase
       if (customerDocRef.data().balance > this.totalPrice) {
         const customerDoc = await doc(db, "customers", this.userId);
         await updateDoc(customerDoc, {
-          balance: customerDocRef.data().balance - this.totalPrice
-        })
+          balance: customerDocRef.data().balance - this.totalPrice,
+        });
         // update merchant's balance in Firebase
         const merchantDoc = await doc(db, "merchants", this.merchantId);
         await updateDoc(merchantDoc, {
-          balance: merchantDocRef.data().balance + this.totalPrice
-        })
+          balance: merchantDocRef.data().balance + this.totalPrice,
+        });
         // update merchant's quantity of listing
         for (let i = 0; i < this.listingIds.length; i++) {
           const listingDoc = await doc(db, "listings", this.listingIds[i]);
           await updateDoc(listingDoc, {
-            quantity: increment(-this.quantities[i])
-          })
+            quantity: increment(-this.quantities[i]),
+          });
         }
         // create the order containing all the listings/products in the cart
 
@@ -177,21 +177,21 @@ export default {
           merchantId: "",
           merchantName: "",
           merchantimageUrl: "",
-          products: []
-        })
-        this.cart = {}
-        this.cartItems = []
-        this.totalPrice = 0
+          products: [],
+        });
+        this.cart = {};
+        this.cartItems = [];
+        this.totalPrice = 0;
         // show order summary page with successful checkout
-        router.push('/ordersummary')
-      // if balance is insufficient, redirect to wallet page for topup 
+        router.push("/ordersummary");
+        // if balance is insufficient, redirect to wallet page for topup
       } else {
-        alert('Insufficient funds. Top up your wallet.')
-        router.push('/wallet')
+        alert("Insufficient funds. Top up your wallet.");
+        router.push("/wallet");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
