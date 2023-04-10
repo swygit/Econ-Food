@@ -27,6 +27,7 @@ import MerchantProfile from "../views/MerchantProfile.vue";
 import MerchantOrders from "../views/MerchantOrders.vue";
 import MerchantOrderStatus from "../views/MerchantOrderStatus.vue";
 import MerchantOrderSummary from "../views/MerchantOrderSummary.vue";
+import Analytics from "../views/Analytics.vue"
 
 const routes = [
   {
@@ -171,6 +172,11 @@ const routes = [
     component: OrderChat,
     props: true,
   },
+  {
+    path: "/analytics",
+    name: "Analytics",
+    component: Analytics
+  }
 ];
 
 const router = createRouter({

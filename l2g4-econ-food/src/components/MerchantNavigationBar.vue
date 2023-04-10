@@ -3,7 +3,7 @@
     <ul>
       <img class="image" src="@/images/logo.png" />
       <li><a @click="profileClickRouter">Profile</a></li>
-      <li><a href="#">Analytics</a></li>
+      <li><a @click="analyticsClickRouter">Analytics</a></li>
       <li><a @click="listingsClickRouter">Listings</a></li>
       <li><a @click="ordersClickRouter">Orders</a></li>
       <li><a @click="dashboardClickRouter">Dashboard</a></li>
@@ -44,6 +44,9 @@ export default {
     ordersClickRouter: function () {
       this.$router.push(`/merchantorders/${this.user.uid}`);
     },
+    analyticsClickRouter: function () {
+      this.$router.push('/analytics');
+    }
   },
 };
 </script>
