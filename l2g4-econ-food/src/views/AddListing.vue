@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     async addListing() {
-      if (!this.name || !this.price || !this.quantity || !this.bestByDate) {
+      if (!this.name || !this.price || !this.quantity || !this.bestByDate || !this.imageUrl) {
         alert('Please fill in all required fields.');
         return;
       }

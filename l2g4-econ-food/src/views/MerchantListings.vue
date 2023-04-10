@@ -41,6 +41,11 @@ import firebaseApp from "../firebase.js";
 
 const db = getFirestore(firebaseApp);
 
+setInterval(function() {
+    console.log("reloading")
+    location.reload();
+  }, 60000);
+
 export default {
   name: "MerchantListings",
   components: {
