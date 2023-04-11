@@ -8,7 +8,7 @@
             :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
             class="merchant-image"
           />
-          <br />
+          <!-- <br /> -->
           <input class="mt-3" type="file" @change="onUpload" accept=".jpg,.png" />
         </div>
         <div class="profileDiv">
@@ -29,9 +29,10 @@
             <input type="tel" placeholder="Phone Number" v-model="phoneNumber" />
             <input type="text" placeholder="Bank Number" v-model="bankNumber" />
             <button type="submit" id="save">Save</button>
+            <button @click="" id="changePassword">Change Password</button>
+            <button @click="signOut" id="signOut">Sign Out</button>
           </form>
-          <button @click="" id="changePassword">Change Password</button>
-          <button @click="signOut" id="signOut">Sign Out</button>
+
         </div>
       </div>
     </div>
@@ -160,6 +161,8 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
+  width: 100%;
 }
 .formDiv {
   display: flex;
@@ -167,10 +170,11 @@ export default {
   align-items: flex-start;
 }
 .imageDiv {
-  margin-top: 20px;
+  margin-right: 20px;
+  flex-basis: 50%;
 }
 .profileDiv {
-  margin-left: 20px;
+  flex-basis: 40%;
 }
 .CustomerNavigationBar {
   position: absolute;
@@ -182,6 +186,10 @@ export default {
   width: 400px;
   height: 400px;
   border: 2px solid #000;
+}
+form {
+  display: flex;
+  flex-direction: column;
 }
 input[type="file"] {
   font-family: "Nunito Sans";
@@ -201,7 +209,7 @@ input[type="text"],
 input[type="tel"],
 input[type="password"] {
   display: block;
-  width: 220px;
+  /* width: 220px; */
   margin-bottom: 10px;
   padding: 10px;
   border: none;
@@ -213,7 +221,8 @@ input[type="password"] {
 #save,
 #changePassword {
   display: block;
-  width: 220px;
+  /* width: 220px; */
+  margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;
   border: none;
@@ -227,7 +236,7 @@ input[type="password"] {
 }
 #signOut {
   display: block;
-  width: 220px;
+  /* width: 220px; */
   margin-bottom: 10px;
   padding: 10px;
   border: 2px solid #16703c;

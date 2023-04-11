@@ -30,7 +30,9 @@
         <button type="submit" class="order-chat-send-btn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
-        <input type="file" ref="fileInput" accept="image/*" @change="onFileSelected">
+        <label class="picture-upload-btn">
+          <input type="file" ref="fileInput" accept="image/*" @change="onFileSelected"/> Upload Image
+        </label>
       </div>
     </form>
 
@@ -231,6 +233,17 @@ export default {
 </script>
 
 <style scoped>
+input[type="file"] {
+    display: none;
+}
+.picture-upload-btn {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 2px 10px 2px 0px;
+    font-size: 1.625rem;
+    cursor: pointer;
+}
 body {
   overflow-x: hidden;
 }
@@ -245,11 +258,13 @@ body {
 }
 
 .order-chat-heading {
-  font-size: 2.5rem;
-  margin: 30px 0;
-  text-align: center;
-  text-shadow: 1px 1px #fff;
-  color: #16703c;
+font-size: 2.5rem;
+margin: 0;
+text-align: center;
+text-shadow: 1px 1px #fff;
+color: #16703c;
+position: fixed;
+left: 39%;
 }
 
 .order-chat-messages {
@@ -321,15 +336,15 @@ body {
   background-color: #fff;
 }
 
-.order-chat-back-btn{
+.order-chat-back-btn {
 background-color: #16703c;
 color: #fff;
 border: none;
 border-radius: 5px;
-padding: 10px;
-font-size: 1rem;
+padding: 10px 20px 10px 20px;
+font-size: 2rem;
 font-weight: bold;
-margin-right: 10px;
+margin-left: 5px;
 font-family: "Nunito Sans", sans-serif;
 }
 
@@ -434,8 +449,8 @@ font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: none;
   border-radius: 50%;
   background-color: #16703c;

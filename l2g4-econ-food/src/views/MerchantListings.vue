@@ -121,7 +121,7 @@ export default {
   justify-content: flex-start;
   align-items: center;
   overflow-x: auto;
-  margin: 0 16px;
+  margin: 0 60px;
   width: 100%;
 }
 
@@ -135,7 +135,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 32px 50px;
+  margin: 10px 50px 0px 50px;
 }
 
 h1 {

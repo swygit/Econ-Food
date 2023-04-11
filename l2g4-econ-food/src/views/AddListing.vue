@@ -186,7 +186,7 @@ export default {
 }
 
 .inputDiv {
-  flex-basis: 50%;
+  flex-basis: 40%;
 }
 
 textarea {

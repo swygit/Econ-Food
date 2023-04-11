@@ -30,8 +30,8 @@
         </div>
       </div>
       <div class="listing-buttons">
-        <button class="delete-button" @click="deleteListing">Delete</button>
-        <button class="save-button" @click="updateQuantity">Save</button>
+        <button class="delete-button mt-2 me-2" @click="deleteListing">Delete</button>
+        <button class="save-button mt-2 ms-2" @click="updateQuantity">Save</button>
       </div>
     </div>
   </div>
@@ -147,12 +147,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f5f5ef;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
   max-width: 400px;
-  margin: 16px;
+  margin: 0px;
 }
 
 .listing-image-container {
@@ -172,6 +172,7 @@ export default {
 }
 
 .listing-info {
+  font-family: "Nunito Sans", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -188,7 +189,8 @@ export default {
 }
 
 .listing-name {
-  font-size: 24px;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 26px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 8px;
@@ -199,6 +201,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-top: 8px;
+  font-size: 2rem;
 }
 
 .quantity-button {
@@ -227,6 +230,7 @@ export default {
 }
 
 .listing-details {
+  font-family: "Nunito Sans", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -262,10 +266,11 @@ export default {
   background-color: #16703c;
   border: none;
   color: #fff;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 20px;
   font-weight: bold;
   width: 100%;
-  height: 48px;
+  padding: 10px 20px 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -282,10 +287,11 @@ export default {
   background-color: #ff1f01;
   border: none;
   color: #fff;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 20px;
   font-weight: bold;
   width: 100%;
-  height: 48px;
+  padding: 10px 20px 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;

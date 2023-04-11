@@ -30,7 +30,7 @@ h2 {
   font-family: 'Nunito Sans';
   color: black;
   margin-bottom: 5px;
-  font-size: 23px;
+  font-size: 3.1rem;
   font-weight: bold;
 }
 
@@ -39,7 +39,7 @@ p {
   font-family: 'Nunito Sans';
   color: black;
   margin-bottom: 30px;
-  font-size: 15px;
+  font-size: 2.1rem;
 }
 
 .icon {
