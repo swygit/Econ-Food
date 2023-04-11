@@ -14,6 +14,7 @@
 import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
 import {
+  arrayUnion,
   collection,
   doc,
   getDocs,
@@ -63,9 +64,13 @@ export default {
                 customerDocRef = doc;
                 this.userId = doc.id;
             });
+            const currentDate = new Date();
+            const updateTopUpHistory = {};
+            updateTopUpHistory[currentDate] = this.amount
             const customerDoc = await doc(db, "customers", this.userId);
             await updateDoc(customerDoc, {
-                balance: customerDocRef.data().balance + this.amount
+                balance: customerDocRef.data().balance + this.amount,
+                topUpHistory: arrayUnion(updateTopUpHistory)
             })
         },
         toMarketplace() {

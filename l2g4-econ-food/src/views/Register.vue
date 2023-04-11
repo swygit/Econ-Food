@@ -93,7 +93,6 @@ export default {
             this.email,
             this.password
           );
-          console.log("result", result);
           // set up the customer data
           if (this.isCustomer) {
             const customerData = {
@@ -102,6 +101,7 @@ export default {
               phoneNumber: "",
               uid: result.user.uid,
               balance: 0,
+              topUpHistory: [],
               updatedProfile: false
             };
             const customerCart = {

@@ -210,6 +210,7 @@ export default {
             phoneNumber: "",
             uid: result.user.uid,
             balance: 0,
+            topUpHistory: [],
             updatedProfile: false
           };
           const customerCart = {

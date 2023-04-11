@@ -24,6 +24,11 @@
                     :buttonName="amount100"
                 ></NormalButton>
             </div>
+            <h2>Transaction History</h2>
+            <div class="topUpHistory" v-for="topUp in topUpHistory.reverse()">
+                ${{ Object.values(topUp)[0] }} <br>
+                {{ Object.keys(topUp)[0] }}
+            </div>
         </div>
     </div>
 </template>
@@ -50,6 +55,7 @@ export default {
             user: false,
             balance: null,
             userId: "",
+            topUpHistory: null,
             amount10: "$10",
             amount20: "$20",
             amount50: "$50",
@@ -103,6 +109,7 @@ export default {
                 this.userId = doc.id;
             });
             this.balance = customerDocRef.data().balance
+            this.topUpHistory = customerDocRef.data().topUpHistory
         },
         async topup10() {
             var stripe = await loadStripe(this.publishableKey);
@@ -166,8 +173,24 @@ export default {
     flex-wrap: wrap;
     gap: 10px;
 }
+.topUpHistory {
+  border: 2px solid black;
+  padding: 10px;
+  display: flex;
+  width: 75%;
+  font-size: 20px;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  background-color: #ffff;
+}
 h1 {
     text-align: center;
+}
+h2 {
+    font-size: 30px;
+    margin-top: 10px;
 }
 </style>
 
