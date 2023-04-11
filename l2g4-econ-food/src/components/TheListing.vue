@@ -40,14 +40,9 @@
 <script>
 import {
   getFirestore,
-  getDoc,
-  addDoc,
-  getDocs,
   updateDoc,
-  collection,
   doc,
-  query,
-  where,
+  onSnapshot,
   deleteDoc,
 } from "firebase/firestore";
 import firebaseApp from "../firebase.js";
