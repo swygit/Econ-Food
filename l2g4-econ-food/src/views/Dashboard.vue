@@ -10,9 +10,9 @@
               Lifetime orders
               <h1>{{ numOrders }}</h1>
           </div>   
-          <div class="numListings">
-              Number of listings
-              <h1>{{ numListings }}</h1>
+          <div class="activeListings">
+              Active listings
+              <h1>{{ activeListings }}</h1>
           </div>
           <div class="topListing">
               Top Listing
@@ -63,7 +63,7 @@ export default {
           userId: "",
           revenue: 0,
           numOrders: 0,
-          numListings: 0,
+          activeListings: 0,
           dailyRevenue : {},
           dailyOrders: {},
           topListings: {},
@@ -82,6 +82,14 @@ export default {
   },
   methods: {
       async getData() {
+          // prepare dailyRevenue and dailyOrders with keys as dates of the month up till current date
+          const today = new Date();
+          const currentYear = today.getYear() + 1900
+          const currentMonth = (today.getMonth() + 1).toString().padStart(2, 0)
+          for (let i = 1; i < today.getDate() + 1; i++) {
+              this.dailyRevenue[currentYear + '-' + currentMonth + '-' + i.toString().padStart(2, 0)] = 0
+              this.dailyOrders[currentYear + '-' + currentMonth + '-' + i.toString().padStart(2, 0)] = 0
+          }
           // load merchant lifetime revenue
           const merchantDocQuery = query(
               collection(db, "merchants"),
@@ -100,19 +108,14 @@ export default {
           );
           const listingDocsRef = await getDocs(listingsDocQuery);
           listingDocsRef.forEach((doc) => {
-              // get total number of listings
-              this.numListings += 1
+              // get active of listings
+              const listingExpiryDate = new Date(doc.data().bestByDate)
+              if (listingExpiryDate > today) {
+                this.activeListings += 1
+              }
               // load tuple into topListings
               this.topListings[[doc.id, doc.data().name]] = 0
           })
-          // prepare dailyRevenue and dailyOrders with keys as dates of the month up till current date
-          const today = new Date();
-          const currentYear = today.getYear() + 1900
-          const currentMonth = (today.getMonth() + 1).toString().padStart(2, 0)
-          for (let i = 1; i < today.getDate() + 1; i++) {
-              this.dailyRevenue[currentYear + '-' + currentMonth + '-' + i.toString().padStart(2, 0)] = 0
-              this.dailyOrders[currentYear + '-' + currentMonth + '-' + i.toString().padStart(2, 0)] = 0
-          }
           // load merchant lifetime number of orders and daily number of orders
           const ordersDocQuery = query(
               collection(db, "orders"),
@@ -197,7 +200,7 @@ h4 {
   display: flex;
   flex-direction: row;
 }
-.revenue, .numOrders, .numListings, .topListing {
+.revenue, .numOrders, .activeListings, .topListing {
   flex: 1;
   margin-right: 20px;
   background-color: #16703c;
