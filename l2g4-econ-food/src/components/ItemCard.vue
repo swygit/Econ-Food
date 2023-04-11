@@ -61,6 +61,7 @@ p {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  cursor: pointer
 }
 .item-card {
   min-width: 160px;
