@@ -1,6 +1,6 @@
 <template>
   <MerchantNavigationBar />
-  <div class="container" v-if="user">
+  <div class="container mt-3" v-if="user">
     <div class="center">
       <div class="formDiv">
         <div class="imageDiv">
@@ -8,7 +8,8 @@
             :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
             class="listing-image"
           />
-          <input type="file" @change="onUpload" accept=".jpg,.png" />
+          
+          <input class="mt-3" type="file" @change="onUpload" accept=".jpg,.png" />
         </div>
         <div class="inputDiv">
           <!-- <form @submit.prevent="addListing"> -->
@@ -101,7 +102,7 @@ export default {
   },
   methods: {
     async addListing() {
-      if (!this.name || !this.price || !this.quantity || !this.bestByDate) {
+      if (!this.name || !this.price || !this.quantity || !this.bestByDate || !this.imageUrl) {
         alert('Please fill in all required fields.');
         return;
       }

@@ -1,9 +1,10 @@
 <template>
   <div class="background">
-    <MerchantNavigationBar></MerchantNavigationBar>
-    <h1 class="title">Orders</h1>
+    <MerchantNavigationBar/>
+    <div class="app-wrapper">
+    <h1 class="mb-8">Orders</h1>
     <div v-for="(entries, date) in orders" :key="date">
-      <h2 class="date">{{ date }}</h2>
+      <h2 class="date mt-8 mb-3">{{ date }}</h2>
       <div class="orders">
         <MerchantOrderList
           v-for="order in entries"
@@ -16,6 +17,7 @@
           :status="order.status"
         />
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -118,13 +120,22 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Nunito Sans");
-.title {
-  font-size: 50px;
+h1 {
   font-family: "Nunito Sans", sans-serif;
-  margin-bottom: 20px;
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: left;
+  letter-spacing: 2%;
+  line-height: 30px;
+  color: #000000;
 }
-
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
+}
 .date {
+  font-family: "Nunito Sans", sans-serif;
   font-size: 20px;
 }
 .background {

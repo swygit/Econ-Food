@@ -1,11 +1,12 @@
 <template>
-    <div class="container">
     <CustomerNavigationBar/>
-    <h1>Payment unsuccessful. Try again.</h1><br>
-    <NormalButton
-            @click="toMarketplace"
-            :buttonName="buttonName"
-    ></NormalButton>
+    <div class="container">
+        <img src="../assets/redcross.png" class="logo mt-8 mb-4" alt="Logo" />
+        <h1 class="mb-1">Payment unsuccessful. Please try again.</h1><br>
+        <NormalButton
+                @click="toMarketplace"
+                :buttonName="buttonName"
+        ></NormalButton>
     </div>
 </template>
 <script>
@@ -42,6 +43,19 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
 .container {
-    font-family: "Nunito Sans"
+    font-family: "Nunito Sans";
+    display: flex;
+    justify-context: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+h1{
+    font-weight: 1000;
+    font-size: 30px;
+}
+.logo {
+  width: 100px;
+  height: 100px;
 }
 </style>

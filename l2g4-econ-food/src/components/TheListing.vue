@@ -1,36 +1,38 @@
 <template>
-  <div class="listing-card">
-    <div class="listing-image-container">
-      <img
-        :src="
-          listing.imageUrl ||
-          'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFile%3ANo_image_available.svg&psig=AOvVaw1ess-dyR_hgsRPHT6PMAIe&ust=1681050910109000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMD4suLAmv4CFQAAAAAdAAAAABAQ'
-        "
-        class="listing-image" alt="Picture Unavailable"
-      />
-    </div>
-    <div class="listing-info">
-      <div class="listing-header">
-        <h2 class="listing-name">{{ listing.name }}</h2>
-        <div class="listing-buttons">
-          <p>Quantity</p>
-          <button class="quantity-button" @click="decrementQuantity">-</button>
-          <input
-            type="number"
-            class="quantity-input"
-            v-model.number="quantity"
-          />
-          <button class="quantity-button" @click="incrementQuantity">+</button>
+  <div v-if="this.listing.quantity > 0 && new Date() < new Date(this.listing.bestByDate)">
+    <div class="listing-card">
+      <div class="listing-image-container">
+        <img
+          :src="
+            listing.imageUrl ||
+            'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFile%3ANo_image_available.svg&psig=AOvVaw1ess-dyR_hgsRPHT6PMAIe&ust=1681050910109000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMD4suLAmv4CFQAAAAAdAAAAABAQ'
+          "
+          class="listing-image" alt="Picture Unavailable"
+        />
+      </div>
+      <div class="listing-info">
+        <div class="listing-header">
+          <h2 class="listing-name">{{ listing.name }}</h2>
+          <div class="listing-buttons">
+            <p>Quantity</p>
+            <button class="quantity-button" @click="decrementQuantity">-</button>
+            <input
+              type="number"
+              class="quantity-input"
+              v-model.number="quantity"
+            />
+            <button class="quantity-button" @click="incrementQuantity">+</button>
+          </div>
+        </div>
+        <div class="listing-details">
+          <p class="listing-price">$ {{ listing.price.toFixed(2) }}</p>
+          <p class="listing-best-by">Best By: {{ formattedBestByDateTime }}</p>
         </div>
       </div>
-      <div class="listing-details">
-        <p class="listing-price">$ {{ listing.price.toFixed(2) }}</p>
-        <p class="listing-best-by">Best By: {{ formattedBestByDateTime }}</p>
+      <div class="listing-buttons">
+        <button class="delete-button" @click="deleteListing">Delete</button>
+        <button class="save-button" @click="updateQuantity">Save</button>
       </div>
-    </div>
-    <div class="listing-buttons">
-      <button class="delete-button" @click="deleteListing">Delete</button>
-      <button class="save-button" @click="updateQuantity">Save</button>
     </div>
   </div>
 </template>

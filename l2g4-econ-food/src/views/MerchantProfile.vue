@@ -1,35 +1,38 @@
 <template>
   <MerchantNavigationBar />
-  <div class="container" v-if="user">
+  <div class="container mt-3" v-if="user">
     <div class="center">
-      <div class="imageDiv">
-        <img
-          :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
-          class="merchant-image"
-        /><br />
-        <input type="file" @change="onUpload" accept=".jpg,.png" />
-      </div>
-      <div class="profileDiv">
-        <form @submit.prevent="updateProfile">
-          <input type="text" placeholder="Company Name" v-model="name" />
-          <input
-            type="text"
-            placeholder="Type of Business"
-            v-model="businessType"
+      <div class="formDiv">
+        <div class="imageDiv">
+          <img
+            :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
+            class="merchant-image"
           />
-          <input type="text" placeholder="Email" v-model="email" readonly />
-          <input
-            type="text"
-            placeholder="Operating Hours"
-            v-model="operatingHours"
-          />
-          <input type="text" placeholder="Location" v-model="location" />
-          <input type="tel" placeholder="Phone Number" v-model="phoneNumber" />
-          <input type="text" placeholder="Bank Number" v-model="bankNumber" />
-          <button type="submit" id="save">Save</button>
-        </form>
-        <button @click="" id="changePassword">Change Password</button>
-        <button @click="signOut" id="signOut">Sign Out</button>
+          <br />
+          <input class="mt-3" type="file" @change="onUpload" accept=".jpg,.png" />
+        </div>
+        <div class="profileDiv">
+          <form @submit.prevent="updateProfile">
+            <input type="text" placeholder="Company Name" v-model="name" />
+            <input
+              type="text"
+              placeholder="Type of Business"
+              v-model="businessType"
+            />
+            <input type="text" placeholder="Email" v-model="email" readonly />
+            <input
+              type="text"
+              placeholder="Operating Hours"
+              v-model="operatingHours"
+            />
+            <input type="text" placeholder="Location" v-model="location" />
+            <input type="tel" placeholder="Phone Number" v-model="phoneNumber" />
+            <input type="text" placeholder="Bank Number" v-model="bankNumber" />
+            <button type="submit" id="save">Save</button>
+          </form>
+          <button @click="" id="changePassword">Change Password</button>
+          <button @click="signOut" id="signOut">Sign Out</button>
+        </div>
       </div>
     </div>
   </div>
@@ -158,6 +161,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.formDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
 .imageDiv {
   margin-top: 20px;
 }
@@ -171,8 +179,8 @@ export default {
   right: 0;
 }
 .merchant-image {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   border: 2px solid #000;
 }
 input[type="file"] {
@@ -193,7 +201,7 @@ input[type="text"],
 input[type="tel"],
 input[type="password"] {
   display: block;
-  width: 200px;
+  width: 220px;
   margin-bottom: 10px;
   padding: 10px;
   border: none;

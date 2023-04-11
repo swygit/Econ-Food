@@ -2,7 +2,7 @@
   <div class="container" v-if="user">
     <CustomerNavigationBar />
     <div class="center">
-      <img src="https://i.ibb.co/GxMZDwr/user-icon.png" class="user-icon" />
+      <img src="https://i.ibb.co/GxMZDwr/user-icon.png" class="user-icon mt-5 mb-5" />
       <form @submit.prevent="updateProfile">
         <input type="text" placeholder="Name" v-model="name" />
         <input type="text" placeholder="Email" v-model="email" readonly />
@@ -121,8 +121,6 @@ export default {
   right: 0;
 }
 .user-icon {
-  padding-top: 20px;
-  padding-bottom: 20px;
   width: 100px;
   height: 100px;
 }
@@ -130,7 +128,7 @@ input[type="text"],
 input[type="tel"],
 input[type="password"] {
   display: block;
-  width: 200px;
+  width: 220px;
   margin-bottom: 10px;
   padding: 10px;
   border: none;

@@ -1,7 +1,7 @@
 <template>
   <div class="search-bar">
     <input type="text" class="search-input" v-bind:value="value" v-on:input="$emit('update:value', $event.target.value)" placeholder="Listing Name...">
-    <button class="search-button" v-on:click="$emit('search')">Search</button>
+    <button class="search-button me-2" v-on:click="$emit('search')">Search</button>
     <button class="reset-button" v-on:click="$emit('reset')">Show All</button>
   </div>
 </template>
@@ -36,6 +36,7 @@ export default {
   margin-right: 8px;
   outline: none;
   transition: all 0.3s ease;
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .search-input:focus {
@@ -50,7 +51,7 @@ export default {
   background-color: #16703c;
   border: none;
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   width: 120px;
   height: 48px;
@@ -58,6 +59,7 @@ export default {
   cursor: pointer;
   margin-left: 8px;
   transition: background-color 0.3s ease;
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .search-button:hover,

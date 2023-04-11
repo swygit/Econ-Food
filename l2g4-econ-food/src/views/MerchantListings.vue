@@ -41,6 +41,11 @@ import firebaseApp from "../firebase.js";
 
 const db = getFirestore(firebaseApp);
 
+setInterval(function() {
+    console.log("reloading")
+    location.reload();
+  }, 60000);
+
 export default {
   name: "MerchantListings",
   components: {
@@ -130,20 +135,22 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 32px 35px;
+  margin: 32px 50px;
 }
 
 h1 {
   font-family: "Nunito Sans", sans-serif;
-  font-size: 48px;
+  font-size: 5rem;
   font-weight: bold;
   color: black;
+  margin-left: 10px;
   margin-right: 16px;
 }
 
 .add-listing-btn {
   display: inline-block;
   padding: 14px 28px;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 16px;
   font-weight: bold;
   color: white;
