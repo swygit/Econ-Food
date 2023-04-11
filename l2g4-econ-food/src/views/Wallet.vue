@@ -80,7 +80,7 @@ export default {
                 }
             ],
             successURL: "http://localhost:5173/topupsuccessful",
-            cancelURL: "http://localhost:5173/error"
+            cancelURL: "http://localhost:5173/topuperror"
         }
     },
     mounted() {
