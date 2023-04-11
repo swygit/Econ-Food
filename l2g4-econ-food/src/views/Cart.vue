@@ -11,8 +11,8 @@
             </div>
             <br />
             <div class="ms-6">
-              <h2>{{ this.cart.merchantName }}</h2>
-              <div class="text" v-for="item in cartItems" :key="item.productId">
+              <h2 class="mb-2">{{ this.cart.merchantName }}</h2>
+              <div class="text mb-2" v-for="item in cartItems" :key="item.productId">
                 <h3>{{ item.name }} x{{ item.quantity }}</h3>
               </div>
               <h3>Subtotal: ${{ totalPrice }}</h3>
@@ -244,6 +244,16 @@ export default {
 :root {
   font-size: 8px;
 }
+.app {
+  margin: auto;
+  width: 100%;
+  /* max-width: 1048px; */
+}
+.app-wrapper {
+  margin-top: 40px;
+  margin-left: 120px;
+  margin-right: 120px;
+}
 body {
   background-color: #f5f5ef;
 }
@@ -256,22 +266,12 @@ h1 {
   line-height: 30px;
   color: #000000;
 }
-.app {
-  margin: auto;
-  width: 100%;
-  /* max-width: 1048px; */
-}
-.app-wrapper {
-  margin-top: 40px;
-  margin-left: 120px;
-  margin-right: 120px;
-}
 h2 {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
 }
 h3 {
@@ -292,48 +292,8 @@ h3 {
   align-items: center;
   border-radius: 28px;
   margin-left: 20px;
-}
-img {
-  width: 230px;
-  height: 180px;
-  border-radius: 28px;
-}
-.listing {
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-  border-radius: 28px;
-}
-.listing-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 10px;
-}
-.app-wrapper {
-  margin-top: 40px;
-  margin-left: 120px;
-  margin-right: 120px;
-}
-h2 {
-  font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
-  letter-spacing: 2%;
-  line-height: 24px;
-  font-size: 18px;
-  font-weight: 700;
-}
-h3 {
-  font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
-  letter-spacing: 2%;
-  line-height: 24px;
-  font-size: 15px;
-}
-.top-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 img {
   width: 230px;

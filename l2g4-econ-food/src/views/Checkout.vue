@@ -81,7 +81,6 @@ export default {
 :root {
   font-size: 8px;
 }
-
 body {
   background-color: #f5f5ef;
 }
@@ -108,7 +107,6 @@ h3 {
   font-size: 20px;
   margin-right: 170px;
 }
-
 h4 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 700;

@@ -3,18 +3,18 @@
     <div class="order-date">
       <div class="order">
         <div class="order-content">
-          <p class="order-merchant">{{ merchant }}</p>
-          <p class="order-date-time">{{ datetime }}</p>
-          <p class="order-id">Order #{{ orderid }}</p>
+          <p class="order-merchant mt-2 ms-3">{{ merchant }}</p>
+          <p class="order-date-time mt-1 ms-3">{{ datetime }}</p>
+          <p class="order-id mt-1 mb-2 ms-3">Order #{{ orderid }}</p>
         </div>
         <div class="order-price">
           <p>${{ price }}</p>
         </div>
-        <button @click="goSummary(orderid, status)" class="view-order">
+        <button @click="goSummary(orderid, status)" class="view-order-btn pt-3 pb-3 ps-5 pe-5 ms-2 me-1">
           View Order
         </button>
 
-        <button @click="goToChat(orderid)" class="merchant-order-chat-btn">
+        <button @click="goToChat(orderid)" class="merchant-order-chat-btn pt-3 pb-3 ps-5 pe-5 ms-1 me-3">
           Chat
         </button>
       </div>
@@ -73,32 +73,39 @@ export default {
   margin-bottom: 30px;
   background-color: #ffff;
 }
-
 .order-content {
   flex: 1;
 }
-p {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
 .order-merchant {
+  font-family: "Nunito Sans", sans-serif;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
 }
 .order-date-time {
+  font-family: "Nunito Sans", sans-serif;
   font-size: 15px;
 }
-
 .order-id {
+  font-family: "Nunito Sans", sans-serif;
   font-size: 18px;
 }
-.view-order {
+.view-order-btn {
   background-color: #16703c;
   color: white;
-  padding: 10px;
   border: none;
   cursor: pointer;
   border-radius: 10px;
+  font-size: 18px;
+  font-family: "Nunito Sans", sans-serif;
+}
+.merchant-order-chat-btn {
+  background-color: white;
+  color: black;
+  border: 0.1rem solid;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: "Nunito Sans", sans-serif;
 }
 .order-price {
   color: black;
@@ -108,8 +115,9 @@ p {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 30px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
+  font-family: "Nunito Sans", sans-serif;
 }
 </style>
