@@ -41,10 +41,10 @@ import firebaseApp from "../firebase.js";
 
 const db = getFirestore(firebaseApp);
 
-setInterval(function() {
-    console.log("reloading")
-    location.reload();
-  }, 60000);
+// setInterval(function() {
+//     console.log("reloading")
+//     location.reload();
+//   }, 60000);
 
 export default {
   name: "MerchantListings",
@@ -59,6 +59,7 @@ export default {
       userId: null,
       listings: [],
       searchQuery: "",
+      intervalTimer: null
     };
   },
   mounted() {
@@ -70,8 +71,18 @@ export default {
         this.getListings();
       }
     });
+    this.intervalTimer = setInterval(() => {
+      console.log("reloading")
+      location.reload();
+      console.log("reloading")
+    }, 60000);
   },
   methods: {
+    beforeRouteLeave(to, from, next) {
+      // Clear the interval timer before leaving the current route
+      clearInterval(this.intervalTimer);
+      next();
+    },
     async getListings() {
       const q = query(
         collection(db, "listings"),
