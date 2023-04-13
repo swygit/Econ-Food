@@ -6,9 +6,9 @@
         <img :src="this.merchant.imageUrl" alt="" />
       </div>
       <div class="text">
-        <h1 class="merchant-name mb-2">{{ merchant.name }}</h1>
-        <h2 calss="location">{{ merchant.location }}</h2>
-        <h2 calss="detail">{{ merchant.operatingHours }}</h2>
+        <h1 class="mb-2">{{ merchant.name }}</h1>
+        <h2>{{ merchant.location }}</h2>
+        <h2>{{ merchant.operatingHours }}</h2>
       </div>
     </div>
     <div class="order-id mb-2">
@@ -158,17 +158,14 @@ h4 {
   line-height: 24px;
   font-size: 15px;
 }
-p {
-  padding: 25px 50px;
-}
 .container {
   display: flex;
   flex-direction: column;
-  /* grid-template-columns: 1fr 1fr 1fr; */
-  /* background-color: #ffffff; */
-  display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #ffffff;
+  margin-left: 18rem;
+  margin-right: 18rem;
 }
 .top-container {
   display: flex;

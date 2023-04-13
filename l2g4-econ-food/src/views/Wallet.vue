@@ -173,7 +173,7 @@ export default {
     gap: 10px;
 }
 .topUpHistory {
-  border: 2px solid black;
+  border: 1px solid lightgrey;
   padding: 10px;
   flex: 1;
   width: 45%;

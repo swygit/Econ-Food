@@ -26,7 +26,7 @@
         ${{ item.price.toFixed(2) }}&emsp;&emsp;
       </h2>
     </div>
-    <div style="margin-left: auto">
+    <div style="margin-left: auto" class="mt-6">
       <h3>Subtotal: ${{ totalPrice.toFixed(2) }}</h3>
     </div>
 
@@ -168,8 +168,10 @@ p {
   display: flex;
   flex-direction: column;
   /* grid-template-columns: 1fr 1fr 1fr; */
-  /* background-color: #ffffff; */
+  background-color: #ffffff;
   display: flex;
+  margin-left: 18rem;
+  margin-right: 18rem;
   align-items: center;
   justify-content: center;
 }
