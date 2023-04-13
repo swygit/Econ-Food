@@ -233,17 +233,6 @@ export default {
 </script>
 
 <style scoped>
-input[type="file"] {
-    display: none;
-}
-.picture-upload-btn {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 2px 10px 2px 0px;
-    font-size: 1.625rem;
-    cursor: pointer;
-}
 body {
   overflow-x: hidden;
 }
@@ -264,7 +253,7 @@ text-align: center;
 text-shadow: 1px 1px #fff;
 color: #16703c;
 position: fixed;
-left: 39%;
+left: 41%;
 }
 
 .order-chat-messages {
@@ -466,5 +455,18 @@ font-size: 1.2rem;
 
 .order-chat-send-btn:hover {
   background-color: #134c2e;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.picture-upload-btn {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 2px 10px 2px 0px;
+    font-size: 1.625rem;
+    cursor: pointer;
 }
 </style>

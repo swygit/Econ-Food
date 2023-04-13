@@ -8,7 +8,7 @@
         r="20"
         :class="{ active: true }"
       />
-      <text x="50" y="50" text-anchor="middle" dy="40" font-size="14px">
+      <text x="50" y="50" text-anchor="middle" dy="40" font-size="14px" font-family="Nunito Sans">
         Received
       </text>
 
@@ -19,7 +19,7 @@
         r="20"
         :class="{ active: status === 'Prepared' || status === 'Collected' }"
       />
-      <text x="150" y="50" text-anchor="middle" dy="40" font-size="14px">
+      <text x="150" y="50" text-anchor="middle" dy="40" font-size="14px" font-family="Nunito Sans">
         Prepared
       </text>
 
@@ -30,7 +30,7 @@
         r="20"
         :class="{ active: status === 'Collected' }"
       />
-      <text x="250" y="50" text-anchor="middle" dy="40" font-size="14px">
+      <text x="250" y="50" text-anchor="middle" dy="40" font-size="14px" font-family="Nunito Sans">
         Collected
       </text>
 

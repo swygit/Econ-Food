@@ -1,17 +1,17 @@
 <template>
   <CustomerNavigationBar />
   <div class="container">
-    <div class="top-container">
-      <div class="top-image-container">
+    <div class="top-container mt-8 mb-8">
+      <div class="top-image-container me-8">
         <img :src="this.merchant.imageUrl" alt="" />
       </div>
       <div class="text">
-        <h1 class="merchant-name">{{ merchant.name }}</h1>
+        <h1 class="merchant-name mb-2">{{ merchant.name }}</h1>
         <h2 calss="location">{{ merchant.location }}</h2>
         <h2 calss="detail">{{ merchant.operatingHours }}</h2>
       </div>
     </div>
-    <div class="order-id">
+    <div class="order-id mb-2">
       <h1>Order #{{ orderid }}</h1>
     </div>
     <div class="time">
@@ -19,26 +19,16 @@
     </div>
     <OrderStatusIcon :status="orderstatus" />
 
-    <div class="bottom-container">
-      <NormalButtonUnfilled
-        @click="viewDetail(orderid)"
-        :buttonName="viewdetails"
-      ></NormalButtonUnfilled>
+    <div class="bottom-container mt-4 mb-1">
+      <button @click="viewDetail(orderid)" id="viewdetails">View Details</button>
     </div>
+    
     <div>
-      <NormalButton
-        @click="goToChat(orderid)"
-        :buttonName="chat"
-      ></NormalButton>
+      <button @click="goToChat(orderid)" id="chat">Chat With Merchant</button>
     </div>
-    <div>
-      <h1></h1>
-    </div>
-    <div class="bottom-container">
-      <NormalButtonUnfilled
-        @click="goBack(customerid)"
-        :buttonName="back"
-      ></NormalButtonUnfilled>
+
+    <div class="bottom-container mt-1 mb-4">
+      <button @click="goBack(customerid)" id="back">Back</button>
     </div>
   </div>
 </template>
@@ -140,10 +130,10 @@ export default {
 <style scoped>
 h1 {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 700;
 }
 h2 {
@@ -151,7 +141,7 @@ h2 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
@@ -175,8 +165,7 @@ p {
   display: flex;
   flex-direction: column;
   /* grid-template-columns: 1fr 1fr 1fr; */
-  background-color: #ffffff;
-  /* margin: 100px; */
+  /* background-color: #ffffff; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,16 +204,39 @@ p {
   align-items: right;
 }
 img {
-  width: 280px;
+  width: 250px;
   height: 180px;
 }
 .bottom-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 20px;
 }
-.text {
-  font-size: 70px;
+#viewdetails {
+  display: block;
+  width: 220px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  background-color: #16703c;
+  color: #fff;
+  font-size: 16px;
+  font-family: "Nunito Sans";
+  cursor: pointer;
+}
+#back, #chat {
+  display: block;
+  width: 220px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #16703c;
+  border-radius: 30px;
+  background-color: #ffffff;
+  color: #000;
+  font-size: 16px;
+  font-family: "Nunito Sans";
+  cursor: pointer;
 }
 </style>

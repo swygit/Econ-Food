@@ -1,24 +1,24 @@
 <template>
   <CustomerNavigationBar />
   <div class="container">
-    <div class="top-container">
-      <div class="top-image-container">
+    <div class="top-container mt-8 mb-8">
+      <div class="top-image-container me-8">
         <img :src="this.merchant.imageUrl" alt="" />
       </div>
       <div class="text">
-        <h1 class="merchant-name">{{ merchant.name }}</h1>
+        <h1 class="merchant-name mb-2">{{ merchant.name }}</h1>
         <h2 class="location">{{ merchant.location }}</h2>
         <h2 class="detail">{{ merchant.operatingHours }}</h2>
       </div>
     </div>
-    <div class="order-id">
+    <div class="order-id mb-2">
       <h1>Order #{{ orderid }}</h1>
     </div>
-    <div class="time">
+    <div class="time mb-6">
       <h2>Completed at {{ datetime }}</h2>
     </div>
-    <h1>Order Summary</h1>
-    <div class="middle-container" v-for="item in cart" :key="item.productId">
+    <h1 class="mb-2">Order Summary</h1>
+    <div class="middle-container mt-4 mb-1" v-for="item in cart" :key="item.productId">
       <div class="middle-content">
         <h3>{{ item.name }} x {{ item.quantity }}</h3>
       </div>
@@ -135,7 +135,7 @@ h1 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 700;
 }
 h2 {
@@ -143,7 +143,7 @@ h2 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
@@ -168,8 +168,7 @@ p {
   display: flex;
   flex-direction: column;
   /* grid-template-columns: 1fr 1fr 1fr; */
-  background-color: #ffffff;
-  /* margin: 100px; */
+  /* background-color: #ffffff; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,9 +207,8 @@ p {
   align-items: right;
 }
 img {
-  align-items: left;
-  width: 200px;
-  height: 120px;
+  width: 250px;
+  height: 180px;
 }
 .bottom-container {
   display: flex;

@@ -2,11 +2,11 @@
     <div class="container" v-if="user">
         <CustomerNavigationBar/>
         <div class="center">
-            <div class="balance">
+            <div class="balance mt-8 mb-5">
                 Current Balance:
-                <h1> ${{ balance }}</h1>
+                <h1> $ {{ balance }}</h1>
             </div>
-            <div class="buttons">
+            <div class="buttons mb-8">
                 <NormalButton
                     @click="topup10"
                     :buttonName="amount10"
@@ -24,10 +24,10 @@
                     :buttonName="amount100"
                 ></NormalButton>
             </div>
-            <h2>Transaction History</h2>
-            <div class="topUpHistory" v-for="topUp in topUpHistory.reverse()">
-                ${{ Object.values(topUp)[0] }} <br>
-                {{ Object.keys(topUp)[0] }}
+            <h2 class="mb-2">Transaction History</h2>
+            <div class="topUpHistory mt-3 mb-2" v-for="topUp in topUpHistory.reverse()">
+                <p class="topUpAmount ms-3 mt-2"> ${{ Object.values(topUp)[0] }} </p>
+                <p class="topUpInfo ms-3 mb-2"> {{ Object.keys(topUp)[0] }} </p>
             </div>
         </div>
     </div>
@@ -166,7 +166,6 @@ export default {
   border-radius: 30px;
   font-size: 24px;
   padding: 20px;
-  margin: 20px;
 }
 .buttons {
     display: flex;
@@ -176,14 +175,19 @@ export default {
 .topUpHistory {
   border: 2px solid black;
   padding: 10px;
-  display: flex;
-  width: 75%;
+  flex: 1;
+  width: 45%;
   font-size: 20px;
-  align-items: center;
   border-radius: 10px;
-  margin-top: 15px;
-  margin-bottom: 30px;
   background-color: #ffff;
+}
+.topUpAmount 
+{
+    font-weight: bold;
+    font-size: 24px;
+}
+.topUpInfo {
+    font-size: 14px;
 }
 h1 {
     text-align: center;
