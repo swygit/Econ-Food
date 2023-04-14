@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .order {
-  border: 2px solid black;
+  border: 2px solid lightgrey;
   padding: 10px;
   display: flex;
   align-items: center;

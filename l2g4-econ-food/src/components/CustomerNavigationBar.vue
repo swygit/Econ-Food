@@ -1,12 +1,16 @@
 <template>
   <div class="nav">
     <ul>
-      <img class="image" src="@/images/logo.png" />
-      <li><a @click="toProfile">Profile</a></li>
-      <li><a @click="toCart">Cart</a></li>
-      <li><a @click="toOrders">Orders</a></li>
-      <li><a @click="toMarketplace">Marketplace</a></li>
-      <li><a @click="toWallet">Wallet</a></li>
+      <div class="logo-container">
+      <a href="/marketplace">
+      <img class="image" src="../assets/logowhite.png" />
+      </a>
+      </div>
+      <li><a class="links-right" @click="toProfile">Profile</a></li>
+      <li><a class="links-right" @click="toCart">Cart</a></li>
+      <li><a class=" links-right" @click="toOrders">Orders</a></li>
+      <li><a class="links-right" @click="toMarketplace">Marketplace</a></li>
+      <li><a class="links-right" @click="toWallet">Wallet</a></li>
     </ul>
   </div>
 </template>
@@ -54,15 +58,14 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
 
-:root {
-  font-size: 15px;
-}
-
 .image {
-  height: 50px;
-  padding-left: 25px;
+  height: 7.2rem;
+  margin-top: 0.3rem;
+  margin-left: 2rem;
 }
-
+.logo-container {
+  float: left;
+}
 .nav {
   background-color: #16703c;
   color: white;
@@ -70,8 +73,6 @@ export default {
 
 .nav ul {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
 }
 .nav li {
@@ -86,7 +87,7 @@ export default {
 }
 
 /* Style the links inside the navigation bar */
-.nav a {
+.links-right {
   font-family: "Nunito Sans", sans-serif;
   display: block;
   float: right;
@@ -94,7 +95,7 @@ export default {
   text-align: center;
   padding: 20px 30px 20px 30px;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 2rem;
 }
 
 /* Add a color to the active/current link */

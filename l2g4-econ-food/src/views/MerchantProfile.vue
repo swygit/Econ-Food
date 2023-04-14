@@ -8,7 +8,6 @@
             :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
             class="merchant-image"
           />
-          <!-- <br /> -->
           <input class="mt-3" type="file" @change="onUpload" accept=".jpg,.png" />
         </div>
         <div class="profileDiv">

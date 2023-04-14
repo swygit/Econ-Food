@@ -247,7 +247,6 @@ export default {
 .app {
   margin: auto;
   width: 100%;
-  /* max-width: 1048px; */
 }
 .app-wrapper {
   margin-top: 40px;
@@ -305,6 +304,8 @@ img {
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 28px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 .listing-item {
   display: flex;

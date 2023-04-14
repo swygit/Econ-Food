@@ -1,11 +1,15 @@
 <template>
   <div class="nav">
     <ul>
-      <img class="image" src="@/images/logo.png" />
-      <li><a @click="profileClickRouter">Profile</a></li>
-      <li><a @click="listingsClickRouter">Listings</a></li>
-      <li><a @click="ordersClickRouter">Orders</a></li>
-      <li><a @click="dashboardClickRouter">Dashboard</a></li>
+      <div class="logo-container">
+      <a href="/dashboard">
+      <img class="image" src="../assets/logowhite.png" />
+      </a>
+      </div>
+      <li><a class="links-right" @click="profileClickRouter">Profile</a></li>
+      <li><a class="links-right" @click="listingsClickRouter">Listings</a></li>
+      <li><a class="links-right" @click="ordersClickRouter">Orders</a></li>
+      <li><a class="links-right" @click="dashboardClickRouter">Dashboard</a></li>
     </ul>
   </div>
 </template>
@@ -55,8 +59,13 @@ export default {
 }
 
 .image {
-  height: 50px;
-  padding-left: 20px;
+  height: 7.2rem;
+  margin-top: 0.3rem;
+  margin-left: 2rem;
+}
+
+.logo-container {
+  float: left;
 }
 
 .nav {
@@ -81,7 +90,7 @@ export default {
 }
 
 /* Style the links inside the navigation bar */
-.nav a {
+.links-right {
   font-family: "Nunito Sans", sans-serif;
   display: block;
   float: right;
@@ -89,8 +98,7 @@ export default {
   text-align: center;
   padding: 20px 30px 20px 30px;
   text-decoration: none;
-  font-size: 11px;
-  cursor: pointer;
+  font-size: 2rem;
 }
 
 /* Add a color to the active/current link */
