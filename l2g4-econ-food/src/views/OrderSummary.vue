@@ -167,13 +167,11 @@ p {
 .container {
   display: flex;
   flex-direction: column;
-  /* grid-template-columns: 1fr 1fr 1fr; */
-  background-color: #ffffff;
-  display: flex;
-  margin-left: 18rem;
-  margin-right: 18rem;
   align-items: center;
   justify-content: center;
+  background-color: #ffffff;
+  margin-left: 18rem;
+  margin-right: 18rem;
 }
 .top-container {
   display: flex;
@@ -216,7 +214,8 @@ img {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 20px;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
 .text {
   font-size: 70px;

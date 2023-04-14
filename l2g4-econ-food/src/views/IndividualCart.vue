@@ -17,7 +17,7 @@
       v-for="item in cartItems"
       :key="item.productId"
     >
-      <div class="middle-image-container ms-8 me-6">
+      <div class="middle-image-container ms-16 me-6">
         <img :src="item.imageUrl" alt="" />
       </div>
       
@@ -28,11 +28,11 @@
           Delete
         </button>
       </div>
-      <h2 style="margin-left: auto" class="me-8">
+      <h2 style="margin-left: auto" class="me-16">
         Price: ${{ item.price }}
       </h2>
     </div>
-    <div style="margin-left: auto" class="mt-6 me-8">
+    <div style="margin-left: auto" class="mt-6 me-16">
       <h3>Subtotal: ${{ totalPrice }}</h3>
     </div>
     <div class="bottom-container">
@@ -271,7 +271,7 @@ h2 {
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
   font-size: 20px;

@@ -247,7 +247,7 @@ h2 {
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
   font-size: 20px;

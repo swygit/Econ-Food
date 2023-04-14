@@ -5,20 +5,9 @@
       <h1>{{ this.merchant.name }}</h1>
 
       <!-- Search bar -->
-      <div class="search-bar">
+      <div class="search-bar mt-7">
         <SearchBar @searchPayloadEvent="searchPayload" />
       </div>
-
-      <!-- Buttons -->
-      <!-- <div id="app">
-        <Button @click="toggleAll" :buttonName="allButtonName"></Button>
-        <Button @click="toggleHotel" :buttonName="hotelButtonName"></Button>
-        <Button
-          @click="toggleSupermarket"
-          :buttonName="supermarketButtonName"
-        ></Button>
-        <Button @click="toggleOthers" :buttonName="othersButtonName"></Button>
-      </div> -->
 
       <!-- Items -->
       <ProductItemCard v-bind:filteredItems="filteredItems" />

@@ -2,11 +2,11 @@
   <div class="app">
     <CustomerNavigationBar />
     <div class="app-wrapper">
-      <h1 class="mt-3">Marketplace</h1>
+      <h1 class="mt-3 mb-7">Marketplace</h1>
 
       <!-- Search bar -->
       <div>
-        <SearchBar @searchPayloadEvent="searchPayload" />
+        <SearchBar @searchPayloadEvent="searchPayload" class="mb-2"/>
       </div>
 
       <!-- Buttons -->

@@ -61,13 +61,12 @@ export default {
 .value-button {
   display: inline-block;
   /* border: 1px solid #ddd; */
-  /* margin: 0px; */
   width: 40px;
-  height: 15px;
+  height: 40px;
   text-align: center;
-  /* vertical-align: 5px; */
-  padding: 11px 0px;
-  /* background: #eee; */
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -81,23 +80,21 @@ export default {
 }
 
 form #decrease {
-  border-radius: 28px 0 0 28px;
+  border-radius: 18px 0 0 18px;
   background-color: #16703c;
   color: #ffffff;
 }
 
 form #increase {
-  border-radius: 0 28px 28px 0;
+  border-radius: 0 18px 18px 0;
   background-color: #16703c;
   color: #ffffff;
 }
 
-form #input-wrap {
-  margin: 10px;
-  padding: 0px;
-}
-
 input#number {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 2.1rem;
+  font-weight: bold;
   text-align: center;
   border: none;
   border-top: 1px solid #ddd;
