@@ -71,6 +71,7 @@ export default {
 .nav {
   background-color: #16703c;
   color: white;
+  cursor: pointer
 }
 
 .nav ul {
