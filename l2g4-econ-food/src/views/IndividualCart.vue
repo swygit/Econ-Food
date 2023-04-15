@@ -20,17 +20,13 @@
       <div class="middle-image-container ms-16 me-6">
         <img :src="item.imageUrl" alt="" />
       </div>
-      
+
       <div class="middle-content">
         <h3>{{ item.name }}</h3>
         <h2>Quantity: {{ item.quantity }}</h2>
-        <button @click="deleteItem(item)" class="delete-button">
-          Delete
-        </button>
+        <button @click="deleteItem(item)" class="delete-button">Delete</button>
       </div>
-      <h2 style="margin-left: auto" class="me-16">
-        Price: ${{ item.price }}
-      </h2>
+      <h2 style="margin-left: auto" class="me-16">Price: ${{ item.price }}</h2>
     </div>
     <div style="margin-left: auto" class="mt-6 me-16">
       <h3>Subtotal: ${{ totalPrice }}</h3>
@@ -40,6 +36,11 @@
         @click="checkoutItem"
         :buttonName="buttonName"
       ></NormalButton>
+      <p></p>
+      <NormalButtonUnfilled
+        @click="back"
+        :buttonName="backButton"
+      ></NormalButtonUnfilled>
     </div>
   </div>
 </template>
@@ -60,6 +61,7 @@ import {
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 import NormalButton from "@/components/NormalButton.vue";
+import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -68,6 +70,7 @@ export default {
   components: {
     CustomerNavigationBar,
     NormalButton,
+    NormalButtonUnfilled,
   },
   data: function () {
     return {
@@ -79,6 +82,7 @@ export default {
       cartId: "",
       cartItems: [],
       buttonName: "Checkout",
+      backButton: "Back",
       merchant: {},
       cart: {},
       totalPrice: 0,
@@ -189,6 +193,9 @@ export default {
           });
         }
         // create the order containing all the listings/products in the cart
+        const displyId = this.$orderIdDisplay.toString();
+        this.$orderIdDisplay = this.$orderIdDisplay + 1;
+
         const ordersData = {
           merchantData: this.merchant,
           cart: this.cartItems,
@@ -198,6 +205,7 @@ export default {
           merchant: this.merchant.name,
           datetime: new Date(),
           status: "Received",
+          displayid: displyId,
         };
         const ordersRef = collection(db, "orders");
         addDoc(ordersRef, ordersData)
@@ -248,12 +256,14 @@ export default {
         });
       }
     },
+    back: function () {
+      this.$router.push(`/cart/${this.user.uid}`);
+    },
   },
 };
 </script>
 
 <style scoped>
-
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 500;

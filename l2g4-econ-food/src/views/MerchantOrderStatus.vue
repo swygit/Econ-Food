@@ -1,6 +1,7 @@
 <template>
   <MerchantNavigationBar />
-  <div class="container">
+  <div class="loading" v-show="isLoading"><h1>Loading...</h1></div>
+  <div v-show="!isLoading" class="container">
     <div class="top-container mt-8 mb-8">
       <div class="top-image-container me-8">
         <img :src="this.merchant.imageUrl" alt="" />
@@ -12,7 +13,7 @@
       </div>
     </div>
     <div class="order-id mb-2">
-      <h1>Order #{{ orderid }}</h1>
+      <h1>Order #{{ orderidDisplay }}</h1>
     </div>
     <div class="time">
       <h2>Pickup By: {{ datetime }}</h2>
@@ -20,7 +21,9 @@
     <OrderStatusIcon :status="orderstatus" @update:status="updateStatus" />
 
     <div class="bottom-container mt-4 mb-1">
-      <button @click="viewDetail(orderid)" id="viewdetails">View Details</button>
+      <button @click="viewDetail(orderid)" id="viewdetails">
+        View Details
+      </button>
     </div>
     <div>
       <button @click="goToChat(orderid)" id="chat">Chat With Customer</button>
@@ -60,6 +63,7 @@ export default {
   },
   data: function () {
     return {
+      isLoading: true,
       viewdetails: "View Details",
       chat: "Chat with Customer",
       back: "Back",
@@ -70,9 +74,13 @@ export default {
       totalPrice: 0,
       customerid: "",
       orderstatus: "",
+      orderidDisplay: "",
     };
   },
   mounted: async function () {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
     this.getUser();
     this.loadOrder();
   },
@@ -104,6 +112,7 @@ export default {
       this.datetime = values.datetime;
       this.customerid = values.customerId;
       this.orderstatus = values.status;
+      this.orderidDisplay = values.displayid;
       this.datetime = this.datetime
         .toDate()
         .toLocaleString("en-SG", {
@@ -229,7 +238,8 @@ img {
   font-family: "Nunito Sans";
   cursor: pointer;
 }
-#back, #chat {
+#back,
+#chat {
   display: block;
   width: 220px;
   margin-bottom: 10px;
@@ -241,5 +251,24 @@ img {
   font-size: 16px;
   font-family: "Nunito Sans";
   cursor: pointer;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.loading h1 {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
 }
 </style>

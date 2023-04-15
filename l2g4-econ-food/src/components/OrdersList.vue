@@ -5,16 +5,22 @@
         <div class="order-content">
           <p class="order-merchant mt-2 ms-3">{{ merchant }}</p>
           <p class="order-date-time mt-1 ms-3">{{ datetime }}</p>
-          <p class="order-id mt-1 mb-2 ms-3">Order #{{ orderid }}</p>
+          <p class="order-id mt-1 mb-2 ms-3">Order #{{ orderidDisplay }}</p>
         </div>
         <div class="order-price">
           <p>${{ price }}</p>
         </div>
-        <button @click="goSummary(orderid, status)" class="view-order-btn pt-3 pb-3 ps-5 pe-5 ms-2 me-1">
+        <button
+          @click="goSummary(orderid, status)"
+          class="view-order-btn pt-3 pb-3 ps-5 pe-5 ms-2 me-1"
+        >
           View Order
         </button>
 
-        <button @click="goToChat(orderid)" class="merchant-order-chat-btn pt-3 pb-3 ps-5 pe-5 ms-1 me-3">
+        <button
+          @click="goToChat(orderid)"
+          class="merchant-order-chat-btn pt-3 pb-3 ps-5 pe-5 ms-1 me-3"
+        >
           Chat
         </button>
       </div>
@@ -44,6 +50,10 @@ export default {
       required: true,
     },
     price: {
+      type: Number,
+      required: true,
+    },
+    orderidDisplay: {
       type: String,
       required: true,
     },
@@ -52,7 +62,7 @@ export default {
       required: true,
     },
     datetime: {
-      type: Date,
+      type: String,
       required: true,
     },
     status: {

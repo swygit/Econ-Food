@@ -1,6 +1,7 @@
 <template>
   <MerchantNavigationBar />
-  <div class="container">
+  <div class="loading" v-show="isLoading"><h1>Loading...</h1></div>
+  <div v-show="!isLoading" class="container">
     <div class="top-container mt-8 mb-8">
       <div class="top-image-container me-8">
         <img :src="this.merchant.imageUrl" alt="" />
@@ -12,13 +13,18 @@
       </div>
     </div>
     <div class="order-id mb-2">
-      <h1>Order #{{ orderid }}</h1>
+      <h1>Order #{{ orderidDisplay }}</h1>
     </div>
     <div class="time mb-6">
-      <h2>Completed at {{ datetime }}</h2>
+      <h2 v-if="Completed">Completed at {{ datetime }}</h2>
+      <h2 v-if="Completed">Completed at {{ datetime }}</h2>
     </div>
     <h1 class="mb-2">Order Summary</h1>
-    <div class="middle-container mt-4 mb-1" v-for="item in cart" :key="item.productId">
+    <div
+      class="middle-container mt-4 mb-1"
+      v-for="item in cart"
+      :key="item.productId"
+    >
       <div class="middle-content">
         <h3>{{ item.name }} x {{ item.quantity }}</h3>
       </div>
@@ -42,15 +48,7 @@
 <script>
 import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import NormalButton from "@/components/NormalButton.vue";
 import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
@@ -65,6 +63,7 @@ export default {
   },
   data: function () {
     return {
+      isLoading: true,
       backToOrder: "Back",
       cart: [],
       merchant: {},
@@ -72,9 +71,13 @@ export default {
       datetime: "",
       totalPrice: 0,
       customerid: "",
+      orderidDisplay: "",
     };
   },
   mounted: async function () {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
     this.getUser();
     this.loadOrder();
   },
@@ -105,6 +108,7 @@ export default {
       this.orderid = values.orderid;
       this.datetime = values.datetime;
       this.customerid = values.customerId;
+      this.orderidDisplay = values.displayid;
       (this.datetime = this.datetime
         .toDate()
         .toLocaleString("en-SG", {
@@ -213,5 +217,24 @@ img {
   align-items: center;
   margin-top: 20px;
   margin-bottom: 50px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.loading h1 {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
 }
 </style>
