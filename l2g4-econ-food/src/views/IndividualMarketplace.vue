@@ -43,6 +43,7 @@ export default {
     return {
       merchant: {},
       filteredItems: [],
+      currentDate: new Date().toISOString(),
     };
   },
   mounted: async function () {
@@ -81,8 +82,12 @@ export default {
           };
         })
         .filter((v) => v.merchantId === id);
-      this.items = values;
-      this.filteredItems = values;
+      this.items = values.filter(
+        (item) => item.quantity > 0 && item.bestByDate > this.currentDate
+      );
+      this.filteredItems = values.filter(
+        (item) => item.quantity > 0 && item.bestByDate > this.currentDate
+      );
     },
     getUser: function () {
       const auth = getAuth();

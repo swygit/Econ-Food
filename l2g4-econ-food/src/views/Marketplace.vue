@@ -6,7 +6,7 @@
 
       <!-- Search bar -->
       <div>
-        <SearchBar @searchPayloadEvent="searchPayload" class="mb-2"/>
+        <SearchBar @searchPayloadEvent="searchPayload" class="mb-2" />
       </div>
 
       <!-- Buttons -->

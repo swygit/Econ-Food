@@ -2,7 +2,10 @@
   <div class="container" v-if="user">
     <CustomerNavigationBar />
     <div class="center">
-      <img src="https://i.ibb.co/GxMZDwr/user-icon.png" class="user-icon mt-5 mb-5" />
+      <img
+        src="https://i.ibb.co/GxMZDwr/user-icon.png"
+        class="user-icon mt-5 mb-5"
+      />
       <form @submit.prevent="updateProfile">
         <input type="text" placeholder="Name" v-model="name" />
         <input type="text" placeholder="Email" v-model="email" readonly />
