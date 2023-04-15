@@ -327,7 +327,7 @@ img {
 }
 .delete-button {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: ;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
   font-size: 16px;

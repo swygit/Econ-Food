@@ -45,7 +45,7 @@ export default {
 .container {
     font-family: "Nunito Sans";
     display: flex;
-    justify-context: center;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;

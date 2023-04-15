@@ -25,7 +25,7 @@
                 ></NormalButton>
             </div>
             <h2 class="mb-2">Transaction History</h2>
-            <div class="topUpHistory mt-3 mb-2" v-for="topUp in topUpHistory.reverse()">
+            <div class="topUpHistory mt-3 mb-2" v-for="topUp in topUpHistory" v-if="loaded">
                 <p class="topUpAmount ms-3 mt-2"> ${{ Object.values(topUp)[0] }} </p>
                 <p class="topUpInfo ms-3 mb-2"> {{ Object.keys(topUp)[0] }} </p>
             </div>
@@ -53,6 +53,7 @@ export default {
     data() {
         return {
             user: false,
+            loaded: false,
             balance: null,
             userId: "",
             topUpHistory: null,
@@ -79,8 +80,8 @@ export default {
                     quantity: 1
                 }
             ],
-            successURL: "http://localhost:5173/topupsuccessful",
-            cancelURL: "http://localhost:5173/topuperror"
+            successURL: "https://econfood-9aa79.web.app/topupsuccessful",
+            cancelURL: "https://econfood-9aa79.web.app/topuperror"
         }
     },
     mounted() {
@@ -89,6 +90,7 @@ export default {
         if (user) {
             this.user = user;
             this.getBalance()
+            this.getTopUpHistory()
         }
         });
     },
@@ -108,8 +110,21 @@ export default {
                 customerDocRef = doc;
                 this.userId = doc.id;
             });
-            this.balance = customerDocRef.data().balance
-            this.topUpHistory = customerDocRef.data().topUpHistory
+            this.balance = await customerDocRef.data().balance.toFixed(2)
+            console.log('User balance loaded.')
+        },
+        async getTopUpHistory() {
+            const customerDocQuery = query(
+                collection(db, "customers"),
+                where("email", "==", this.user.email)
+            );
+            const customerDocsRef = await getDocs(customerDocQuery);
+            customerDocsRef.forEach((doc) => {
+                this.userId = doc.id;
+                this.topUpHistory = doc.data().topUpHistory.reverse();
+            });
+            console.log('User transaction history loaded.')
+            this.loaded = true
         },
         async topup10() {
             var stripe = await loadStripe(this.publishableKey);
@@ -154,18 +169,18 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,900&display=swap");
 .center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: "Nunito Sans"
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Nunito Sans"
 }
 .balance {
-  background-color: #16703c;
-  color: #fff;
-  border-radius: 30px;
-  font-size: 24px;
-  padding: 20px;
+    background-color: #16703c;
+    color: #fff;
+    border-radius: 30px;
+    font-size: 24px;
+    padding: 20px;
 }
 .buttons {
     display: flex;
@@ -173,13 +188,13 @@ export default {
     gap: 10px;
 }
 .topUpHistory {
-  border: 1px solid lightgrey;
-  padding: 10px;
-  flex: 1;
-  width: 45%;
-  font-size: 20px;
-  border-radius: 10px;
-  background-color: #ffff;
+    border: 1px solid lightgrey;
+    padding: 10px;
+    flex: 1;
+    width: 45%;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #ffff;
 }
 .topUpAmount 
 {
