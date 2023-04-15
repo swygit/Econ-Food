@@ -28,7 +28,10 @@
       </div>
     </div>
     <div class="bottom-container">
-      <CounterButton v-bind:setCounterValue="setCounterValue" class="mt-6 me-10 mb-10"/>
+      <CounterButton
+        v-bind:setCounterValue="setCounterValue"
+        class="mt-6 me-10 mb-10"
+      />
       <NormalButton
         @click="addToCart"
         :buttonName="buttonName"
@@ -229,7 +232,6 @@ export default {
 </script>
 
 <style scoped>
-
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 500;
