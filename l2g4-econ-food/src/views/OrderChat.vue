@@ -438,20 +438,28 @@ font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border: none;
   border-radius: 50%;
   background-color: #16703c;
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   cursor: pointer;
   margin-left: 10px;
   margin-right: 10px;
+  padding-top: 2px;
+  padding-right: 2px;
   transition: background-color 0.3s ease;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+.order-chat-send-btn svg {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
 
 .order-chat-send-btn:hover {
   background-color: #134c2e;
