@@ -127,7 +127,11 @@ export default {
       // (-1 means not found)
       console.log(this.merchantId);
       console.log(this.cart.merchantId);
-      if (this.merchant.uid !== this.cart.merchantId && this.merchantId != "") {
+
+      if (
+        this.cart.merchantId != "" &&
+        this.merchant.uid !== this.cart.merchantId
+      ) {
         alert("Adding item from another merchant will override current one!");
         this.cart.products = [];
       }
