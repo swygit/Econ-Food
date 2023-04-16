@@ -40,12 +40,12 @@
           </form>
           <div class="container mt-3">
             <input
-              type="text"
+              type="password"
               placeholder="Enter Current Password"
               v-model="currentPassword"
             />
             <input
-              type="text"
+              type="password"
               placeholder="Enter New Password"
               v-model="newPassword"
             />
