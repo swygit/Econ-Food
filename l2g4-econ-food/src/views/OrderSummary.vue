@@ -16,7 +16,7 @@
       <h1>Order #{{ orderidDisplay }}</h1>
     </div>
     <div class="time mb-6">
-      <h2>Completed at {{ datetime }}</h2>
+      <h2>Received at {{ datetime }}</h2>
     </div>
     <h1 class="mb-2">Order Summary</h1>
     <div

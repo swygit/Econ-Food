@@ -16,7 +16,7 @@
       <h1>Order #{{ orderidDisplay }}</h1>
     </div>
     <div class="time">
-      <h2>Pickup By: {{ datetime }}</h2>
+      <h2>Received at {{ datetime }}</h2>
     </div>
     <OrderStatusIcon :status="orderstatus" @update:status="updateStatus" />
 
