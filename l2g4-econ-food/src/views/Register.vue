@@ -25,7 +25,7 @@
           v-model="confirmpassword"
         />
         <button type="submit" id="register">Register</button>
-        <p v-if="errMsg" v-text="errMsg"></p>
+        <p v-if="errMsg" v-text="errMsg" class="error-message"></p>
         <div class="links">
           <router-link to="/login">
             <div class="link">Login</div>
@@ -226,6 +226,9 @@ input[type="password"] {
 }
 p {
   font-family: "Nunito Sans";
+}
+.error-message {
+  font-size: 1.8rem;
 }
 .links {
   display: flex;

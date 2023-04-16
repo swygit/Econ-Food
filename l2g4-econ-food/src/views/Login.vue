@@ -24,7 +24,7 @@
           v-model="password"
           required
         />
-        <p v-if="errMsg" v-text="errMsg"></p>
+        <p v-if="errMsg" v-text="errMsg" class="error-message"></p>
         <button type="submit" id="login">Login</button>
         <button id="loginGoogle" @click.prevent="loginGoogle">
           <img id="googleLogo" src="https://i.ibb.co/ySrpjSd/google-icon.png" />
@@ -367,6 +367,10 @@ input[type="password"] {
 }
 p {
   font-family: "Nunito Sans";
+}
+.error-message {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 .links {
   display: flex;
