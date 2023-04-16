@@ -72,9 +72,11 @@ export default {
       }
     });
     this.intervalTimer = setInterval(() => {
-      console.log("reloading")
-      location.reload();
-      console.log("reloading")
+      if (this.$route.name === "MerchantListings") {
+        console.log("reloading")
+        location.reload();
+        console.log("reloading")
+      }
     }, 60000);
   },
   methods: {
