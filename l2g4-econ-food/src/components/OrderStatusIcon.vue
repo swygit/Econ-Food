@@ -8,7 +8,14 @@
         r="20"
         :class="{ active: true }"
       />
-      <text x="50" y="50" text-anchor="middle" dy="40" font-size="14px" font-family="Nunito Sans">
+      <text
+        x="50"
+        y="50"
+        text-anchor="middle"
+        dy="40"
+        font-size="14px"
+        font-family="Nunito Sans"
+      >
         Received
       </text>
 
@@ -19,7 +26,14 @@
         r="20"
         :class="{ active: status === 'Prepared' || status === 'Collected' }"
       />
-      <text x="150" y="50" text-anchor="middle" dy="40" font-size="14px" font-family="Nunito Sans">
+      <text
+        x="150"
+        y="50"
+        text-anchor="middle"
+        dy="40"
+        font-size="14px"
+        font-family="Nunito Sans"
+      >
         Prepared
       </text>
 
@@ -30,7 +44,14 @@
         r="20"
         :class="{ active: status === 'Collected' }"
       />
-      <text x="250" y="50" text-anchor="middle" dy="40" font-size="14px" font-family="Nunito Sans">
+      <text
+        x="250"
+        y="50"
+        text-anchor="middle"
+        dy="40"
+        font-size="14px"
+        font-family="Nunito Sans"
+      >
         Collected
       </text>
 
@@ -87,7 +108,7 @@ export default {
 circle:not(.active) {
   stroke: green;
   stroke-width: 4;
-  fill: none;
+  fill: white;
   cursor: pointer;
 }
 </style>

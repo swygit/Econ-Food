@@ -195,8 +195,7 @@ export default {
           });
         }
         // create the order containing all the listings/products in the cart
-        const displyId = this.$orderIdDisplay.toString();
-        this.$orderIdDisplay = this.$orderIdDisplay + 1;
+        const displyId = Math.floor(Math.random() * 100 + 1);
 
         const ordersData = {
           merchantData: this.merchant,
