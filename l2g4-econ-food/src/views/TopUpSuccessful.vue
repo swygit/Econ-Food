@@ -35,6 +35,7 @@ export default {
     data() {
         return {
             user: false,
+            amount: 0,
             userId: "",
             buttonName: "Back to Marketplace"
         }
@@ -44,16 +45,17 @@ export default {
         onAuthStateChanged(auth, (user) => {
         if (user) {
             this.user = user;
+            this.updateBalance()
         }
         });
     },
-    created() {
-        this.updateBalance()
-    },
     methods: {
         async updateBalance() {
-            // get the topup amount
+            // get the topup amount 
             const urlSearchParams = new URLSearchParams(window.location.search);
+            if (!parseInt(urlSearchParams.get('amount'))) {
+                return
+            }
             this.amount = parseInt(urlSearchParams.get('amount'));
             // get customer doc
             const customerDocQuery = query(
@@ -69,7 +71,7 @@ export default {
             const currentDate = new Date();
             const updateTopUpHistory = {};
             updateTopUpHistory[currentDate] = this.amount
-            const customerDoc = await doc(db, "customers", this.userId);
+            const customerDoc = doc(db, "customers", this.userId);
             await updateDoc(customerDoc, {
                 balance: customerDocRef.data().balance + this.amount,
                 topUpHistory: arrayUnion(updateTopUpHistory)
