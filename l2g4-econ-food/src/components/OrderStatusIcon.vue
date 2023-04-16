@@ -6,6 +6,7 @@
         cx="50"
         cy="50"
         r="20"
+        :style="{ cursor: cursorStyle }"
         :class="{ active: true }"
       />
       <text
@@ -24,6 +25,7 @@
         cx="150"
         cy="50"
         r="20"
+        :style="{ cursor: cursorStyle }"
         :class="{ active: status === 'Prepared' || status === 'Collected' }"
       />
       <text
@@ -42,6 +44,7 @@
         cx="250"
         cy="50"
         r="20"
+        :style="{ cursor: cursorStyle }"
         :class="{ active: status === 'Collected' }"
       />
       <text
@@ -88,6 +91,7 @@
 export default {
   props: {
     status: String,
+    cursor: String,
   },
   methods: {
     toggleCircle(circleStatus) {
@@ -96,6 +100,11 @@ export default {
       } else {
         this.status = circleStatus;
       }
+    },
+  },
+  computed: {
+    cursorStyle() {
+      return this.cursor;
     },
   },
 };
@@ -109,6 +118,5 @@ circle:not(.active) {
   stroke: green;
   stroke-width: 4;
   fill: white;
-  cursor: pointer;
 }
 </style>

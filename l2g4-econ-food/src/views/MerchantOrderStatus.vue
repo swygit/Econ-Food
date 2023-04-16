@@ -18,7 +18,11 @@
     <div class="time">
       <h2>Received at {{ datetime }}</h2>
     </div>
-    <OrderStatusIcon :status="orderstatus" @update:status="updateStatus" />
+    <OrderStatusIcon
+      :status="orderstatus"
+      :cursor="pointer"
+      @update:status="updateStatus"
+    />
 
     <div class="bottom-container mt-4 mb-1">
       <button @click="viewDetail(orderid)" id="viewdetails">
@@ -75,6 +79,7 @@ export default {
       customerid: "",
       orderstatus: "",
       orderidDisplay: "",
+      pointer: "pointer",
     };
   },
   mounted: async function () {
