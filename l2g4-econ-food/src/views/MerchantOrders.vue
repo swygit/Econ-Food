@@ -1,23 +1,42 @@
 <template>
   <div class="background">
-    <MerchantNavigationBar/>
+    <MerchantNavigationBar />
     <div class="app-wrapper">
-    <h1 class="mb-8">Orders</h1>
-    <div v-for="(entries, date) in orders" :key="date">
-      <h2 class="date mt-8 mb-3">{{ date }}</h2>
-      <div class="orders">
-        <MerchantOrderList
-          v-for="order in entries"
-          :key="order.id"
-          :id="order.id"
-          :orderid="order.orderid"
-          :merchant="order.merchant"
-          :datetime="order.datetime"
-          :price="order.price"
-          :status="order.status"
-        />
+      <h1 class="mb-8">Orders</h1>
+      <!-- Buttons -->
+      <div>
+        <FilterButton
+          @click="toggleAll"
+          :buttonName="allButtonName"
+        ></FilterButton>
+        <FilterButton
+          @click="toggleRecieved"
+          :buttonName="receivedButtonName"
+        ></FilterButton>
+        <FilterButton
+          @click="togglePrepared"
+          :buttonName="preparedButtonName"
+        ></FilterButton>
+        <FilterButton
+          @click="toggleCollected"
+          :buttonName="collectedButtonName"
+        ></FilterButton>
       </div>
-    </div>
+      <div v-for="(entries, date) in filteredOrders" :key="date">
+        <h2 class="date mt-8 mb-3">{{ date }}</h2>
+        <div>
+          <MerchantOrderList
+            v-for="order in entries"
+            :key="order.id"
+            :id="order.id"
+            :orderid="order.orderid"
+            :orderidDisplay="order.orderidDisplay"
+            :datetime="order.datetime"
+            :price="order.price"
+            :status="order.status"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -25,6 +44,7 @@
 <script>
 import MerchantNavigationBar from "../components/MerchantNavigationBar.vue";
 import MerchantOrderList from "../components/MerchantOrderList.vue";
+import FilterButton from "../components/FilterButton.vue";
 import firebaseApp from "../firebase.js";
 import {
   getFirestore,
@@ -41,11 +61,68 @@ export default {
   components: {
     MerchantNavigationBar,
     MerchantOrderList,
+    FilterButton,
   },
   data() {
     return {
       orders: {},
+      filteredOrders: {},
+      allButtonName: "All",
+      receivedButtonName: "Recieved",
+      preparedButtonName: "Prepared",
+      collectedButtonName: "Collected",
     };
+  },
+  methods: {
+    toggleAll: function () {
+      this.filteredOrders = this.orders;
+    },
+
+    toggleRecieved: function () {
+      const filteredOrders = {};
+      Object.entries(this.orders).forEach(([date, orders]) => {
+        orders.forEach(function (order) {
+          if (order.status === "Received") {
+            if (!filteredOrders[date]) {
+              filteredOrders[date] = [order];
+            } else {
+              filteredOrders[date].push(order);
+            }
+          }
+        });
+      });
+      this.filteredOrders = filteredOrders;
+    },
+    togglePrepared: function () {
+      const filteredOrders = {};
+      Object.entries(this.orders).forEach(([date, orders]) => {
+        orders.forEach(function (order) {
+          if (order.status === "Prepared") {
+            if (!filteredOrders[date]) {
+              filteredOrders[date] = [order];
+            } else {
+              filteredOrders[date].push(order);
+            }
+          }
+        });
+      });
+      this.filteredOrders = filteredOrders;
+    },
+    toggleCollected: function () {
+      const filteredOrders = {};
+      Object.entries(this.orders).forEach(([date, orders]) => {
+        orders.forEach(function (order) {
+          if (order.status === "Collected") {
+            if (!filteredOrders[date]) {
+              filteredOrders[date] = [order];
+            } else {
+              filteredOrders[date].push(order);
+            }
+          }
+        });
+      });
+      this.filteredOrders = filteredOrders;
+    },
   },
   mounted() {
     const auth = getAuth();
@@ -72,6 +149,7 @@ export default {
               merchant: data.merchant,
               price: data.price,
               status: data.status,
+              orderidDisplay: data.displayid,
               // The line of code below basically changes the timestamp format in fire base to the
               // format that we want
               datetime: data.datetime
@@ -110,6 +188,7 @@ export default {
             }
           }
         });
+        this.filteredOrders = groupedByDate;
         this.orders = groupedByDate;
       })
       .catch((error) => {

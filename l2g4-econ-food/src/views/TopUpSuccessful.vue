@@ -35,6 +35,7 @@ export default {
     data() {
         return {
             user: false,
+            amount: 0,
             userId: "",
             buttonName: "Back to Marketplace"
         }
@@ -50,8 +51,11 @@ export default {
     },
     methods: {
         async updateBalance() {
-            // get the topup amount
+            // get the topup amount 
             const urlSearchParams = new URLSearchParams(window.location.search);
+            if (!parseInt(urlSearchParams.get('amount'))) {
+                return
+            }
             this.amount = parseInt(urlSearchParams.get('amount'));
             // get customer doc
             const customerDocQuery = query(
@@ -67,7 +71,7 @@ export default {
             const currentDate = new Date();
             const updateTopUpHistory = {};
             updateTopUpHistory[currentDate] = this.amount
-            const customerDoc = await doc(db, "customers", this.userId);
+            const customerDoc = doc(db, "customers", this.userId);
             await updateDoc(customerDoc, {
                 balance: customerDocRef.data().balance + this.amount,
                 topUpHistory: arrayUnion(updateTopUpHistory)
@@ -85,7 +89,7 @@ export default {
 .container {
     font-family: "Nunito Sans";
     display: flex;
-    justify-context: center;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;

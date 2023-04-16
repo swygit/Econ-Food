@@ -70,21 +70,21 @@ p {
   flex-wrap: wrap;
 }
 .item-card {
-  min-width: 160px;
-  min-height: 180px;
+  height: 32rem;
+  width: 26rem;
   background-color: #ffffff;
-  border-radius: 7px;
+  border-radius: 13px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 10px 10px 0;
+  margin: 0 20px 20px 0;
   padding: 10px;
 }
 .item-card-icon-circle {
   background-color: #ffffff;
-  width: 85px;
-  height: 85px;
+  width: 16rem;
+  height: 16rem;
   border-radius: 50%;
   margin: 0 auto 0 auto;
   display: flex;
@@ -92,8 +92,9 @@ p {
   align-items: center;
 }
 .item-card-icon-circle img {
-  max-width: 60px;
-  max-height: 60px;
+  margin-top: 2rem;
+  max-width: 18rem;
+  max-height: 18rem;
   object-fit: fill;
 }
 .item-card-variety {
@@ -102,18 +103,19 @@ p {
   text-transform: lowercase;
   text-transform: capitalize;
 }
-
 .item-card-name {
-  font-weight: 500;
+  font-weight: bold;
+  font-size: 14px;
   color: #000000;
-  margin: 15px auto 15px auto;
+  margin: 15px auto 10px auto;
   text-transform: lowercase;
   text-transform: capitalize;
 }
 .item-card-price {
   font-weight: 500;
+  font-size: 14px;
   color: #000000;
-  margin: 15px auto 15px auto;
+  margin: 15px auto auto auto;
   text-transform: lowercase;
   text-transform: capitalize;
 }
@@ -121,10 +123,11 @@ p {
   color: #ffffff;
   margin: 15px auto 0 auto;
   font-size: 1.5rem;
+  /* font-weight: bold; */
   display: flex;
 }
 .button {
   padding: 8px 5px;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 </style>

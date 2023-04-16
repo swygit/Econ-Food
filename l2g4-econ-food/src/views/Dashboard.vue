@@ -6,30 +6,33 @@
               Lifetime Revenue
               <h1>${{ revenue.toFixed(2) }}</h1>
           </div>
+          
           <div class="numOrders">
-              Lifetime orders
+               Lifetime orders
               <h1>{{ numOrders }}</h1>
-          </div>   
+          </div>
+          
           <div class="activeListings">
-              Active listings
+              <a href="/merchantlistings" id="links">Active listings</a>
               <h1>{{ activeListings }}</h1>
           </div>
+          
           <div class="topListing">
               Top Listing
               <h4>{{ topListing }}</h4>
           </div>
       </div>  
       <div class="middle">
-          <h2>Daily Revenue</h2>
-          <line-chart v-if="loaded" :data="dailyRevenue" :colors="['#16703c']" height="800px" ></line-chart>
+          <h2 class="mb-2">Daily Revenue</h2>
+          <line-chart v-if="loaded" :data="dailyRevenue" :colors="['#16703c']" height="60rem" ></line-chart>
       </div>
       <div class="bottom">
-          <div class="bottomLeft">
-              <h3>Daily number of orders</h3>
+          <div class="bottomLeft me-6">
+              <h3 class="mb-2">Daily number of orders</h3>
               <bar-chart v-if="loaded" :data="dailyOrders" :colors="['#16703c']" ></bar-chart>
           </div>
-          <div class="bottomRight">
-              <h3>Top listings by revenue</h3>
+          <div class="bottomRight ms-6">
+              <h3 class="mb-2">Top listings by revenue</h3>
               <column-chart v-if="loaded" :data="topListings" :colors="['#16703c']" prefix="$" ></column-chart>
           </div>
       </div>
@@ -186,7 +189,7 @@ h1 {
 }
 
 h2 {
-  font-size: 50px;
+  font-size: 42px;
   margin-left: 20px;
 }
 h3 {
@@ -196,9 +199,17 @@ h3 {
 h4 {
   font-size: 30px;
 }
+a {
+    color: white;
+    text-decoration: none;
+}
 .top {
   display: flex;
   flex-direction: row;
+  margin: 2rem 6rem 0rem 6rem;
+}
+.middle {
+  margin: 1rem 6rem 0rem 6rem;
 }
 .revenue, .numOrders, .activeListings, .topListing {
   flex: 1;
@@ -211,11 +222,11 @@ h4 {
   margin: 20px;
 }
 .bottom {
-display: flex;
-flex-direction: row;
-align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin: 6rem 6rem 6rem 6rem;
 }
-
 .bottomLeft, .bottomRight {
   flex: 1;
 }

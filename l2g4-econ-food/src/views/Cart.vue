@@ -12,7 +12,11 @@
             <br />
             <div class="ms-6">
               <h2 class="mb-2">{{ this.cart.merchantName }}</h2>
-              <div class="text mb-2" v-for="item in cartItems" :key="item.productId">
+              <div
+                class="text mb-2"
+                v-for="item in cartItems"
+                :key="item.productId"
+              >
                 <h3>{{ item.name }} x{{ item.quantity }}</h3>
               </div>
               <h3>Subtotal: ${{ totalPrice }}</h3>
@@ -187,6 +191,8 @@ export default {
           });
         }
         // create the order containing all the listings/products in the cart
+        const displyId = this.$orderIdDisplay.toString();
+        this.$orderIdDisplay = this.$orderIdDisplay + 1;
         const ordersData = {
           merchantData: this.merchant,
           cart: this.cartItems,
@@ -196,6 +202,7 @@ export default {
           merchant: this.merchant.name,
           datetime: new Date(),
           status: "Received",
+          displayid: displyId,
         };
         const ordersRef = collection(db, "orders");
         addDoc(ordersRef, ordersData)
@@ -247,7 +254,6 @@ export default {
 .app {
   margin: auto;
   width: 100%;
-  /* max-width: 1048px; */
 }
 .app-wrapper {
   margin-top: 40px;
@@ -305,6 +311,8 @@ img {
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 28px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 .listing-item {
   display: flex;

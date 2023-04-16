@@ -1,49 +1,46 @@
 <template>
-  <div class="app">
-    <div class="app-wrapper">
-      <CustomerNavigationBar />
-      <div class="container" v-if="this.cartItems.length != 0">
-        <div class="top-container">
-          <div class="top-image-container">
-            <img :src="this.merchant.imageUrl" alt="" />
-          </div>
-          &emsp;&emsp;
-          <div class="text">
-            <h1>{{ merchant.name }}</h1>
-            <h2>{{ merchant.location }}</h2>
-            <h2>{{ merchant.operatingHours }}</h2>
-          </div>
-        </div>
-        <div
-          class="middle-container"
-          v-for="item in cartItems"
-          :key="item.productId"
-        >
-          <div class="middle-image-container">
-            <img :src="item.imageUrl" alt="" />
-          </div>
-          &emsp;&emsp;
-          <div class="middle-content">
-            <h3>{{ item.name }}</h3>
-            <h2>Quantity: {{ item.quantity }}</h2>
-            <button @click="deleteItem(item)" class="delete-button">
-              Delete
-            </button>
-          </div>
-          <h2 style="margin-left: auto">
-            Price: ${{ item.price }}&emsp;&emsp;
-          </h2>
-        </div>
-        <div style="margin-left: auto">
-          <h3>Subtotal: ${{ totalPrice }} &emsp;</h3>
-        </div>
-        <div class="bottom-container">
-          <NormalButton
-            @click="checkoutItem"
-            :buttonName="buttonName"
-          ></NormalButton>
-        </div>
+  <CustomerNavigationBar />
+  <div class="container" v-if="this.cartItems.length != 0">
+    <div class="top-container">
+      <div class="top-image-container mt-8 mb-8 me-8">
+        <img :src="this.merchant.imageUrl" alt="" />
       </div>
+
+      <div class="text">
+        <h1 class="mb-2">{{ merchant.name }}</h1>
+        <h2>{{ merchant.location }}</h2>
+        <h2>{{ merchant.operatingHours }}</h2>
+      </div>
+    </div>
+    <div
+      class="middle-container mt-6"
+      v-for="item in cartItems"
+      :key="item.productId"
+    >
+      <div class="middle-image-container ms-16 me-6">
+        <img :src="item.imageUrl" alt="" />
+      </div>
+
+      <div class="middle-content">
+        <h3>{{ item.name }}</h3>
+        <h2>Quantity: {{ item.quantity }}</h2>
+        <button @click="deleteItem(item)" class="delete-button">Delete</button>
+      </div>
+      <h2 style="margin-left: auto" class="me-16">Price: ${{ item.price }}</h2>
+    </div>
+    <div style="margin-left: auto" class="mt-6 me-16">
+      <h3>Subtotal: ${{ totalPrice }}</h3>
+    </div>
+    <div class="bottom-container">
+      <NormalButton
+        @click="checkoutItem"
+        :buttonName="buttonName"
+      ></NormalButton>
+      <p></p>
+      <NormalButtonUnfilled
+        @click="back"
+        :buttonName="backButton"
+      ></NormalButtonUnfilled>
     </div>
   </div>
 </template>
@@ -64,6 +61,7 @@ import {
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
 import NormalButton from "@/components/NormalButton.vue";
+import NormalButtonUnfilled from "@/components/NormalButtonUnfilled.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -72,6 +70,7 @@ export default {
   components: {
     CustomerNavigationBar,
     NormalButton,
+    NormalButtonUnfilled,
   },
   data: function () {
     return {
@@ -83,6 +82,7 @@ export default {
       cartId: "",
       cartItems: [],
       buttonName: "Checkout",
+      backButton: "Back",
       merchant: {},
       cart: {},
       totalPrice: 0,
@@ -193,6 +193,9 @@ export default {
           });
         }
         // create the order containing all the listings/products in the cart
+        const displyId = this.$orderIdDisplay.toString();
+        this.$orderIdDisplay = this.$orderIdDisplay + 1;
+
         const ordersData = {
           merchantData: this.merchant,
           cart: this.cartItems,
@@ -202,6 +205,7 @@ export default {
           merchant: this.merchant.name,
           datetime: new Date(),
           status: "Received",
+          displayid: displyId,
         };
         const ordersRef = collection(db, "orders");
         addDoc(ordersRef, ordersData)
@@ -252,25 +256,20 @@ export default {
         });
       }
     },
+    back: function () {
+      this.$router.push(`/cart/${this.user.uid}`);
+    },
   },
 };
 </script>
 
 <style scoped>
-.app {
-  margin: auto;
-  width: 100%;
-  /* max-width: 1048px; */
-}
-.app-warpper {
-  margin: auto;
-}
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 700;
 }
 h2 {
@@ -278,11 +277,11 @@ h2 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
   font-size: 20px;
@@ -296,13 +295,13 @@ p {
   align-items: left;
   /* grid-template-columns: 1fr 1fr 1fr; */
   background-color: #ffffff;
-  /* margin: 100px; */
+  margin-left: 18rem;
+  margin-right: 18rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .top-container {
-  margin-top: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -325,33 +324,28 @@ p {
   justify-content: center;
   align-items: center;
 }
-.middle-content {
-  font-size: 15px;
-}
 img {
-  width: 230px;
+  width: 250px;
   height: 180px;
 }
 .bottom-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 20px;
+  margin-top: 8rem;
+  margin-bottom: 8rem;
 }
 .delete-button {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
   color: #b12e21;
   background-color: #ffffff;
   border: 0px;
 }
 .delete-button:hover {
   cursor: pointer;
-}
-.text {
-  font-size: 70px;
 }
 </style>

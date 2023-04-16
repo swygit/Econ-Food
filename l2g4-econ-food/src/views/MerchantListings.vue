@@ -2,7 +2,7 @@
   <div>
     <MerchantNavigationBar />
     <div class="header-wrapper">
-      <h1>Listings</h1>
+      <h1>Active Listings</h1>
       <ListingSearchBar
         v-bind:value="searchQuery"
         v-on:update:value="searchQuery = $event"

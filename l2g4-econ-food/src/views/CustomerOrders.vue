@@ -1,8 +1,8 @@
 <template>
   <div class="background">
-    <CustomerNavigationBar/>
+    <CustomerNavigationBar />
     <div class="app-wrapper">
-    <h1 class="mb-8">Orders</h1>
+      <h1 class="mb-8">Orders</h1>
       <div v-for="(entries, date) in orders" :key="date">
         <h2 class="date mt-8 mb-3">{{ date }}</h2>
         <div class="orders">
@@ -11,6 +11,7 @@
             :key="order.id"
             :id="order.id"
             :orderid="order.orderid"
+            :orderidDisplay="order.displayid"
             :merchantid="order.merchantID"
             :merchant="order.merchant"
             :datetime="order.datetime"
@@ -74,6 +75,7 @@ export default {
               merchant: data.merchant,
               price: data.price,
               status: data.status,
+              displayid: data.displayid,
               // The line of code below basically changes the timestamp format in fire base to the
               // format that we want
               datetime: data.datetime

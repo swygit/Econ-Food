@@ -1,46 +1,42 @@
 <template>
-  <div class="app">
-    <div class="app-wrapper">
-      <CustomerNavigationBar />
-      <div class="container">
-        <div class="top-container">
-          <div class="top-image-container">
-            <img :src="this.merchant.imageUrl" alt="" />
-          </div>
-          &emsp;&emsp;
-          <div class="text">
-            <h1>{{ merchant.name }}</h1>
-            <h2>{{ merchant.location }}</h2>
-            <h2>{{ merchant.operatingHours }}</h2>
-          </div>
-        </div>
-        <div class="middle-container">
-          <div class="middle-image-container">
-            <img :src="item.imageUrl" alt="" />
-          </div>
-          &emsp;&emsp;
-          <div class="middle-content">
-            <h3>{{ item.name }}</h3>
-            <h2>
-              {{ item.description }}
-            </h2>
-            <h2>Quantity Available: {{ item.quantity }}</h2>
-            <h2>Best Before Date: {{ formattedBestByDate }}</h2>
-            <h2>Best Before Time: {{ formattedBestByTime }}</h2>
-            <h2>Price: ${{ item.price }}</h2>
-          </div>
-        </div>
-        <div class="bottom-container">
-          <CounterButton v-bind:setCounterValue="setCounterValue" />
-          <div>
-            <p></p>
-          </div>
-          <NormalButton
-            @click="addToCart"
-            :buttonName="buttonName"
-          ></NormalButton>
-        </div>
+  <CustomerNavigationBar />
+  <div class="container">
+    <div class="top-container mt-8 mb-10">
+      <div class="top-image-container me-8">
+        <img :src="this.merchant.imageUrl" alt="" />
       </div>
+      <div class="text">
+        <h1 class="mb-2">{{ merchant.name }}</h1>
+        <h2>{{ merchant.location }}</h2>
+        <h2>{{ merchant.operatingHours }}</h2>
+      </div>
+    </div>
+    <div class="middle-container ms-16 me-16 mb-2">
+      <div class="middle-image-container me-8">
+        <img :src="item.imageUrl" alt="" />
+      </div>
+
+      <div class="middle-content">
+        <h3 class="mb-2">{{ item.name }}</h3>
+        <h2>
+          {{ item.description }}
+        </h2>
+        <h2>Quantity Available: {{ item.quantity }}</h2>
+        <h2>Best Before Date: {{ formattedBestByDate }}</h2>
+        <h2>Best Before Time: {{ formattedBestByTime }}</h2>
+        <h2 class="mt-4">Price: ${{ item.price }}</h2>
+      </div>
+    </div>
+    <div class="bottom-container">
+      <CounterButton
+        v-bind:setCounterValue="setCounterValue"
+        class="mt-6 me-10 mb-10"
+      />
+      <NormalButton
+        @click="addToCart"
+        :buttonName="buttonName"
+        class="mt-6 ms-10 mb-10"
+      ></NormalButton>
     </div>
   </div>
 </template>
@@ -129,8 +125,9 @@ export default {
     },
     addToCart: async function () {
       // (-1 means not found)
-
-      if (this.merchant.uid !== this.cart.merchantId) {
+      console.log(this.merchantId);
+      console.log(this.cart.merchantId);
+      if (this.merchant.uid !== this.cart.merchantId && this.merchantId != "") {
         alert("Adding item from another merchant will override current one!");
         this.cart.products = [];
       }
@@ -236,20 +233,12 @@ export default {
 </script>
 
 <style scoped>
-.app {
-  margin: auto;
-  width: 100%;
-  /* max-width: 1048px; */
-}
-.app-warpper {
-  margin: auto;
-}
 h1 {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 700;
 }
 h2 {
@@ -257,28 +246,23 @@ h2 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 2%;
   line-height: 24px;
   font-size: 20px;
-}
-p {
-  padding: 25px 50px;
 }
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* grid-template-columns: 1fr 1fr 1fr; */
-  background-color: #ffffff;
-  /* margin: 100px; */
-  display: flex;
-  align-items: center;
   justify-content: center;
+  background-color: #ffffff;
+  margin-left: 18rem;
+  margin-right: 18rem;
 }
 .top-container {
   margin-top: 20px;
@@ -297,17 +281,14 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 100%;
 }
 .middle-image-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.middle-content {
-}
 img {
-  width: 230px;
+  width: 250px;
   height: 180px;
 }
 .bottom-container {
@@ -315,8 +296,5 @@ img {
   flex-direction: row;
   align-items: center;
   margin: 20px;
-}
-.text {
-  font-size: 70px;
 }
 </style>

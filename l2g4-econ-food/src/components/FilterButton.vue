@@ -21,7 +21,8 @@ button {
   color: #000000;
   background-color: #ffffff;
   border-radius: 4px;
-  font-size: 1.625rem;
+  font-size: 1.8rem;
+  font-family: "Nunito Sans", sans-serif;
   border-radius: 1.625rem;
   cursor: pointer;
 }

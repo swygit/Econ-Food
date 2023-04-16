@@ -1,24 +1,29 @@
 <template>
   <CustomerNavigationBar />
-  <div class="container">
-    <div class="top-container">
-      <div class="top-image-container">
+  <div class="loading" v-show="isLoading"><h1>Loading...</h1></div>
+  <div v-show="!isLoading" class="container">
+    <div class="top-container mt-8 mb-8">
+      <div class="top-image-container me-8">
         <img :src="this.merchant.imageUrl" alt="" />
       </div>
       <div class="text">
-        <h1 class="merchant-name">{{ merchant.name }}</h1>
+        <h1 class="merchant-name mb-2">{{ merchant.name }}</h1>
         <h2 class="location">{{ merchant.location }}</h2>
         <h2 class="detail">{{ merchant.operatingHours }}</h2>
       </div>
     </div>
-    <div class="order-id">
-      <h1>Order #{{ orderid }}</h1>
+    <div class="order-id mb-2">
+      <h1>Order #{{ orderidDisplay }}</h1>
     </div>
-    <div class="time">
+    <div class="time mb-6">
       <h2>Completed at {{ datetime }}</h2>
     </div>
-    <h1>Order Summary</h1>
-    <div class="middle-container" v-for="item in cart" :key="item.productId">
+    <h1 class="mb-2">Order Summary</h1>
+    <div
+      class="middle-container mt-4 mb-1"
+      v-for="item in cart"
+      :key="item.productId"
+    >
       <div class="middle-content">
         <h3>{{ item.name }} x {{ item.quantity }}</h3>
       </div>
@@ -26,7 +31,7 @@
         ${{ item.price.toFixed(2) }}&emsp;&emsp;
       </h2>
     </div>
-    <div style="margin-left: auto">
+    <div style="margin-left: auto" class="mt-6">
       <h3>Subtotal: ${{ totalPrice.toFixed(2) }}</h3>
     </div>
 
@@ -42,15 +47,7 @@
 <script>
 import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import NormalButton from "@/components/NormalButton.vue";
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
@@ -65,6 +62,7 @@ export default {
   },
   data: function () {
     return {
+      isLoading: true,
       backToOrder: "Back",
       cart: [],
       merchant: {},
@@ -72,9 +70,13 @@ export default {
       datetime: "",
       totalPrice: 0,
       customerid: "",
+      orderidDisplay: "",
     };
   },
   mounted: async function () {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
     this.getUser();
     this.loadOrder();
   },
@@ -105,6 +107,7 @@ export default {
       this.orderid = values.orderid;
       this.datetime = values.datetime;
       this.customerid = values.customerId;
+      this.orderidDisplay = values.displayid;
       (this.datetime = this.datetime
         .toDate()
         .toLocaleString("en-SG", {
@@ -135,7 +138,7 @@ h1 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 700;
 }
 h2 {
@@ -143,7 +146,7 @@ h2 {
   font-weight: 500;
   letter-spacing: 2%;
   line-height: 24px;
-  font-size: 15px;
+  font-size: 16px;
 }
 h3 {
   font-family: "Nunito Sans", sans-serif;
@@ -167,12 +170,11 @@ p {
 .container {
   display: flex;
   flex-direction: column;
-  /* grid-template-columns: 1fr 1fr 1fr; */
-  background-color: #ffffff;
-  /* margin: 100px; */
-  display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #ffffff;
+  margin-left: 18rem;
+  margin-right: 18rem;
 }
 .top-container {
   display: flex;
@@ -208,17 +210,35 @@ p {
   align-items: right;
 }
 img {
-  align-items: left;
-  width: 200px;
-  height: 120px;
+  width: 250px;
+  height: 180px;
 }
 .bottom-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 20px;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
 .text {
   font-size: 70px;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.loading h1 {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
 }
 </style>

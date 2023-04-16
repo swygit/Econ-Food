@@ -10,26 +10,27 @@
           class="listing-image" alt="Picture Unavailable"
         />
       </div>
-      <div class="listing-info">
+      <div class="listing-info mt-3">
         <div class="listing-header">
           <h2 class="listing-name">{{ listing.name }}</h2>
-          <div class="listing-buttons">
-            <p>Quantity</p>
-            <button class="quantity-button" @click="decrementQuantity">-</button>
-            <input
-              type="number"
-              class="quantity-input"
-              v-model.number="quantity"
-            />
-            <button class="quantity-button" @click="incrementQuantity">+</button>
-          </div>
         </div>
         <div class="listing-details">
-          <p class="listing-price">$ {{ listing.price.toFixed(2) }}</p>
-          <p class="listing-best-by">Best By: {{ formattedBestByDateTime }}</p>
+          <p class="listing-price mt-1">$ {{ listing.price.toFixed(2) }}</p>
+          <p class="listing-best-by mt-1">Best By: {{ formattedBestByDateTime }}</p>
+        </div>
+        <div class="listing-buttons mt-5">
+          <p class="me-4">Quantity</p>
+          <button class="quantity-button" id="decrease" @click="decrementQuantity">-</button>
+          <input
+            type="number"
+            id="number"
+            class="quantity-input"
+            v-model.number="quantity"
+          />
+          <button class="quantity-button" id="increase" @click="incrementQuantity">+</button>
         </div>
       </div>
-      <div class="listing-buttons">
+      <div class="listing-buttons mt-4">
         <button class="delete-button mt-2 me-2" @click="deleteListing">Delete</button>
         <button class="save-button mt-2 ms-2" @click="updateQuantity">Save</button>
       </div>
@@ -151,8 +152,9 @@ export default {
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
-  max-width: 400px;
-  margin: 0px;
+  height: 60rem;
+  width: 38rem;
+  margin: 10px;
 }
 
 .listing-image-container {
@@ -162,7 +164,7 @@ export default {
   width: 100%;
   height: 200px;
   border-radius: 8px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .listing-image {
@@ -178,7 +180,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: 16px;
 }
 
 .listing-header {
@@ -193,42 +194,51 @@ export default {
   font-size: 26px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 8px;
 }
 
 .listing-buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 8px;
   font-size: 2rem;
 }
 
 .quantity-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #16703c;
-  border: none;
-  color: #fff;
-  font-size: 20px;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 3rem;
   font-weight: bold;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  margin: 0px 8px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
+#decrease {
+  border-radius: 18px 0 0 18px;
+  background-color: #16703c;
+  color: #ffffff;
+}
+#increase {
+  border-radius: 0 18px 18px 0;
+  background-color: #16703c;
+  color: #ffffff;
+}
 .quantity-input {
   font-size: 20px;
   text-align: center;
-  width: 60px;
+  height: 5rem;
+  width: 6rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px;
 }
-
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
 .listing-details {
   font-family: "Nunito Sans", sans-serif;
   display: flex;
@@ -236,14 +246,12 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 16px;
 }
 
 .listing-price {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 8px;
 }
 
 .listing-best-by {
@@ -256,7 +264,6 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 16px;
 }
 
 .save-button {
@@ -277,14 +284,14 @@ export default {
 }
 
 .save-button:hover {
-  background-color: #16703c;
+  background-color: #1e924e;
 }
 
 .delete-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ff1f01;
+  background-color: #cc1b04;
   border: none;
   color: #fff;
   font-family: "Nunito Sans", sans-serif;
@@ -298,6 +305,6 @@ export default {
 }
 
 .delete-button:hover {
-  background-color: #ff8c69;
+  background-color: #f85625;
 }
 </style>

@@ -3,18 +3,23 @@
     <div class="order-date">
       <div class="order">
         <div class="order-content">
-          <p class="order-merchant mt-2 ms-3">{{ merchant }}</p>
+          <p class="order-merchant mt-2 ms-3">Order #{{ orderidDisplay }}</p>
           <p class="order-date-time mt-1 ms-3">{{ datetime }}</p>
-          <p class="order-id mt-1 mb-2 ms-3">Order #{{ orderid }}</p>
         </div>
         <div class="order-price">
-          <p>${{ price }}</p>
+          <p>${{ price.toFixed(2) }}</p>
         </div>
-        <button @click="goSummary(orderid, status)" class="view-order-btn pt-3 pb-3 ps-5 pe-5 ms-2 me-1">
+        <button
+          @click="goSummary(orderid, status)"
+          class="view-order-btn pt-3 pb-3 ps-5 pe-5 ms-2 me-1"
+        >
           View Order
         </button>
 
-        <button @click="goToChat(orderid)" class="merchant-order-chat-btn pt-3 pb-3 ps-5 pe-5 ms-1 me-3">
+        <button
+          @click="goToChat(orderid)"
+          class="merchant-order-chat-btn pt-3 pb-3 ps-5 pe-5 ms-1 me-3"
+        >
           Chat
         </button>
       </div>
@@ -39,20 +44,20 @@ export default {
       type: String,
       required: true,
     },
-    merchant: {
-      type: String,
-      required: true,
-    },
     price: {
-      type: String,
+      type: Number,
       required: true,
     },
     orderid: {
       type: String,
       required: true,
     },
+    orderidDisplay: {
+      type: String,
+      required: true,
+    },
     datetime: {
-      type: Date,
+      type: String,
       required: true,
     },
     status: {
@@ -65,7 +70,7 @@ export default {
 
 <style scoped>
 .order {
-  border: 2px solid black;
+  border: 2px solid lightgrey;
   padding: 10px;
   display: flex;
   align-items: center;
