@@ -138,14 +138,14 @@ export default {
                   this.dailyOrders[orderDate] += 1
                   // increment daily revenue from all items in order
                   for (let i = 0; i < doc.data().cart.length; i++) {
-                      this.dailyRevenue[orderDate] +=  doc.data().cart[i].price * doc.data().cart[i].quantity
+                      this.dailyRevenue[orderDate] +=  doc.data().cart[i].price // * doc.data().cart[i].quantity
                   }
               }
               // top listings
               for (let i = 0; i < doc.data().cart.length; i++) {
                   const productId = doc.data().cart[i].productId
                   const productName = doc.data().cart[i].name
-                  this.topListings[[productId, productName]] += doc.data().cart[i].price * doc.data().cart[i].quantity
+                  this.topListings[[productId, productName]] += doc.data().cart[i].price // * doc.data().cart[i].quantity
               }
           });
           // modify topListings to show only top 5 listings by revenue
