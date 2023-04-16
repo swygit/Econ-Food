@@ -104,31 +104,35 @@ export default {
   },
   methods: {
     async updateProfile() {
-      const merchantDoc = await doc(db, "merchants", this.userId);
-      await updateDoc(merchantDoc, {
-        imageUrl: this.imageUrl,
-        name: this.name,
-        businessType: this.businessType,
-        operatingHours: this.operatingHours,
-        location: this.location,
-        phoneNumber: this.phoneNumber,
-        bankNumber: this.bankNumber,
-      });
-      // check if the profile has been filled up
-      const merchantDocRef = await getDoc(doc(db, "merchants", this.userId));
-      for (const key in merchantDocRef.data()) {
-        const value = merchantDocRef.data()[key];
-        if (value === "") {
-          await updateDoc(merchantDoc, {
-            updatedProfile: false,
-          });
-          break;
-        }
+      try {
+        const merchantDoc = await doc(db, "merchants", this.userId);
         await updateDoc(merchantDoc, {
-          updatedProfile: true,
+          imageUrl: this.imageUrl,
+          name: this.name,
+          businessType: this.businessType,
+          operatingHours: this.operatingHours,
+          location: this.location,
+          phoneNumber: this.phoneNumber,
+          bankNumber: this.bankNumber,
         });
+        // check if the profile has been filled up
+        const merchantDocRef = await getDoc(doc(db, "merchants", this.userId));
+        for (const key in merchantDocRef.data()) {
+          const value = merchantDocRef.data()[key];
+          if (value === "") {
+            await updateDoc(merchantDoc, {
+              updatedProfile: false,
+            });
+            break;
+          }
+          await updateDoc(merchantDoc, {
+            updatedProfile: true,
+          });
+        }
+        alert("Profile successfully updated!");
+      } catch (error) {
+        alert('Image too large. Select another one.')
       }
-      alert("Profile successfully updated!");
     },
     async onUpload(event) {
       const file = event.target.files[0];
@@ -136,7 +140,7 @@ export default {
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.imageUrl = reader.result;
-      };
+      }
     },
     async signOut() {
       await signOut(getAuth(firebaseApp));
