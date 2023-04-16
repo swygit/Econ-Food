@@ -9,10 +9,10 @@
 
       <div class="col-left">
         <v-col class="center">
-          <h1>As a Merchant...</h1>
+          <h1>As a Mercant...</h1>
 
           <ListWithIcon
-            image-src="src/assets/merchant-icon-1.png"
+            image-src="../merchant-icon-1.png"
             image-alt="merchant-icon-1"
             header="POST"
             description="Upload a listing of your surplus food onto the marketplace"
@@ -21,7 +21,7 @@
           <br />
 
           <ListWithIcon
-            image-src="src/assets/merchant-icon-2.png"
+            image-src="../merchant-icon-2.png"
             image-alt="merchant-icon-2"
             header="CONNECT"
             description="Chat with a customer to arrange a self pickup time in store"
@@ -30,7 +30,7 @@
           <br />
 
           <ListWithIcon
-            image-src="src/assets/merchant-icon-3.png"
+            image-src="../merchant-icon-3.png"
             image-alt="merchant-icon-3"
             header="DELIVER"
             description="Excess food sold at a reduced price, alleviating loss incurred from food wastage"
@@ -51,6 +51,7 @@
 
 <script>
 import ListWithIcon from "./ListWithIcon.vue";
+
 
 export default {
   name: "AboutMerchant",

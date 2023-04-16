@@ -12,7 +12,7 @@
           <h1>As a Customer...</h1>
           
           <ListWithIcon
-            image-src="src/assets/customer-icon-1.png"
+            image-src="../customer-icon-1.png"
             image-alt="customer-icon-1"
             header="LOCATE"
             description="Discover a breath of food options from food places near you"
@@ -21,7 +21,7 @@
           <br />
 
           <ListWithIcon
-            image-src="src/assets/customer-icon-2.png"
+            image-src="../customer-icon-2.png"
             image-alt="customer-icon-2"
             header="SELF PICKUP"
             description="Head over to their store to pick up your tasty food/groceries"
@@ -30,7 +30,7 @@
           <br />
 
           <ListWithIcon
-            image-src="src/assets/customer-icon-3.png"
+            image-src="../customer-icon-3.png"
             image-alt="customer-icon-3"
             header="ENJOY"
             description="Enjoy your affordable prepared meal or whip up a storm with your fresh groceries"
