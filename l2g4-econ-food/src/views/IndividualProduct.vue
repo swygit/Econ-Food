@@ -125,8 +125,9 @@ export default {
     },
     addToCart: async function () {
       // (-1 means not found)
-
-      if (this.merchant.uid !== this.cart.merchantId) {
+      console.log(this.merchantId);
+      console.log(this.cart.merchantId);
+      if (this.merchant.uid !== this.cart.merchantId && this.merchantId != "") {
         alert("Adding item from another merchant will override current one!");
         this.cart.products = [];
       }

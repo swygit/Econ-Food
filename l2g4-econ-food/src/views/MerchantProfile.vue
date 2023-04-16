@@ -8,7 +8,12 @@
             :src="imageUrl || 'https://i.ibb.co/vhNdMn5/upload-icon.png'"
             class="merchant-image"
           />
-          <input class="mt-3" type="file" @change="onUpload" accept=".jpg,.png" />
+          <input
+            class="mt-3"
+            type="file"
+            @change="onUpload"
+            accept=".jpg,.png"
+          />
         </div>
         <div class="profileDiv">
           <form @submit.prevent="updateProfile">
@@ -25,13 +30,30 @@
               v-model="operatingHours"
             />
             <input type="text" placeholder="Location" v-model="location" />
-            <input type="tel" placeholder="Phone Number" v-model="phoneNumber" />
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              v-model="phoneNumber"
+            />
             <input type="text" placeholder="Bank Number" v-model="bankNumber" />
             <button type="submit" id="save">Save</button>
-            <button @click="" id="changePassword">Change Password</button>
-            <button @click="signOut" id="signOut">Sign Out</button>
           </form>
-
+          <div class="container mt-3">
+            <input
+              type="text"
+              placeholder="Enter Current Password"
+              v-model="currentPassword"
+            />
+            <input
+              type="text"
+              placeholder="Enter New Password"
+              v-model="newPassword"
+            />
+            <button @click="updatePassword" id="changePassword">
+              Change Password
+            </button>
+            <button @click="signOut" id="signOut">Sign Out</button>
+          </div>
         </div>
       </div>
     </div>
@@ -40,7 +62,14 @@
 
 <script>
 import MerchantNavigationBar from "@/components/MerchantNavigationBar.vue";
-import { getAuth, onAuthStateChanged, signOut } from "@firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "@firebase/auth";
 import {
   getFirestore,
   getDoc,
@@ -73,6 +102,8 @@ export default {
       location: "",
       phoneNumber: "",
       bankNumber: "",
+      newPassword: "",
+      currentPassword: "",
     };
   },
   mounted() {
@@ -138,6 +169,38 @@ export default {
         this.imageUrl = reader.result;
       };
     },
+    async updatePassword() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        this.currentPassword
+      );
+      try {
+        if (this.currentPassword == "") {
+          return alert("Enter current password!");
+        } else {
+          await reauthenticateWithCredential(user, credential);
+        }
+      } catch (error) {
+        if (error.code === "auth/wrong-password") {
+          throw alert("Current password is incorrect!");
+        }
+        throw error;
+      }
+      try {
+        if (this.newPassword == "") {
+          return alert("Enter a new password!");
+        } else {
+          await updatePassword(user, this.newPassword);
+          alert("Password updated successfully!");
+          this.currentPassword = "";
+          this.newPassword = "";
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
     async signOut() {
       await signOut(getAuth(firebaseApp));
       router.push("/login");
@@ -157,7 +220,7 @@ export default {
 }
 .center {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 20px;

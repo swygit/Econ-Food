@@ -1,26 +1,50 @@
 <template>
   <div class="container" v-if="user">
     <CustomerNavigationBar />
-    <div class="center">
-      <img
-        src="https://i.ibb.co/GxMZDwr/user-icon.png"
-        class="user-icon mt-5 mb-5"
-      />
-      <form @submit.prevent="updateProfile">
-        <input type="text" placeholder="Name" v-model="name" />
-        <input type="text" placeholder="Email" v-model="email" readonly />
-        <input type="tel" placeholder="Phone Number" v-model="phoneNumber" />
-        <button type="submit" id="save">Save</button>
-      </form>
-      <button @click="" id="changePassword">Change Password</button>
-      <button @click="signOut" id="signOut">Sign Out</button>
+    <div class="containertwo">
+      <div class="center">
+        <img
+          src="https://i.ibb.co/GxMZDwr/user-icon.png"
+          class="user-icon mt-5 mb-5"
+        />
+        <form @submit.prevent="updateProfile">
+          <input type="text" placeholder="Name" v-model="name" />
+          <input type="text" placeholder="Email" v-model="email" readonly />
+          <input type="tel" placeholder="Phone Number" v-model="phoneNumber" />
+          <button type="submit" id="save">Save</button>
+        </form>
+
+        <div class="center">
+          <input
+            type="text"
+            placeholder="Enter Current Password"
+            v-model="currentPassword"
+          />
+          <input
+            type="text"
+            placeholder="Enter New Password"
+            v-model="newPassword"
+          />
+          <button @click="updatePassword" id="changePassword">
+            Change Password
+          </button>
+          <button @click="signOut" id="signOut">Sign Out</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import CustomerNavigationBar from "@/components/CustomerNavigationBar.vue";
-import { getAuth, onAuthStateChanged, signOut } from "@firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+} from "@firebase/auth";
 import {
   getFirestore,
   getDoc,
@@ -48,6 +72,8 @@ export default {
       name: "",
       email: "",
       phoneNumber: "",
+      newPassword: "",
+      currentPassword: "",
     };
   },
   mounted() {
@@ -94,6 +120,36 @@ export default {
       }
       alert("Profile successfully updated!");
     },
+    async updatePassword() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        this.currentPassword
+      );
+      try {
+        if (this.currentPassword == "") {
+          return alert("Enter current password!");
+        }
+        await reauthenticateWithCredential(user, credential);
+      } catch (error) {
+        if (error.code === "auth/wrong-password") {
+          throw alert("Current password is incorrect!");
+        }
+        throw error;
+      }
+      try {
+        if (this.newPassword == "") {
+          return alert("Enter a new password!");
+        }
+        await updatePassword(user, this.newPassword);
+        alert("Password updated successfully!");
+        this.currentPassword = "";
+        this.newPassword = "";
+      } catch (error) {
+        throw error;
+      }
+    },
     async signOut() {
       await signOut(getAuth(firebaseApp));
       router.push("/login");
@@ -139,6 +195,13 @@ input[type="password"] {
   box-shadow: 0px 0px 5px #999;
   font-size: 16px;
   font-family: "Nunito Sans";
+}
+.containertwo {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5ef;
+  background-size: cover;
+  position: relative;
 }
 #save,
 #changePassword {
