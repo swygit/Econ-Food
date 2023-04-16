@@ -9,7 +9,7 @@
 
       <div class="col-left">
         <v-col class="center">
-          <h1>As a Mercant...</h1>
+          <h1>As a Merchant...</h1>
 
           <ListWithIcon
             image-src="../merchant-icon-1.png"
