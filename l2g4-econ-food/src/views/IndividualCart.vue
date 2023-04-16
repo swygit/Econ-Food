@@ -26,10 +26,12 @@
         <h2>Quantity: {{ item.quantity }}</h2>
         <button @click="deleteItem(item)" class="delete-button">Delete</button>
       </div>
-      <h2 style="margin-left: auto" class="me-16">Price: ${{ item.price }}</h2>
+      <h2 style="margin-left: auto" class="me-16">
+        Price: ${{ item.price.toFixed(2) }}
+      </h2>
     </div>
     <div style="margin-left: auto" class="mt-6 me-16">
-      <h3>Subtotal: ${{ totalPrice }}</h3>
+      <h3>Subtotal: ${{ totalPrice.toFixed(2) }}</h3>
     </div>
     <div class="bottom-container">
       <NormalButton

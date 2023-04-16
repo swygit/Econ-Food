@@ -17,9 +17,9 @@
                 v-for="item in cartItems"
                 :key="item.productId"
               >
-                <h3>{{ item.name }} x{{ item.quantity }}</h3>
+                <h3>{{ item.name }} x {{ item.quantity }}</h3>
               </div>
-              <h3>Subtotal: ${{ totalPrice }}</h3>
+              <h3>Subtotal: ${{ totalPrice.toFixed(2) }}</h3>
             </div>
           </div>
           <div class="buttons">

@@ -8,7 +8,7 @@
           <p class="order-id mt-1 mb-2 ms-3">Order #{{ orderidDisplay }}</p>
         </div>
         <div class="order-price">
-          <p>${{ price }}</p>
+          <p>${{ price.toFixed(2) }}</p>
         </div>
         <button
           @click="goSummary(orderid, status)"
