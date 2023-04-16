@@ -137,6 +137,16 @@ export default {
     async updateProfile() {
       try {
         const merchantDoc = await doc(db, "merchants", this.userId);
+        var checkPhoneNumber = /^\d{8}$/
+        if (!checkPhoneNumber.test(this.phoneNumber)) {
+          alert("Enter a valid 8-digit phone number.")
+          return
+        }
+        var checkBankNumber = /^\d{9,11}$/
+        if (!checkBankNumber.test(this.bankNumber)) {
+          alert("Enter a valid 9 to 11 digit bank number.")
+          return
+        }
         await updateDoc(merchantDoc, {
           imageUrl: this.imageUrl,
           name: this.name,

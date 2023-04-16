@@ -100,6 +100,11 @@ export default {
   methods: {
     async updateProfile() {
       const customerDoc = await doc(db, "customers", this.userId);
+      var checkPhoneNumber = /^\d{8}$/
+      if (!checkPhoneNumber.test(this.phoneNumber)) {
+        alert("Enter a valid 8-digit phone number.")
+        return
+      }
       await updateDoc(customerDoc, {
         name: this.name,
         phoneNumber: this.phoneNumber,
